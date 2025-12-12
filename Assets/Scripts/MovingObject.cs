@@ -10,15 +10,9 @@ public class MovingObject : PatternBase
 
     private void FixedUpdate()
     {
-<<<<<<< Updated upstream
         if (Moving)            
         {
             transform.position = Vector3.MoveTowards(transform.position, TargetPosition, MoveSpeed * Time.deltaTime);
-=======
-        if (Moving)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime);
->>>>>>> Stashed changes
 
             if (transform.position == TargetPosition)
             {
@@ -29,11 +23,8 @@ public class MovingObject : PatternBase
         }
     }
 
-<<<<<<< Updated upstream
 
 
-=======
->>>>>>> Stashed changes
     public void ActivateObject()
     {
         float UpPosition = this.transform.localScale.y / 2;
@@ -47,12 +38,6 @@ public class MovingObject : PatternBase
         float UnderPosition = -(this.transform.transform.localScale.y / 2);
         Moving = true;
         TargetPosition = new Vector3(this.transform.position.x, UnderPosition, this.transform.position.z);
-<<<<<<< Updated upstream
     }
 
 }
-=======
-
-    }
-}
->>>>>>> Stashed changes
