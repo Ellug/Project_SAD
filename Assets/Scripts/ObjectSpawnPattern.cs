@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+
 public class ObjectSpawnPattern : PatternBase
 {
     [Tooltip("오브젝트 태그")][SerializeField] GameObject[] PatternObject;
@@ -17,6 +17,11 @@ public class ObjectSpawnPattern : PatternBase
 
         for (int i = 0; i < MovingObject.Length; i++)
             MovingObject[i].ActivateObject();
+    }
+
+    protected override void PatternLogic()
+    {
+        
     }
 }
 

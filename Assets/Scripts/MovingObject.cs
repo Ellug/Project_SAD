@@ -40,4 +40,8 @@ public class MovingObject : PatternBase
         TargetPosition = new Vector3(this.transform.position.x, UnderPosition, this.transform.position.z);
     }
 
+    protected override void PatternLogic()
+    {
+        
+    }
 }
