@@ -29,12 +29,15 @@ public class BossController : MonoBehaviour
     private void TakeDamage(int dmg)
     {
         BossCurrentHp -= dmg;
+
+        // 페이즈 전환 조건 검사
         if (_isChangedPhase == false && 
             (float)BossCurrentHp / _bossMaxHp < _changePhaseHpRate)
         {
             _phaseChange?.Invoke();
             _isChangedPhase = true;
         }
+
         if (BossCurrentHp <= 0)
         {
             Die();
