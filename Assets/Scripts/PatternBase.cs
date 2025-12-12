@@ -5,29 +5,29 @@ public abstract class PatternBase : MonoBehaviour
 {
     [SerializeField] protected bool _counterable;
     [SerializeField] protected float _cycleTime;
-    private WaitForSeconds patternDelay;
-    private Coroutine patternCoroutine;
+    private WaitForSeconds _patternDelay;
+    private Coroutine _patternCoroutine;
 
     void Awake()
     {
-        patternDelay = new WaitForSeconds(_cycleTime);
+        _patternDelay = new WaitForSeconds(_cycleTime);
     }
 
     public void StartPatternTimer()
     {
-        patternCoroutine = StartCoroutine(PatternCycle());
+        _patternCoroutine = StartCoroutine(PatternCycle());
     }
 
     public void StopPatternTimer()
     {
-        StopCoroutine(patternCoroutine);
+        StopCoroutine(_patternCoroutine);
     }
 
     protected IEnumerator PatternCycle()
     {
         while (true)
         {
-            yield return patternDelay;
+            yield return _patternDelay;
             PatternLogic();
         }
     }
