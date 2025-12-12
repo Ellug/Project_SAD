@@ -5,30 +5,30 @@ using UnityEngine;
 public class PhaseData : ScriptableObject
 {
     // 얘는 프리팹 정보만 가진 리스트 (인스펙터에서 할당)
-    [SerializeField] private List<PatternBase> patterns;
+    [SerializeField] private List<PatternBase> _patterns;
     
     // 얘는 런타임 중 프리팹을 인스턴스한 오브젝트를 가진 리스트
-    private PatternBase[] activeObjects;
+    private PatternBase[] _activeObjects;
 
-    public List<PatternBase> Pattern { get { return patterns; } }
+    public List<PatternBase> Pattern { get { return _patterns; } }
 
     public void StartPhase()
     {
-        activeObjects = new PatternBase[patterns.Count];
+        _activeObjects = new PatternBase[_patterns.Count];
         // 담겨진 패턴들 모두 타이머 시작
-        for (int i = 0; i < activeObjects.Length; i++)
+        for (int i = 0; i < _activeObjects.Length; i++)
         {
-            activeObjects[i] = Instantiate(Pattern[i].gameObject).GetComponent<PatternBase>();
-            activeObjects[i].StartPatternTimer();
+            _activeObjects[i] = Instantiate(Pattern[i].gameObject).GetComponent<PatternBase>();
+            _activeObjects[i].StartPatternTimer();
         }
     }
 
     public void StopPhase()
     {
-        for (int i = 0; i < activeObjects.Length; i++)
+        for (int i = 0; i < _activeObjects.Length; i++)
         {
-            activeObjects[i].StopPatternTimer();
-            activeObjects[i].gameObject.SetActive(false);
+            _activeObjects[i].StopPatternTimer();
+            _activeObjects[i].gameObject.SetActive(false);
         }
     }
 }
