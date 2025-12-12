@@ -5,7 +5,8 @@ public abstract class PatternBase : MonoBehaviour
 {
     [SerializeField] protected bool _counterable;
     [SerializeField] protected float _cycleTime;
-    WaitForSeconds patternDelay;
+    private WaitForSeconds patternDelay;
+    private Coroutine patternCoroutine;
 
     void Awake()
     {
@@ -14,18 +15,21 @@ public abstract class PatternBase : MonoBehaviour
 
     public void StartPatternTimer()
     {
-        StartCoroutine(PatternCycle());
+        patternCoroutine = StartCoroutine(PatternCycle());
     }
 
     public void StopPatternTimer()
     {
-        StopCoroutine(PatternCycle());
+        StopCoroutine(patternCoroutine);
     }
 
-    protected virtual IEnumerator PatternCycle()
+    protected IEnumerator PatternCycle()
     {
-        PatternLogic();
-        yield return patternDelay;
+        while (true)
+        {
+            yield return patternDelay;
+            PatternLogic();
+        }
     }
 
     protected abstract void PatternLogic();

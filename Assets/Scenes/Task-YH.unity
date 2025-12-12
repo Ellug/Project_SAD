@@ -525,10 +525,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbfe7c8109df12444830e2c1d55fc4b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PhaseManager
-  boss: {fileID: 252912509}
-  phase:
+  _boss: {fileID: 252912509}
+  _phase:
   - {fileID: 11400000, guid: ee9a4d3701baf6e45868a4b42c4c2e7b, type: 2}
-  - {fileID: 11400000, guid: 3d657a43447ef754ab057bf0500f7da8, type: 2}
 --- !u!4 &668785849
 Transform:
   m_ObjectHideFlags: 0
