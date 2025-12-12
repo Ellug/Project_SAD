@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class PatternBase : MonoBehaviour
+public abstract class PatternBase : MonoBehaviour
 {
-    
+    [SerializeField] protected bool _counterable;
+
 }

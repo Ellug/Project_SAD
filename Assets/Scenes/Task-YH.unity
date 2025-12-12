@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 252912505}
   - component: {fileID: 252912509}
   m_Layer: 0
-  m_Name: BossBody
+  m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -357,7 +357,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77aa77eca01fefb45bde02d5309d0b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
-  _bossHp: 100
+  _bossMaxHp: 100
+  _changePhaseHpRate: 0.5
 --- !u!1 &253442389
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,6 +496,54 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &668785847
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 668785849}
+  - component: {fileID: 668785848}
+  m_Layer: 0
+  m_Name: PhaseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &668785848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668785847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfe7c8109df12444830e2c1d55fc4b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhaseManager
+  boss: {fileID: 252912509}
+  phase:
+  - {fileID: 11400000, guid: ee9a4d3701baf6e45868a4b42c4c2e7b, type: 2}
+  - {fileID: 11400000, guid: 3d657a43447ef754ab057bf0500f7da8, type: 2}
+--- !u!4 &668785849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668785847}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1181229057
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,3 +679,4 @@ SceneRoots:
   - {fileID: 1181229059}
   - {fileID: 60650557}
   - {fileID: 252912508}
+  - {fileID: 668785849}
