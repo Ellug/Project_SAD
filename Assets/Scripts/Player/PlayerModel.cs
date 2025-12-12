@@ -1,0 +1,133 @@
+using UnityEngine;
+
+public class PlayerModel : MonoBehaviour
+{
+    [Header("Status")]
+    [SerializeField] private float _maxHp = 50f;
+
+    [Header("Movement")]
+    [SerializeField] private float _maxSpeed = 10f;
+    [SerializeField] private float _accelForce = 30f;
+    [SerializeField] private float _rotSpeed = 10f;
+
+    [Header("Dodge")]
+    [SerializeField] private float _dodgeDuration = 0.1f;
+    [SerializeField] private float _dodgeSpeed = 25f;
+    [SerializeField] private float _dodgeCoolTime = 5.0f;
+
+    [Header("Special Attack")]
+    [SerializeField] private float _specialCoolTime = 4.0f;
+
+    // Internal
+    private float _curHp;
+    private bool _isDodging = false;
+    private float _curDodgeTime = 0f;
+    private bool _isInvincible = false;
+    private float _curDodgeCoolTime = 0f;
+
+    private float _curSpecialCoolTime = 0f;
+
+    // Properties
+    public IWeapon CurrentWeapon { get; private set; }
+
+    public float MaxHp => _maxHp;
+    public float CurHp => _curHp;
+    public float MaxSpeed => _maxSpeed;
+    public float AccelForce => _accelForce;
+    public float RotSpeed => _rotSpeed;
+    public float DodgeSpeed => _dodgeSpeed;
+    public float DodgeDuration => _dodgeDuration;
+    public float DodgeCoolTime => _dodgeCoolTime;
+    public bool IsDodging => _isDodging;
+
+    public float DodgeCooldownCur => _curDodgeCoolTime;
+    public float DodgeCooldownRatio => 1f - (_curDodgeCoolTime / _dodgeCoolTime);
+
+    public float SpecialCooldownCur => _curSpecialCoolTime;
+    public float SpecialCooldownRatio => 1f - (_curSpecialCoolTime / _specialCoolTime);
+
+    public bool CanDodge => !_isDodging && _curDodgeCoolTime <= 0f;
+    public bool CanSpecialAttack => _curSpecialCoolTime <= 0f;
+
+    void Start()
+    {
+        Init();
+        // TODO : 여기서 로드아웃에서 선택한 무기로 SetWeapon?  아니면 다른 곳에서 셋?
+    }
+
+    public void Init()
+    {
+        _curHp = _maxHp;
+        _curDodgeCoolTime = 0f;
+        _curSpecialCoolTime = 0f;
+        _curDodgeTime = 0f;
+        _isDodging = false;
+        _isInvincible = false;
+    }
+
+    public void StartDodge()
+    {
+        _isDodging = true;
+        _isInvincible = true;
+        _curDodgeTime = _dodgeDuration;
+        _curDodgeCoolTime = _dodgeCoolTime;
+    }
+
+    public void UpdateDodge(float deltaTime)
+    {
+        if (!_isDodging) return;
+
+        _curDodgeTime -= deltaTime;
+
+        // 앞 절반 동안만 무적
+        if (_curDodgeTime <= _dodgeDuration * 0.5f)
+            _isInvincible = false;
+
+        // 종료
+        if (_curDodgeTime <= 0f)
+        {
+            _curDodgeTime = 0f;
+            _isDodging = false;
+            _isInvincible = false;
+        }
+    }
+
+    public void StopDodge()
+    {
+        _isDodging = false;
+    }
+
+    public void StartSpecial()
+    {
+        _curSpecialCoolTime = _specialCoolTime;
+    }
+
+    public void UpdateTimer(float deltaTime)
+    {
+        if (_curDodgeCoolTime > 0f)
+            _curDodgeCoolTime = Mathf.Max(0, _curDodgeCoolTime - deltaTime);
+
+        if (_curSpecialCoolTime > 0f)
+            _curSpecialCoolTime = Mathf.Max(0, _curSpecialCoolTime - deltaTime);
+    }
+
+    public void SetWeapon(IWeapon weapon)
+    {
+        CurrentWeapon = weapon;
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        if (_isInvincible) return; // 무적 판정
+
+        _curHp -= dmg;
+
+        if(_curHp <= 0)
+            Die();
+    }
+
+    private void Die()
+    {
+        Debug.Log("사망 처리");
+    }
+}
