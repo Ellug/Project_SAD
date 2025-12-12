@@ -6,6 +6,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerModel _model;
     [SerializeField] private PlayerView _view;
     
+    [Header("Camera Settings")]
+    [SerializeField] private Transform _cameraTarget;
+    [SerializeField] private float _cameraOffset = 6f;
+    [SerializeField] private float _cameraSmooth = 2f;
+    [SerializeField] private float _cameraDisMultiplier = 0.2f;
+    
     private Camera _cam;
     private Plane _groundPlane;
     private Vector2 _moveInput;
@@ -21,13 +27,14 @@ public class PlayerController : MonoBehaviour
     {
         _model.UpdateTimer(Time.deltaTime);
         _model.UpdateDodge(Time.deltaTime);
+        
+        HandleAim();
     }
 
     void FixedUpdate()
     {        
         HandleMovement();
         HandleDodgeState();
-        HandleAim();
     }
 
     // Input Actions - New Input System
@@ -121,5 +128,26 @@ public class PlayerController : MonoBehaviour
         Vector3 aimDir = worldCursorPos - _view.transform.position;
         aimDir.y = 0;
         _view.RotateTurret(aimDir);
+
+        // 카메라 업데이트
+        UpdateCameraTarget(aimDir);
+    }
+
+    // 씨네머신 카메라 페이크 타겟 추적
+    private void UpdateCameraTarget(Vector3 aimDir)
+    {
+        Vector3 playerPos = _view.transform.position;
+
+        // 마우스까지의 거리
+        float dist = aimDir.magnitude;
+        float maxDist = _cameraOffset;
+        float clampedDist = Mathf.Min(dist * _cameraDisMultiplier, maxDist);
+
+        Vector3 dir = aimDir.normalized;
+
+        Vector3 targetPos = playerPos + dir * clampedDist;
+        targetPos.y = _cameraTarget.position.y;
+
+        _cameraTarget.position = Vector3.Lerp(_cameraTarget.position, targetPos, Time.deltaTime * _cameraSmooth);
     }
 }
