@@ -16,5 +16,14 @@ public class BossController : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         _bossHp -= dmg;
+        if (_bossHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
     }
 }
