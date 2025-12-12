@@ -1,10 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
-    [SerializeField] private int _bossHp = 100;
+    [SerializeField] private int _bossMaxHp = 100;
+    [SerializeField] private float _changePhaseHpRate = 0.5f;
+    private bool _isChangedPhase;
 
-    private void OnTriggerEnter(Collider other)
+    public int BossCurrentHp { get; private set; }
+
+    public event Action _phaseChange;
+
+    void Awake()
+    {
+        _isChangedPhase = false;
+        BossCurrentHp = _bossMaxHp;
+    }
+
+    void OnTriggerEnter(Collider other)
     {
         // 플레이어 총알에 태그 별도로 할당 바랍니다.
         if (other.CompareTag("PlayerBullet"))
@@ -13,10 +26,19 @@ public class BossController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int dmg)
+    private void TakeDamage(int dmg)
     {
-        _bossHp -= dmg;
-        if (_bossHp <= 0)
+        BossCurrentHp -= dmg;
+
+        // 페이즈 전환 조건 검사
+        if (_isChangedPhase == false && 
+            (float)BossCurrentHp / _bossMaxHp < _changePhaseHpRate)
+        {
+            _phaseChange?.Invoke();
+            _isChangedPhase = true;
+        }
+
+        if (BossCurrentHp <= 0)
         {
             Die();
         }
