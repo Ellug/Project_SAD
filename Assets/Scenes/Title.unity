@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66cf56917bddd4948b70c40eb8d14284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneChanger
-  SceneIndex: 0
+  SceneName: 
 --- !u!114 &449991268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -529,7 +529,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66cf56917bddd4948b70c40eb8d14284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LoadScenes
-  SceneIndex: 0
+  SceneName: Lobby
 --- !u!114 &861631521
 MonoBehaviour:
   m_ObjectHideFlags: 0
