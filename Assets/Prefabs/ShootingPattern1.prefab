@@ -49,4 +49,4 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 5109388918546901027, guid: 38d725455bafedd4b89852261a702488, type: 3}
   _shootInterval: 0.1
   _shootBulletNumber: 3
-  _spawnPosition: {fileID: 9218724176230422718, guid: a2ad2a11644d40c42b72ef36988a5d69, type: 3}
+  _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}

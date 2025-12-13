@@ -11,6 +11,9 @@ public class PhaseManager : MonoBehaviour
     private PhaseData _curPhase;
     private int _phaseIndex;
 
+    // 런타임 중 프리팹을 인스턴스한 오브젝트를 가진 배열
+    private PatternBase[] _activeObjects;
+
     void Awake()
     {
         _boss._phaseChange += ChangePhase;
@@ -20,7 +23,7 @@ public class PhaseManager : MonoBehaviour
 
     void Start()
     {
-        _curPhase.StartPhase(_player, _spawnPosition);
+        StartCurrentPhase();
     }
 
     void OnDestroy()
@@ -28,14 +31,35 @@ public class PhaseManager : MonoBehaviour
         _boss._phaseChange -= ChangePhase;
     }
 
+    public void StartCurrentPhase()
+    {
+        _activeObjects = new PatternBase[_curPhase.Pattern.Count];
+        // 담겨진 패턴들 모두 타이머 시작
+        for (int i = 0; i < _activeObjects.Length; i++)
+        {
+            _activeObjects[i] = Instantiate(_curPhase.Pattern[i].gameObject).GetComponent<PatternBase>();
+            _activeObjects[i].Init(_player);
+            _activeObjects[i].StartPatternTimer();
+        }
+    }
+
+    public void StopCurrentPhase()
+    {
+        for (int i = 0; i < _activeObjects.Length; i++)
+        {
+            _activeObjects[i].StopPatternTimer();
+            _activeObjects[i].gameObject.SetActive(false);
+        }
+    }
+
     public void ChangePhase()
     {
         if (_phaseIndex < _phase.Count - 1)
         {
             // 지금 페이즈 멈추고, 다음 페이즈로 전환 후 시작해라.
-            _curPhase.StopPhase();
+            StopCurrentPhase();
             _curPhase = _phase[++_phaseIndex];
-            _curPhase.StartPhase(_player, _spawnPosition);
+            StartCurrentPhase();
         }
     }
 }

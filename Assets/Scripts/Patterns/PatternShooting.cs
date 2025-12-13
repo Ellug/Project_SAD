@@ -6,6 +6,7 @@ public class PatternShooting : PatternBase
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private float _shootInterval = 0.1f;
     [SerializeField] private int _shootBulletNumber;
+    [SerializeField] private Transform _spawnPosition;
 
     private GameObject _target;
     private WaitForSeconds _delay;
@@ -19,6 +20,7 @@ public class PatternShooting : PatternBase
     public override void Init(GameObject target)
     {
         _target = target;
+        transform.position = _spawnPosition.position;
     }
 
     protected override void PatternLogic()
