@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class PhaseManager : MonoBehaviour
 {
+    [SerializeField] private GameObject _player;
     [SerializeField] private BossController _boss;
+    [SerializeField] private Transform _spawnPosition;
     [SerializeField] private List<PhaseData> _phase;
+
     private PhaseData _curPhase;
     private int _phaseIndex;
 
@@ -17,7 +20,7 @@ public class PhaseManager : MonoBehaviour
 
     void Start()
     {
-        _curPhase.StartPhase();
+        _curPhase.StartPhase(_player, _spawnPosition);
     }
 
     void OnDestroy()
@@ -32,7 +35,7 @@ public class PhaseManager : MonoBehaviour
             // 지금 페이즈 멈추고, 다음 페이즈로 전환 후 시작해라.
             _curPhase.StopPhase();
             _curPhase = _phase[++_phaseIndex];
-            _curPhase.StartPhase();
+            _curPhase.StartPhase(_player, _spawnPosition);
         }
     }
 }
