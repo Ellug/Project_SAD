@@ -8,8 +8,9 @@ public abstract class PatternBase : MonoBehaviour
     private WaitForSeconds _patternDelay;
     private Coroutine _patternCoroutine;
 
-    void Awake()
+    protected void Awake()
     {
+        Debug.Log("패턴 딜레이 클래스 생성.");
         _patternDelay = new WaitForSeconds(_cycleTime);
     }
 
@@ -28,9 +29,10 @@ public abstract class PatternBase : MonoBehaviour
         while (true)
         {
             yield return _patternDelay;
+            Debug.Log($"패턴 로직을 가동. ({_cycleTime}초마다 호출해야 함)");
             PatternLogic();
         }
     }
-
+    public abstract void Init(GameObject target);
     protected abstract void PatternLogic();
 }

@@ -12,13 +12,14 @@ public class PhaseData : ScriptableObject
 
     public List<PatternBase> Pattern { get { return _patterns; } }
 
-    public void StartPhase()
+    public void StartPhase(GameObject target, Transform spawnPos)
     {
         _activeObjects = new PatternBase[_patterns.Count];
         // 담겨진 패턴들 모두 타이머 시작
         for (int i = 0; i < _activeObjects.Length; i++)
         {
-            _activeObjects[i] = Instantiate(Pattern[i].gameObject).GetComponent<PatternBase>();
+            _activeObjects[i] = Instantiate(Pattern[i].gameObject, spawnPos.position, spawnPos.rotation).GetComponent<PatternBase>();
+            _activeObjects[i].Init(target);
             _activeObjects[i].StartPatternTimer();
         }
     }

@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 public class MovingObject : PatternBase
 {
     private bool Moving = false;
-    [Tooltip("¿ÀºêÁ§Æ® ÀÌµ¿ ¼Óµµ")][SerializeField] float MoveSpeed = 0;
-    [Tooltip("¿ÀºêÁ§Æ® È°¼ºÈ­ ½Ã°£")][SerializeField] float LifeTime = 5f;
+    [Tooltip("ì˜¤ë¸Œì íŠ¸ ì´ë™ ì†ë„")][SerializeField] float MoveSpeed = 0;
+    [Tooltip("ì˜¤ë¸Œì íŠ¸ í™œì„±í™” ì‹œê°„")][SerializeField] float LifeTime = 5f;
     private Vector3 TargetPosition;
 
     private void FixedUpdate()
@@ -41,6 +41,11 @@ public class MovingObject : PatternBase
     }
 
     protected override void PatternLogic()
+    {
+        
+    }
+
+    public override void Init(GameObject target)
     {
         
     }
