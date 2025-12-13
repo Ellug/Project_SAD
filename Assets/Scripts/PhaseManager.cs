@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PhaseManager : MonoBehaviour
 {
+    [SerializeField] private GameObject _player;
     [SerializeField] private BossController _boss;
     [SerializeField] private List<PhaseData> _phase;
     private PhaseData _curPhase;
