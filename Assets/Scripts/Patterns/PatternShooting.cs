@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PatternShooting : PatternBase
 {
+    [Header("투사체 패턴 속성")]
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private float _shootInterval = 0.1f;
     [SerializeField] private int _shootBulletNumber;
