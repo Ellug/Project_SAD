@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6693376829381441343}
   - component: {fileID: 8034155009519885667}
   - component: {fileID: 6183429666845410444}
+  - component: {fileID: 5363972325274319927}
   m_Layer: 0
   m_Name: AOEattack
   m_TagString: Untagged
@@ -113,6 +114,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &5363972325274319927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 341724237388840686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae7ed77f584278a41853e0c6177e37f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AreaOfEffectController
 --- !u!1 &4923519318504281155
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,3 +266,5 @@ MonoBehaviour:
   _cycleTime: 10
   _warningTime: 3
   _lifeTime: 3
+  _damage: 10
+  _tickInterval: 0.5

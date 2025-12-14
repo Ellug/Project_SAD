@@ -5,6 +5,8 @@ public class PatternAreaOfEffect : PatternBase
 {
     [SerializeField] private float _warningTime;
     [SerializeField] private float _lifeTime;
+    [SerializeField] private int _damage;
+    [SerializeField] private float _tickInterval;
 
     private GameObject _warningImage;
     private GameObject _attackAOE;
@@ -15,6 +17,8 @@ public class PatternAreaOfEffect : PatternBase
         base.Awake();
         _warningImage = transform.GetChild(0).gameObject;
         _attackAOE = transform.GetChild(1).gameObject;
+        _attackAOE.GetComponent<AreaOfEffectController>()
+            .Init(_damage, _tickInterval);
     }
 
     void OnEnable()
