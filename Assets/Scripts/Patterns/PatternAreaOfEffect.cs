@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PatternAreaOfEffect : PatternBase
 {
+    [Header("장판 패턴 속성")]
     [SerializeField] private float _warningTime;
     [SerializeField] private float _lifeTime;
     [SerializeField] private int _damage;
