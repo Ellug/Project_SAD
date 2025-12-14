@@ -17,6 +17,7 @@ public class PhaseManager : MonoBehaviour
     void Awake()
     {
         _boss._phaseChange += ChangePhase;
+        _boss._takeCounterableAttack += TriggerCounter;
         _phaseIndex = 0;
         _curPhase = _phase[_phaseIndex];
     }
@@ -29,9 +30,10 @@ public class PhaseManager : MonoBehaviour
     void OnDestroy()
     {
         _boss._phaseChange -= ChangePhase;
+        _boss._takeCounterableAttack -= TriggerCounter;
     }
 
-    public void StartCurrentPhase()
+    private void StartCurrentPhase()
     {
         _activeObjects = new PatternBase[_curPhase.Pattern.Count];
         // 담겨진 패턴들 모두 타이머 시작
@@ -43,7 +45,7 @@ public class PhaseManager : MonoBehaviour
         }
     }
 
-    public void StopCurrentPhase()
+    private void StopCurrentPhase()
     {
         for (int i = 0; i < _activeObjects.Length; i++)
         {
@@ -60,6 +62,14 @@ public class PhaseManager : MonoBehaviour
             StopCurrentPhase();
             _curPhase = _phase[++_phaseIndex];
             StartCurrentPhase();
+        }
+    }
+
+    public void TriggerCounter()
+    {
+        foreach (PatternBase pattern in _activeObjects) 
+        {
+            pattern.CounterAttackTrigger();
         }
     }
 }

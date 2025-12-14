@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BossController : MonoBehaviour
 {
@@ -10,11 +11,20 @@ public class BossController : MonoBehaviour
     public int BossCurrentHp { get; private set; }
 
     public event Action _phaseChange;
+    public event Action _takeCounterableAttack;
 
     void Awake()
     {
         _isChangedPhase = false;
         BossCurrentHp = _bossMaxHp;
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current.qKey.isPressed)
+        {
+            TakeDamage(5, true);
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -26,10 +36,13 @@ public class BossController : MonoBehaviour
         }
     }
 
-    private void TakeDamage(int dmg)
+    private void TakeDamage(int dmg, bool isCounterable)
     {
         BossCurrentHp -= dmg;
-
+        if (isCounterable) 
+        {
+            _takeCounterableAttack?.Invoke();
+        }
         // 페이즈 전환 조건 검사
         if (_isChangedPhase == false && 
             (float)BossCurrentHp / _bossMaxHp < _changePhaseHpRate)
