@@ -8,7 +8,7 @@ public abstract class PatternBase : MonoBehaviour
     private WaitForSeconds _patternDelay;
     private Coroutine _patternCoroutine;
 
-    void Awake()
+    protected void Awake()
     {
         _patternDelay = new WaitForSeconds(_cycleTime);
     }
@@ -31,6 +31,6 @@ public abstract class PatternBase : MonoBehaviour
             PatternLogic();
         }
     }
-
+    public abstract void Init(GameObject target);
     protected abstract void PatternLogic();
 }

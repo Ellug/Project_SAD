@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc51b4512194dfa449cd0d34d84bfd99, type: 3}
   m_Name: PhaseTestData
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
-  patterns: []
+  _patterns:
+  - {fileID: 8020916841353739512, guid: aed32bfc3fcb54c4fb7431b2193f8647, type: 3}
+  - {fileID: 3153455433497496169, guid: c7a98a82a739e094d8866f27d6463f71, type: 3}

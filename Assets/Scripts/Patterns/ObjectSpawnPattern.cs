@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class ObjectSpawnPattern : PatternBase
 {
-    [Tooltip("¿ÀºêÁ§Æ® ÅÂ±×")][SerializeField] GameObject[] PatternObject;
+    [Tooltip("ì˜¤ë¸Œì íŠ¸ íƒœê·¸")][SerializeField] GameObject[] PatternObject;
     public MovingObject[] MovingObject;
     private void Awake()
     {
@@ -20,6 +20,11 @@ public class ObjectSpawnPattern : PatternBase
     }
 
     protected override void PatternLogic()
+    {
+        
+    }
+
+    public override void Init(GameObject target)
     {
         
     }
