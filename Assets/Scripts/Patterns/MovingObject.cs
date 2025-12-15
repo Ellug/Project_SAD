@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovingObject : PatternBase
+public class MovingObject : MonoBehaviour
 {
     private bool Moving = false;
     [Tooltip("오브젝트 이동 속도")][SerializeField] float MoveSpeed = 0;
     [Tooltip("오브젝트 활성화 시간")][SerializeField] float LifeTime = 5f;
     private Vector3 TargetPosition;
+    private float UpPosition;
+    private float UnderPosition;
 
     private void FixedUpdate()
     {
@@ -14,11 +16,16 @@ public class MovingObject : PatternBase
         {
             transform.position = Vector3.MoveTowards(transform.position, TargetPosition, MoveSpeed * Time.deltaTime);
 
-            if (transform.position == TargetPosition)
+            if (transform.position.y == UpPosition)
             {
                 StartCoroutine(DeActivateObject());
                 Moving = false;
+            }
+
+            if (transform.position.y == UnderPosition)
+            {
                 StopCoroutine(DeActivateObject());
+                Moving = false;
             }
         }
     }
@@ -27,7 +34,7 @@ public class MovingObject : PatternBase
 
     public void ActivateObject()
     {
-        float UpPosition = this.transform.localScale.y / 2;
+        UpPosition = this.transform.localScale.y / 2;
         Moving = true;
         TargetPosition = new Vector3(this.transform.position.x, UpPosition, this.transform.position.z);
     }
@@ -35,18 +42,8 @@ public class MovingObject : PatternBase
     IEnumerator DeActivateObject()
     {
         yield return new WaitForSeconds(LifeTime);
-        float UnderPosition = -(this.transform.transform.localScale.y / 2);
+        UnderPosition = -(this.transform.transform.localScale.y / 2);
         Moving = true;
         TargetPosition = new Vector3(this.transform.position.x, UnderPosition, this.transform.position.z);
-    }
-
-    protected override void PatternLogic()
-    {
-        
-    }
-
-    public override void Init(GameObject target)
-    {
-        
     }
 }
