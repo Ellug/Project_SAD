@@ -1,6 +1,6 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StageUI : MonoBehaviour
@@ -21,15 +21,24 @@ public class StageUI : MonoBehaviour
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private GameObject _resultPanel;
 
-    private bool _isPaused = false;
+    [Header("GameResult")]
+    [SerializeField] private TMP_Text _resultText;
+    [SerializeField] private Image _resultColor;
+    [SerializeField] private TMP_Text _remainedBossHp;
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
+    }
 
     private void Start()
     {
-        // 초기화 대신 최초 세팅
-        UpdatePlayerHP();
-        UpdateBossHP();
-        UpdateCooldowns();
-
         if (_pausePanel != null)
             _pausePanel.SetActive(false);
 
@@ -44,14 +53,11 @@ public class StageUI : MonoBehaviour
         UpdateCooldowns();
 
         // 퍼즈, 게임 종료 임시 인풋
-        // TODO: 매니져 분리할 가능성 높아 보임
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
-            TogglePause();
-
-        if (Keyboard.current.pKey.wasPressedThisFrame)
-            ShowResult();
+            GameManager.Instance.TogglePause();
     }
 
+    // HP Bar Update
     private void UpdatePlayerHP()
     {
         if (_playerModel == null) return;
@@ -72,6 +78,7 @@ public class StageUI : MonoBehaviour
             _bossHpSlider.value = ratio;
     }
 
+    // CoolTime Update
     private void UpdateCooldowns()
     {
         // Dodge
@@ -83,55 +90,63 @@ public class StageUI : MonoBehaviour
             _specialCooldownSlider.value = _playerModel.SpecialCooldownRatio;
     }
 
-    private void TogglePause()
+    // 게임 상태 변경 -> 이벤트 등록
+    private void HandleGameStateChanged(GameState state)
     {
-        _isPaused = !_isPaused;
-
         if (_pausePanel != null)
-            _pausePanel.SetActive(_isPaused);
-
-        Time.timeScale = _isPaused ? 0f : 1f;
-    }
-
-    // 토글로 때워도 되는데 일단 분리
-    public void ResumeGame()
-    {
-        _isPaused = false;
-
-        if (_pausePanel != null)
-            _pausePanel.SetActive(false);
-
-        Time.timeScale = 1f;
-    }
-
-    // 결과창 출력
-    public void ShowResult()
-    {
-        Time.timeScale = 0f;
-
-        // TODO: 보스 남은 hp, 승리 여부 받아야함
+            _pausePanel.SetActive(state == GameState.Paused);
 
         if (_resultPanel != null)
-            _resultPanel.SetActive(true);
+        {
+            bool isResult = state == GameState.Result;
+            _resultPanel.SetActive(isResult);
+
+            if (isResult)
+                UpdateResultUI();
+        }
     }
 
-    // 로비로 - TODO: 다른 sc와 중복된 부분 통합 고려해서 리팩토링 하면 좋음
+    // 결과 UI 업데이트
+    private void UpdateResultUI()
+    {
+        if (_resultText == null || _resultColor == null || _bossController == null)
+            return;
+
+        bool isWin = GameManager.Instance.IsPlayerWin;
+
+        _resultText.text = isWin ? "성공" : "실패";
+        _resultText.color = isWin ? Color.black : Color.white;
+
+        _resultColor.color = isWin
+            ? new Color(0.4f, 0.8352942f, 0.4627451f)
+            : new Color(0.9450981f, 0.282353f, 0.1294118f);
+
+        // 보스 남은 체력
+        if (_remainedBossHp != null)
+        {
+            float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp * 100f;
+            _remainedBossHp.text = $"남은 보스의 체력: {ratio:F1}%";
+        }
+    }
+
+    // UI Btn OnClick Events
+    public void Resume()
+    {
+        GameManager.Instance.ResumeGame();
+    }
+
     public void GoToLobby()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("Lobby");
+        GameManager.Instance.GoToLobby();
     }
 
-    // 현재 씬 재시작
-    public void ReloadCurrentScene()
+    public void Retry()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameManager.Instance.ReloadCurrentScene();
     }
 
-    // TODO: 이런 것도 게임 매니져에서 중앙 관리 (캐싱할 데이터 관리 등 처리) 하면 좋아 보임
-    public void GameExit() 
+    public void GameExit()
     {
-        Application.Quit();
+        GameManager.Instance.GameExit();
     }
 }

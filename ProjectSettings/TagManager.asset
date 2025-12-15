@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PatternObject
   - LaserObject
+  - Boss
   - Obstacle
   layers:
   - Default

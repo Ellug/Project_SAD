@@ -28,8 +28,9 @@ public class PlayerModel : MonoBehaviour
     private float _curSpecialCoolTime = 0f;
 
     // Properties
-    //public IWeapon CurrentWeapon { get; private set; }
     public WeaponController CurrentWeapon { get; private set; }
+    public Weapon CurrentWeaponType { get; private set; }
+    public WeaponData CurrentWeaponData { get; private set; }
 
     public float MaxHp => _maxHp;
     public float CurHp => _curHp;
@@ -53,8 +54,19 @@ public class PlayerModel : MonoBehaviour
     void Start()
     {
         Init();
-        // TODO : 여기서 로드아웃에서 선택한 무기로 SetWeapon?  아니면 다른 곳에서 셋?
+
+        CurrentWeapon = GetComponentInChildren<WeaponController>();
+
+        var wm = WeaponManager.Instance;
+
+        Debug.Log($"[PlayerModel] WeaponManager : {wm.CurrentWeapon}, {wm.CurrentWeaponData}");
+
+        CurrentWeaponType = wm.CurrentWeapon;
+        CurrentWeaponData = wm.CurrentWeaponData;
+
+        CurrentWeapon.Init(CurrentWeaponData);
     }
+
 
     public void Init()
     {
@@ -112,7 +124,6 @@ public class PlayerModel : MonoBehaviour
             _curSpecialCoolTime = Mathf.Max(0, _curSpecialCoolTime - deltaTime);
     }
 
-    //public void SetWeapon(IWeapon weapon)
     public void SetWeapon(WeaponController weapon)
     {
         CurrentWeapon = weapon;
@@ -130,6 +141,7 @@ public class PlayerModel : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("사망 처리");
+        // Game Over
+        GameManager.Instance.PlayerLose();
     }
 }

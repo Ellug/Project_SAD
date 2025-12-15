@@ -20,14 +20,19 @@ public class WeaponHandler : MonoBehaviour
 
     private void Awake()
     {
-        _ui.OnWeaponSelected += HandleWeaponSelected;
+        if (_ui != null)
+            _ui.OnWeaponSelected += HandleWeaponSelected;
+    }
 
-        SetCurrentWeapon(_currentWeapon, _currentWeaponData);
+    void Start()
+    {
+        SetCurrentWeapon(_currentWeapon, _currentWeaponData);        
     }
 
     private void OnDestroy()
     {
-        _ui.OnWeaponSelected -= HandleWeaponSelected;
+        if (_ui != null)
+            _ui.OnWeaponSelected -= HandleWeaponSelected;
     }
 
     private void HandleWeaponSelected(Weapon weapon)
@@ -58,6 +63,7 @@ public class WeaponHandler : MonoBehaviour
         _weaponController.Init(data);
         _playerModel.SetWeapon(_weaponController);
     }
+
     private void SetCurrentWeapon(Weapon weapon, WeaponData data)
     {
         if(data == null)

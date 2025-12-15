@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         if (ctx.performed) _model.CurrentWeapon?.Attack();
     }
+
     public void OnSpecialAttack(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;

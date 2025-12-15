@@ -8,7 +8,7 @@ public class BossBullet : BulletBase
     // 장애물 통과라면 유저가 벽 뒤에 숨어있어도 갑자기 튀어나온 탄에 맞을텐데 의도된건지?
     // 플레이어가 맞아도 사라지지 않는다면 플레이어 캐릭터는 1명인데 통과하는게 어떤 의미인지?
     // 우선 관통 여부는 고려하지 마시오.
-    [SerializeField] private bool _isPierce = false;
+    // [SerializeField] private bool _isPierce = false;
     //[Tooltip("유도탄 여부 (미구현)")]
     //[SerializeField] private bool _isTracking = false;
     //[SerializeField] private float _startSpeed = 3f;
@@ -20,7 +20,7 @@ public class BossBullet : BulletBase
     [SerializeField] private float _lifeTime = 3f;
     [SerializeField] private float _damage = 10f;
     // 넉백에 대한 내용도 좀 더 상세한 설명 필요.
-    [SerializeField] private float _knockbackPower = 5f;
+    // [SerializeField] private float _knockbackPower = 5f;
 
     void Awake()
     {
@@ -34,8 +34,16 @@ public class BossBullet : BulletBase
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Obstacle"))
+        // if (other.CompareTag("Obstacle"))
+        // {
+        //     Destroy(gameObject);
+        // }
+
+        if (other.transform.CompareTag("Player"))
         {
+            if (other.TryGetComponent<PlayerModel>(out var player))
+                player.TakeDamage(_damage);
+
             Destroy(gameObject);
         }
     }

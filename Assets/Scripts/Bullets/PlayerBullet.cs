@@ -31,4 +31,15 @@ public class PlayerBullet : BulletBase
             Destroy(gameObject);
         }
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("Boss"))
+        {
+            if (other.TryGetComponent<BossController>(out var boss))
+                boss.TakeDamage(_attackPower, _counterAttack);
+
+            Destroy(gameObject);
+        }
+    }
 }
