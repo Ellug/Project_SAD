@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PatternObject
   - LaserObject
+  - Obstacle
   layers:
   - Default
   - TransparentFX
