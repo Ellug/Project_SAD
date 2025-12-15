@@ -4,7 +4,7 @@ public class ObjectSpawnPattern : PatternBase
 {
     [Tooltip("오브젝트 태그")][SerializeField] GameObject[] PatternObject;
     public MovingObject[] MovingObject;
-    private void Awake()
+    protected override void Awake()
     {
         PatternObject = GameObject.FindGameObjectsWithTag("PatternObject");
     }

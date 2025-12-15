@@ -12,7 +12,7 @@ public class PatternShooting : PatternBase
     private GameObject _target;
     private WaitForSeconds _delay;
 
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
         _delay = new WaitForSeconds(_shootInterval);

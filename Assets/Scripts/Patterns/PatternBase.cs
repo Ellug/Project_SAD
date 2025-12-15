@@ -14,7 +14,7 @@ public abstract class PatternBase : MonoBehaviour
     private bool _isReadyCounterAttack;
     private bool _isTakeCounterAttack;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         _patternDelay = new WaitForSeconds(_cycleTime);
         _isReadyCounterAttack = false;
