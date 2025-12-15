@@ -4,7 +4,7 @@ public class LaserObject : MonoBehaviour
 {
     private bool Moving = false;
     private bool Rotate = false;
-    [Tooltip("오브젝트 이동 속도")][SerializeField] float _MoveSpeed = 0;
+    [Tooltip("오브젝트 이동 속도")][SerializeField] float _MoveSpeed = 5f;
     [Tooltip("오브젝트 활성화 시간")][SerializeField] float _LifeTime = 5f;
     [Tooltip("오브젝트 회전 속도")][SerializeField] float _RotationSpeed = 5f;
     private Vector3 TargetPosition;
