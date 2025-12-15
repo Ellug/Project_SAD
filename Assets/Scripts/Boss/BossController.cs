@@ -19,20 +19,13 @@ public class BossController : MonoBehaviour
         BossCurrentHp = _bossMaxHp;
     }
 
-    private void Update()
-    {
-        if (Keyboard.current.qKey.isPressed)
-        {
-            TakeDamage(5, true);
-        }
-    }
-
     void OnTriggerEnter(Collider other)
     {
         // 플레이어 총알에 태그 별도로 할당 바랍니다.
         if (other.CompareTag("PlayerBullet"))
         {
             // TakeDamage(총알 공격력);
+            Destroy(other.gameObject);
         }
     }
 
