@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class LoadOutUI : MonoBehaviour
@@ -10,33 +11,42 @@ public class LoadOutUI : MonoBehaviour
     [SerializeField] private GameObject _snipePuck;
     [SerializeField] private GameObject _shotgunPuck;
 
+    public event Action<Weapon> OnWeaponSelected;
 
-    public void OnClickRifle()
+    public void OnClickRifle() => Select(Weapon.Rifle);
+    public void OnClickSnipe() => Select(Weapon.Snipe);
+    public void OnClickShotgun() => Select(Weapon.Shotgun);
+
+    private void Select(Weapon weapon)
     {
         SetAllInActive();
-        _riflePuck.SetActive(true);
-        _rifleButton.interactable = false;
-    }
-    public void OnClickSnipe()
-    {
-        SetAllInActive();
-        _snipePuck.SetActive(true);
-        _snipeButton.interactable = false;
-    }
-    public void OnClickShotgun()
-    {
-        SetAllInActive();
-        _shotgunPuck.SetActive(true);
-        _shotgunButton.interactable = false;
+
+        switch (weapon)
+        {
+            case Weapon.Rifle:
+                _riflePuck.SetActive(true);
+                _rifleButton.interactable = false;
+                break;
+            case Weapon.Snipe:
+                _snipePuck.SetActive(true);
+                _snipeButton.interactable = false;
+                break;
+            case Weapon.Shotgun:
+                _shotgunPuck.SetActive(true);
+                _shotgunButton.interactable = false;
+                break;
+        }
+
+        OnWeaponSelected?.Invoke(weapon);
     }
 
     public void SetAllInActive()
     {
         _riflePuck.SetActive(false);
-        _rifleButton.interactable = true;
         _snipePuck.SetActive(false);
-        _snipeButton.interactable = true;
         _shotgunPuck.SetActive(false);
+        _rifleButton.interactable = true;
+        _snipeButton.interactable = true;
         _shotgunButton.interactable = true;
     }
 }
