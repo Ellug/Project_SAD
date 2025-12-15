@@ -13,7 +13,7 @@ public class PatternAreaOfEffect : PatternBase
     private GameObject _attackAOE;
     private GameObject _target;
 
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
         _warningImage = transform.GetChild(0).gameObject;
