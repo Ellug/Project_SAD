@@ -602,9 +602,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cadb616225fe9b49bb2cabc40cf4455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
-  _moveSpeed: 0
-  _lifeTime: 5
-  _rotationSpeed: 5
+  _moveSpeed: 5
+  _lifeTime: 15
+  _rotationSpeed: 30
 --- !u!1 &6145205909630711365
 GameObject:
   m_ObjectHideFlags: 0
