@@ -5,15 +5,13 @@ using UnityEngine.UI;
 
 public class StageUI : MonoBehaviour
 {
-    [Header("Player")]
+    [Header("Models")]
     [SerializeField] private PlayerModel _playerModel;
-
-    // [Header("Boss")]
-    // [SerializeField] private BossController _bossController;
+    [SerializeField] private BossController _bossController;
 
     [Header("HP UI")]
     [SerializeField] private Slider _playerHpSlider;
-    // [SerializeField] private Slider _bossHpSlider;
+    [SerializeField] private Slider _bossHpSlider;
 
     [Header("Cooldown UI")]
     [SerializeField] private Slider _dodgeCooldownSlider;
@@ -29,7 +27,7 @@ public class StageUI : MonoBehaviour
     {
         // 초기화 대신 최초 세팅
         UpdatePlayerHP();
-        // UpdateBossHP();
+        UpdateBossHP();
         UpdateCooldowns();
 
         if (_pausePanel != null)
@@ -42,7 +40,7 @@ public class StageUI : MonoBehaviour
     private void Update()
     {
         UpdatePlayerHP();
-        // UpdateBossHP();
+        UpdateBossHP();
         UpdateCooldowns();
 
         // 퍼즈, 게임 종료 임시 인풋
@@ -64,16 +62,15 @@ public class StageUI : MonoBehaviour
             _playerHpSlider.value = ratio;
     }
 
-    // TODO : Boss HP Float으로 정리 후 연결 및 활성화
-    // private void UpdateBossHP()
-    // {
-    //     if (_bossController == null) return;
+    private void UpdateBossHP()
+    {
+        if (_bossController == null) return;
 
-    //     float ratio = _bossController.CurHp / _bossController.MaxHp;
+        float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp;
 
-    //     if (_bossHpSlider != null)
-    //         _bossHpSlider.value = ratio;
-    // }
+        if (_bossHpSlider != null)
+            _bossHpSlider.value = ratio;
+    }
 
     private void UpdateCooldowns()
     {
@@ -107,7 +104,7 @@ public class StageUI : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    // 결과창
+    // 결과창 출력
     public void ShowResult()
     {
         Time.timeScale = 0f;
