@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
 {
@@ -28,7 +28,8 @@ public class PlayerModel : MonoBehaviour
     private float _curSpecialCoolTime = 0f;
 
     // Properties
-    public IWeapon CurrentWeapon { get; private set; }
+    //public IWeapon CurrentWeapon { get; private set; }
+    public WeaponController CurrentWeapon { get; private set; }
 
     public float MaxHp => _maxHp;
     public float CurHp => _curHp;
@@ -111,7 +112,8 @@ public class PlayerModel : MonoBehaviour
             _curSpecialCoolTime = Mathf.Max(0, _curSpecialCoolTime - deltaTime);
     }
 
-    public void SetWeapon(IWeapon weapon)
+    //public void SetWeapon(IWeapon weapon)
+    public void SetWeapon(WeaponController weapon)
     {
         CurrentWeapon = weapon;
     }

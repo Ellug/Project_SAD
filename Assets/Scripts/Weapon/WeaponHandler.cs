@@ -56,7 +56,7 @@ public class WeaponHandler : MonoBehaviour
 
         WeaponManager.Instance.SetWeapon(weapon, data);
         _weaponController.Init(data);
-        //_playerModel.SetWeapon(data);
+        _playerModel.SetWeapon(_weaponController);
     }
     private void SetCurrentWeapon(Weapon weapon, WeaponData data)
     {
@@ -73,8 +73,7 @@ public class WeaponHandler : MonoBehaviour
             case Weapon.Snipe: _snipeData = data; break;
             case Weapon.Shotgun: _shotgunData = data; break;
         }
-
         _weaponController.Init(data);
-        //_playerModel.SetWeapon(data);
+        _playerModel.SetWeapon(_weaponController);
     }
 }
