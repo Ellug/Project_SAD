@@ -604,7 +604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
   _moveSpeed: 5
   _lifeTime: 15
-  _rotationSpeed: 30
+  _rotationSpeed: 20
 --- !u!1 &6145205909630711365
 GameObject:
   m_ObjectHideFlags: 0
