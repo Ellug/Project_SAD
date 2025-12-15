@@ -1,14 +1,14 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class BossController : MonoBehaviour
 {
-    [SerializeField] private int _bossMaxHp = 100;
+    [SerializeField] private float _bossMaxHp = 100;
     [SerializeField] private float _changePhaseHpRate = 0.5f;
     private bool _isChangedPhase;
 
-    public int BossCurrentHp { get; private set; }
+    public float BossMaxHp { get { return _bossMaxHp; }}
+    public float BossCurrentHp { get; private set; }
 
     public event Action _phaseChange;
     public event Action _takeCounterableAttack;
@@ -29,7 +29,7 @@ public class BossController : MonoBehaviour
         }
     }
 
-    private void TakeDamage(int dmg, bool isCounterable)
+    private void TakeDamage(float dmg, bool isCounterable)
     {
         BossCurrentHp -= dmg;
         if (isCounterable) 
@@ -38,7 +38,7 @@ public class BossController : MonoBehaviour
         }
         // 페이즈 전환 조건 검사
         if (_isChangedPhase == false && 
-            (float)BossCurrentHp / _bossMaxHp < _changePhaseHpRate)
+            BossCurrentHp / _bossMaxHp < _changePhaseHpRate)
         {
             _phaseChange?.Invoke();
             _isChangedPhase = true;
