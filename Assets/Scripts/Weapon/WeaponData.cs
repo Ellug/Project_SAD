@@ -10,7 +10,7 @@ public class WeaponData : ScriptableObject
     public float projectileAngle;
     public float projectileRange;
     public float projectileSpeed;
-    public GameObject projectilePrefab;
+    public PlayerBullet projectilePrefab;
 
     [Header("Special Attack")]
     public float SpecialAttack;
@@ -20,5 +20,5 @@ public class WeaponData : ScriptableObject
     public float SpecialProjectileAngle;
     public float SpecialProjectileRange;
     public float SpecialProjectileSpeed;
-    public GameObject SpecialProjectilePrefab;
+    public PlayerBullet SpecialProjectilePrefab;
 }

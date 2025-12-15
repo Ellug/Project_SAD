@@ -36,7 +36,6 @@ public class LoadOutUI : MonoBehaviour
                 _shotgunButton.interactable = false;
                 break;
         }
-
         OnWeaponSelected?.Invoke(weapon);
     }
 
