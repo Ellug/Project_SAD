@@ -7,9 +7,9 @@ public class LoadOutUI : MonoBehaviour
     [SerializeField] private Button _rifleButton;
     [SerializeField] private Button _snipeButton;
     [SerializeField] private Button _shotgunButton;
-    [SerializeField] private GameObject _riflePuck;
-    [SerializeField] private GameObject _snipePuck;
-    [SerializeField] private GameObject _shotgunPuck;
+    [SerializeField] private GameObject _riflePeck;
+    [SerializeField] private GameObject _snipePeck;
+    [SerializeField] private GameObject _shotgunPeck;
 
     public event Action<Weapon> OnWeaponSelected;
 
@@ -24,27 +24,26 @@ public class LoadOutUI : MonoBehaviour
         switch (weapon)
         {
             case Weapon.Rifle:
-                _riflePuck.SetActive(true);
+                _riflePeck.SetActive(true);
                 _rifleButton.interactable = false;
                 break;
             case Weapon.Snipe:
-                _snipePuck.SetActive(true);
+                _snipePeck.SetActive(true);
                 _snipeButton.interactable = false;
                 break;
             case Weapon.Shotgun:
-                _shotgunPuck.SetActive(true);
+                _shotgunPeck.SetActive(true);
                 _shotgunButton.interactable = false;
                 break;
         }
-
         OnWeaponSelected?.Invoke(weapon);
     }
 
     public void SetAllInActive()
     {
-        _riflePuck.SetActive(false);
-        _snipePuck.SetActive(false);
-        _shotgunPuck.SetActive(false);
+        _riflePeck.SetActive(false);
+        _snipePeck.SetActive(false);
+        _shotgunPeck.SetActive(false);
         _rifleButton.interactable = true;
         _snipeButton.interactable = true;
         _shotgunButton.interactable = true;

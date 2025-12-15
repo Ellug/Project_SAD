@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponController : MonoBehaviour , IWeapon
+public class WeaponController : MonoBehaviour
 {
     private WeaponData _weaponData;
 
@@ -11,12 +11,7 @@ public class WeaponController : MonoBehaviour , IWeapon
     
     public void Attack()
     {
-
-    }
-
-    public float Damage()
-    {
-        return _weaponData.attack;
+        FireProjectile();
     }
 
     public void SpecialAttack()
@@ -24,8 +19,12 @@ public class WeaponController : MonoBehaviour , IWeapon
 
     }
 
-    private void Fireprojectile()
+    //불릿 정보 줄거
+    private void FireProjectile() 
     {
-        Instantiate(_weaponData.projectilePrefab, transform.position, transform.rotation);
+        Vector3 spawnPos = transform.position + transform.forward * 0.5f;
+
+        PlayerBullet bullet = Instantiate(_weaponData.projectilePrefab, spawnPos, transform.rotation);
+        bullet.Init(_weaponData, this.transform);
     }
 }
