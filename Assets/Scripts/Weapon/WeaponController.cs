@@ -20,11 +20,40 @@ public class WeaponController : MonoBehaviour
     }
 
     //불릿 정보 줄거
-    private void FireProjectile() 
+    private void FireProjectile()
     {
-        Vector3 spawnPos = transform.position + transform.forward * 0.5f;
+        int count = Mathf.Max(1, _weaponData.projectileCount);
+        float totalAngle = _weaponData.projectileAngle;
 
-        PlayerBullet bullet = Instantiate(_weaponData.projectilePrefab, spawnPos, transform.rotation);
-        bullet.Init(_weaponData, this.transform);
+        Vector3 baseDir = transform.forward;
+        baseDir.y = 0f;
+        baseDir.Normalize();
+
+        Vector3 spawnPos = transform.position + baseDir * 0.5f;
+
+        // 각도, 숫자로 산탄 계산
+        if (count == 1 || totalAngle == 0f)
+        {
+            SpawnBullet(spawnPos, baseDir);
+            return;
+        }
+
+        float halfAngle = totalAngle * 0.5f;
+
+        for (int i = 0; i < count; i++)
+        {
+            float t = (count == 1) ? 0.5f : (float)i / (count - 1);
+            float angle = Mathf.Lerp(-halfAngle, halfAngle, t);
+
+            Vector3 dir = Quaternion.AngleAxis(angle, Vector3.up) * baseDir;
+            SpawnBullet(spawnPos, dir);
+        }
+    }
+
+    private void SpawnBullet(Vector3 pos, Vector3 dir)
+    {
+        Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
+        PlayerBullet bullet = Instantiate(_weaponData.projectilePrefab, pos, rot);
+        bullet.Init(_weaponData, transform);
     }
 }

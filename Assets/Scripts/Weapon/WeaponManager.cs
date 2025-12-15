@@ -34,9 +34,7 @@ public class WeaponManager : MonoBehaviour
     private void Start()
     {
         if (CurrentWeaponData == null)
-        {
             SetWeapon(_defaultWeapon, _defaultWeaponData);
-        }
     }
 
     public void SetWeapon(Weapon weapon, WeaponData weaponData)

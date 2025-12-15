@@ -19,23 +19,23 @@ public class BossController : MonoBehaviour
         BossCurrentHp = _bossMaxHp;
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        // 플레이어 총알에 태그 별도로 할당 바랍니다.
-        if (other.CompareTag("PlayerBullet"))
-        {
-            // TakeDamage(총알 공격력);
-            Destroy(other.gameObject);
-        }
-    }
+    // void OnTriggerEnter(Collider other)
+    // {
+    //     // 플레이어 총알에 태그 별도로 할당 바랍니다.
+    //     if (other.CompareTag("PlayerBullet"))
+    //     {
+    //         // TakeDamage(총알 공격력);
+    //         Destroy(other.gameObject);
+    //     }
+    // }
 
-    private void TakeDamage(float dmg, bool isCounterable)
+    public void TakeDamage(float dmg, bool isCounterable)
     {
         BossCurrentHp -= dmg;
-        if (isCounterable) 
-        {
+
+        if (isCounterable)
             _takeCounterableAttack?.Invoke();
-        }
+
         // 페이즈 전환 조건 검사
         if (_isChangedPhase == false && 
             BossCurrentHp / _bossMaxHp < _changePhaseHpRate)
@@ -45,13 +45,12 @@ public class BossController : MonoBehaviour
         }
 
         if (BossCurrentHp <= 0)
-        {
             Die();
-        }
     }
 
     private void Die()
     {
         Destroy(gameObject);
+        GameManager.Instance.PlayerWin();
     }
 }

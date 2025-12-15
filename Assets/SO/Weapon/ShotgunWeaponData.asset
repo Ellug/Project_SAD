@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a14cb1693998143813ff7874f9d5d1, type: 3}
   m_Name: ShotgunWeaponData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  attack: 0
-  attackSpeed: 0
-  projectileCount: 0
-  projectileAngle: 0
-  projectileRange: 0
-  projectileSpeed: 0
+  attack: 10
+  attackSpeed: 5
+  projectileCount: 10
+  projectileAngle: 20
+  projectileRange: 30
+  projectileSpeed: 15
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
   SpecialAttack: 0
   SpecialAttackSpeed: 0
