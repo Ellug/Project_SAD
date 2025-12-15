@@ -931,7 +931,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageUI
   _playerModel: {fileID: 996569840}
+  _bossController: {fileID: 0}
   _playerHpSlider: {fileID: 1892532661}
+  _bossHpSlider: {fileID: 0}
   _dodgeCooldownSlider: {fileID: 716401763}
   _specialCooldownSlider: {fileID: 481891194}
   _pausePanel: {fileID: 2068151558}
