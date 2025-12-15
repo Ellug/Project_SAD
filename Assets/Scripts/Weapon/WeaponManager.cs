@@ -5,10 +5,8 @@ public enum Weapon
     Rifle, Snipe, Shotgun
 }
 
-public class WeaponManager : MonoBehaviour
+public class WeaponManager : SingletonePattern<WeaponManager>
 {
-    public static WeaponManager Instance { get; private set; }
-
     [field: SerializeField]
     public Weapon CurrentWeapon { get; private set; }
 
@@ -18,18 +16,6 @@ public class WeaponManager : MonoBehaviour
     [Header("Default Weapon")]
     [SerializeField] private Weapon _defaultWeapon = Weapon.Rifle;
     [SerializeField] private WeaponData _defaultWeaponData;
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
     private void Start()
     {
