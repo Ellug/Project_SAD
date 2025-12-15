@@ -10,11 +10,11 @@ public class LaserPattern : PatternBase
         _objectTag = GameObject.FindGameObjectsWithTag("LaserObject");
     }
 
-    public void ActivateObject()
+    public void ActivateObjects()
     {
-        _laserObject = new LaserObject[_laserObject.Length];
-        for (int i = 0; i < _laserObject.Length; i++)
-            _laserObject[i] = _laserObject[i].GetComponent<LaserObject>();
+        LaserObject = new LaserObject[ObjectTag.Length];
+        for (int i = 0; i < ObjectTag.Length; i++)
+            LaserObject[i] = ObjectTag[i].GetComponent<LaserObject>();
 
         for (int i = 0; i < _laserObject.Length; i++)
             _laserObject[i].ActivateObject();

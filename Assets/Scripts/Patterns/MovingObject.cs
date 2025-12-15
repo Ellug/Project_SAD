@@ -4,7 +4,7 @@ using System.Collections;
 public class MovingObject : MonoBehaviour
 {
     private bool Moving = false;
-    [Tooltip("오브젝트 이동 속도")][SerializeField] float MoveSpeed = 0;
+    [Tooltip("오브젝트 이동 속도")][SerializeField] float MoveSpeed = 5f;
     [Tooltip("오브젝트 활성화 시간")][SerializeField] float LifeTime = 5f;
     private Vector3 TargetPosition;
     private float UpPosition;
