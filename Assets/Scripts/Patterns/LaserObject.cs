@@ -2,38 +2,39 @@
 using System.Collections;
 public class LaserObject : MonoBehaviour
 {
-    private bool Moving = false;
-    private bool Rotate = false;
-    [Tooltip("오브젝트 이동 속도")][SerializeField] float _MoveSpeed = 0;
-    [Tooltip("오브젝트 활성화 시간")][SerializeField] float _LifeTime = 5f;
-    [Tooltip("오브젝트 회전 속도")][SerializeField] float _RotationSpeed = 5f;
-    private Vector3 TargetPosition;
-    private float UpPosition;
-    private float UnderPosition;
+    private bool _moving = false;
+    private bool _rotate = false;
+    [Tooltip("오브젝트 이동 속도")][SerializeField] float _moveSpeed = 0;
+    [Tooltip("오브젝트 활성화 시간")][SerializeField] float _lifeTime = 5f;
+    [Tooltip("오브젝트 회전 속도")][SerializeField] float _rotationSpeed = 5f;
+    private Vector3 _targetPosition;
+    private float _upPosition;
+    private float _underPosition;
+    private Coroutine _actionCoroutine;
 
     private void FixedUpdate()
     {
-        if (Moving)
+        if (_moving)
         {
-            transform.position = Vector3.MoveTowards(transform.position, TargetPosition, _MoveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.deltaTime);
 
-            if (transform.position.y == UpPosition) 
+            if (transform.position.y == _upPosition) 
             {
                 ActivateLaser();
-                StartCoroutine(DeActivateObject());
-                Moving = false;
+                _actionCoroutine = StartCoroutine(DeActivateObject());
+                _moving = false;
             }
 
-            if (transform.position.y == UnderPosition)
+            if (transform.position.y == _underPosition)
             {
                 DeActivateLaser();
-                StopCoroutine(DeActivateObject());
-                Moving = false;
+                StopCoroutine(_actionCoroutine);
+                _moving = false;
             }
         }
-        if (Rotate) 
+        if (_rotate) 
         {
-            transform.Rotate(0, _RotationSpeed * Time.deltaTime, 0);
+            transform.Rotate(0, _rotationSpeed * Time.deltaTime, 0);
         }
     }
 
@@ -42,18 +43,18 @@ public class LaserObject : MonoBehaviour
     public void ActivateObject()
     {
         transform.rotation = Quaternion.identity;
-        UpPosition = this.transform.localScale.y / 2;
-        Moving = true;
-        TargetPosition = new Vector3(this.transform.position.x, UpPosition, this.transform.position.z);
+        _upPosition = this.transform.localScale.y / 2;
+        _moving = true;
+        _targetPosition = new Vector3(this.transform.position.x, _upPosition, this.transform.position.z);
     }
 
     IEnumerator DeActivateObject()
     {
-        yield return new WaitForSeconds(_LifeTime);
-        UnderPosition = -(this.transform.transform.localScale.y / 2);
-        Moving = true;
+        yield return new WaitForSeconds(_lifeTime);
+        _underPosition = -(this.transform.transform.localScale.y / 2);
+        _moving = true;
         DeActivateLaser();
-        TargetPosition = new Vector3(this.transform.position.x, UnderPosition, this.transform.position.z);
+        _targetPosition = new Vector3(this.transform.position.x, _underPosition, this.transform.position.z);
     }
 
     private void ActivateLaser() 
@@ -62,7 +63,7 @@ public class LaserObject : MonoBehaviour
         {
             child.gameObject.SetActive(true);
         }
-        Rotate = true;
+        _rotate = true;
     }
 
     private void DeActivateLaser() 
@@ -71,6 +72,6 @@ public class LaserObject : MonoBehaviour
         {
             child.gameObject.SetActive(false);
         }
-        Rotate = false;
+        _rotate = false;
     }
 }
