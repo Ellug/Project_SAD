@@ -6,27 +6,26 @@ public class ObjectSpawnPattern : PatternBase
     public MovingObject[] MovingObject;
     protected override void Awake()
     {
-        PatternObject = GameObject.FindGameObjectsWithTag("PatternObject");
+        base.Awake();
+        PatternObject = GameObject.FindGameObjectsWithTag("Obstacle");
     }
 
-    public void ActivateObject()
+    public void ActivateObjects()
     {
-        MovingObject = new MovingObject[PatternObject.Length];
-        for (int i = 0; i < PatternObject.Length; i++)
-            MovingObject[i] = PatternObject[i].GetComponent<MovingObject>();
-
         for (int i = 0; i < MovingObject.Length; i++)
             MovingObject[i].ActivateObject();
     }
 
     protected override void PatternLogic()
     {
-        
+        ActivateObjects();
     }
 
     public override void Init(GameObject target)
     {
-        
+        MovingObject = new MovingObject[PatternObject.Length];
+        for (int i = 0; i < PatternObject.Length; i++)
+            MovingObject[i] = PatternObject[i].GetComponent<MovingObject>();
     }
 }
 
