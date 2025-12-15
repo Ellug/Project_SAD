@@ -812,9 +812,9 @@ MonoBehaviour:
   _rifleButton: {fileID: 864915321}
   _snipeButton: {fileID: 396158736}
   _shotgunButton: {fileID: 1352365499}
-  _riflePuck: {fileID: 1114135225}
-  _snipePuck: {fileID: 441316970}
-  _shotgunPuck: {fileID: 1778509244}
+  _riflePeck: {fileID: 0}
+  _snipePeck: {fileID: 0}
+  _shotgunPeck: {fileID: 0}
 --- !u!1 &198353350
 GameObject:
   m_ObjectHideFlags: 0
@@ -1771,10 +1771,10 @@ RectTransform:
   - {fileID: 1254318739}
   m_Father: {fileID: 657679461}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -300}
+  m_SizeDelta: {x: 260, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &396158736
 MonoBehaviour:
@@ -4498,10 +4498,10 @@ RectTransform:
   - {fileID: 1701006953}
   m_Father: {fileID: 657679461}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -160}
+  m_SizeDelta: {x: 260, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &864915321
 MonoBehaviour:
@@ -4626,7 +4626,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36bd17174361dba4aa112fe7e2e5aaa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
-  _weaponData: {fileID: 0}
 --- !u!4 &867757363
 Transform:
   m_ObjectHideFlags: 0
@@ -5632,6 +5631,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2374d1922fdd4974299523d6f15a03d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponManager
+  <CurrentWeapon>k__BackingField: 0
+  <CurrentWeaponData>k__BackingField: {fileID: 0}
   _defaultWeapon: 0
   _defaultWeaponData: {fileID: 11400000, guid: 5697fc13d71bf064aa3433bd40f60caa, type: 2}
 --- !u!4 &1070001377
@@ -7196,10 +7197,10 @@ RectTransform:
   - {fileID: 1687039235}
   m_Father: {fileID: 657679461}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -440}
+  m_SizeDelta: {x: 260, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1352365499
 MonoBehaviour:
@@ -7564,7 +7565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1450732918
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10644,6 +10645,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponHandler
   _ui: {fileID: 192651677}
   _weaponController: {fileID: 867757362}
+  _playerModel: {fileID: 0}
   _rifleData: {fileID: 11400000, guid: 5697fc13d71bf064aa3433bd40f60caa, type: 2}
   _snipeData: {fileID: 11400000, guid: 2a559d7c706ae2f4ba02927ae1cd0a8f, type: 2}
   _shotgunData: {fileID: 11400000, guid: 05085080f1e69ad43beae1b9e96a5fc0, type: 2}
