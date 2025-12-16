@@ -3,6 +3,11 @@
 [CreateAssetMenu(fileName = "WeaponData", menuName = "ScriptableObject/Weapon")]
 public class WeaponData : ScriptableObject
 {
+    [SerializeField] private GameObject _weaponPrefab;
+    [SerializeField] private int _weaponId;
+    public GameObject WeaponPrefab => _weaponPrefab;
+    public int WeaponId => _weaponId;
+
     [Header("Normal Attack")]
     public float attack;
     public float attackSpeed;

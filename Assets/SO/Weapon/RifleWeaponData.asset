@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a14cb1693998143813ff7874f9d5d1, type: 3}
   m_Name: RifleWeaponData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  _weaponPrefab: {fileID: 7917165348537499237, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
+  _weaponId: 0
   attack: 10
   attackSpeed: 1
   projectileCount: 1

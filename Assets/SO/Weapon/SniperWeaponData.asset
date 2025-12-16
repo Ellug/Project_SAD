@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75a14cb1693998143813ff7874f9d5d1, type: 3}
-  m_Name: SnipeWeaponData
+  m_Name: SniperWeaponData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  _weaponPrefab: {fileID: 1777389893361340517, guid: 1fc66bc9096e59440bdbf73ea626377c, type: 3}
+  _weaponId: 1
   attack: 20
   attackSpeed: 10
   projectileCount: 1
