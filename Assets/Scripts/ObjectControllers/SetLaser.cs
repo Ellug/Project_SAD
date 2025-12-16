@@ -3,7 +3,7 @@
 public class SetLaser : MonoBehaviour
 {
     [Tooltip("레이저 라인렌더러")] public LineRenderer lineRenderer;
-    [Tooltip("레이저 시작지점")]  public Transform firePoint;
+    [Tooltip("레이저 시작지점")] public Transform firePoint;
     [Tooltip("레이저 최대 길이")] public float maxLaserDistance = 50f;
     [Tooltip("레이저 히트 지점")] public GameObject laserHitObject;
     [Tooltip("레이저 히트 이펙트 이격 거리")] public float hitParticleOffset = 0.1f;
