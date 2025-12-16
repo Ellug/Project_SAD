@@ -21,6 +21,12 @@ public class GameManager : SingletonePattern<GameManager>
 
     public event Action<GameState> OnGameStateChanged;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        SceneManager.sceneLoaded += OnSceneLoad;
+    }
+
     public void PlayerWin()
     {
         IsPlayerWin = true;
@@ -75,9 +81,23 @@ public class GameManager : SingletonePattern<GameManager>
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    private void OnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Contains("Stage"))
+        {
+            EquipPlayerWeapon();
+        }
+    }
+
     public void SetPlayerWeapon(WeaponBase weapon)
     {
         Weapon = weapon;
+    }
+    public void EquipPlayerWeapon()
+    {
+        PlayerModel player = GameObject.FindWithTag("Player").GetComponent<PlayerModel>();
+        GameObject weapon = Instantiate(Weapon.gameObject, GameObject.Find("FirePoint").transform);
+        player.SetWeapon(weapon.GetComponent<WeaponBase>());
     }
 
     public void GameExit()

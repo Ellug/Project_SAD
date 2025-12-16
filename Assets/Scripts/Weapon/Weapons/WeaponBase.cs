@@ -4,6 +4,8 @@ public abstract class WeaponBase : MonoBehaviour
 {
     [SerializeField] private WeaponData _weaponData;
 
+    public WeaponData WeaponData => _weaponData;
+
     public int GetWeaponId()
     {
         return _weaponData.WeaponId;
@@ -53,7 +55,7 @@ public abstract class WeaponBase : MonoBehaviour
     private void SpawnBullet(Vector3 pos, Vector3 dir)
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
-        PlayerBullet bullet = Instantiate(_weaponData.projectilePrefab, pos, rot);
+        PlayerBullet bullet = PoolManager.Instance.Spawn(_weaponData.projectilePrefab, pos, rot);
         bullet.Init(_weaponData, transform);
     }
 }

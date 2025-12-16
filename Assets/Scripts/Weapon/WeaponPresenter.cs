@@ -16,6 +16,7 @@
     public void Init()
     {
         _currentWeapon = _model.GetWeapon(0);
+        PoolManager.Instance.Prewarm(_currentWeapon.WeaponData.projectilePrefab, 20);
         GameManager.Instance.SetPlayerWeapon(_currentWeapon);
     }
 
