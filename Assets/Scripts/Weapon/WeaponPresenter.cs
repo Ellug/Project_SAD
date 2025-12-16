@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class WeaponPresenter
+﻿public class WeaponPresenter
 {
     private WeaponModel _model;
     private WeaponView _view;
@@ -18,11 +16,13 @@ public class WeaponPresenter
     public void Init()
     {
         _currentWeapon = _model.GetWeapon(0);
+        GameManager.Instance.SetPlayerWeapon(_currentWeapon);
     }
 
     public void SelectWeapon(int weaponId)
     {
         // 해당 ID와 매칭된 무기 가져와
-        _currentWeapon = _model.GetWeapon(weaponId); 
+        _currentWeapon = _model.GetWeapon(weaponId);
+        GameManager.Instance.SetPlayerWeapon(_currentWeapon);
     }
 }

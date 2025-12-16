@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +13,7 @@ public class GameManager : SingletonePattern<GameManager>
 {
     public GameState CurrentState { get; private set; } = GameState.Playing;
     public bool IsPlayerWin { get; private set; }
+    public WeaponBase Weapon { get; private set; }
 
     public bool IsPlaying => CurrentState == GameState.Playing;
     public bool IsPaused  => CurrentState == GameState.Paused;
@@ -72,6 +73,11 @@ public class GameManager : SingletonePattern<GameManager>
     {
         SetState(GameState.Playing);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void SetPlayerWeapon(WeaponBase weapon)
+    {
+        Weapon = weapon;
     }
 
     public void GameExit()
