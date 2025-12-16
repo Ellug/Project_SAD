@@ -18,14 +18,21 @@ public class PlayerModel : MonoBehaviour
     [Header("Special Attack")]
     [SerializeField] private float _specialCoolTime = 4.0f;
 
+    [Header("AttackSlow")]
+    [SerializeField] private float _onAttackSlowRate = 0.5f;
+    [SerializeField] private float _onAttackSlowDuration = 0.25f;
+
     // Internal
     private float _curHp;
     private bool _isDodging = false;
     private float _curDodgeTime = 0f;
     private bool _isInvincible = false;
+    private bool _isOnAttack = false;
     private float _curDodgeCoolTime = 0f;
 
     private float _curSpecialCoolTime = 0f;
+
+    private float _curAttackSlowTime = 0f;
 
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
@@ -35,6 +42,10 @@ public class PlayerModel : MonoBehaviour
     public float MaxSpeed => _maxSpeed;
     public float AccelForce => _accelForce;
     public float RotSpeed => _rotSpeed;
+    
+    public float OnAttackSlowRate => _onAttackSlowRate;
+    public bool IsOnAttack => _isOnAttack;
+
     public float DodgeSpeed => _dodgeSpeed;
     public float DodgeDuration => _dodgeDuration;
     public float DodgeCoolTime => _dodgeCoolTime;
@@ -69,6 +80,8 @@ public class PlayerModel : MonoBehaviour
         _curDodgeTime = 0f;
         _isDodging = false;
         _isInvincible = false;
+        _curAttackSlowTime = 0f;
+        _isOnAttack = false;
     }
 
     public void StartDodge()
@@ -103,6 +116,26 @@ public class PlayerModel : MonoBehaviour
         _isDodging = false;
     }
 
+    
+    public void StartAttackSlow()
+    {
+        _isOnAttack = true;
+        _curAttackSlowTime = _onAttackSlowDuration;
+    }
+
+    public void UpdateAttackSlow(float deltaTime)
+    {
+        if(!_isOnAttack) return;
+
+        _curAttackSlowTime -= deltaTime;
+
+        if(_curAttackSlowTime <= 0f)
+        {
+            _curAttackSlowTime = 0f;
+            _isOnAttack = false;
+        }
+    }
+
     public void StartSpecial()
     {
         _curSpecialCoolTime = _specialCoolTime;
@@ -115,6 +148,9 @@ public class PlayerModel : MonoBehaviour
 
         if (_curSpecialCoolTime > 0f)
             _curSpecialCoolTime = Mathf.Max(0, _curSpecialCoolTime - deltaTime);
+        
+        if (_curAttackSlowTime > 0f)
+            _curAttackSlowTime = Mathf.Max(0f, _curAttackSlowTime - deltaTime);
     }
 
     public void SetWeapon(WeaponBase weapon)

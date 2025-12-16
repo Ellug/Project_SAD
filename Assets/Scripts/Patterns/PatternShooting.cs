@@ -4,7 +4,7 @@ using UnityEngine;
 public class PatternShooting : PatternBase
 {
     [Header("투사체 패턴 속성")]
-    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private BulletBase _bulletPrefab;
     [SerializeField] private float _shootInterval = 0.1f;
     [SerializeField] private int _shootBulletNumber;
     [SerializeField] private Transform _spawnPosition;
@@ -40,13 +40,13 @@ public class PatternShooting : PatternBase
                 _target.transform.position.z
                 );
 
-            // 생성하고 타겟 방향으로 돌린다.
-            Instantiate(_bulletPrefab, transform.position, transform.rotation)
-                .transform.LookAt(target);
+            Vector3 dir = target - transform.position;
+            dir.y = 0f;
+            Quaternion rot = Quaternion.LookRotation(dir.normalized, Vector3.up);
+
+            PoolManager.Instance.Spawn(_bulletPrefab, transform.position, rot);
 
             yield return _delay;
         }
-    }
-
-    
+    }    
 }

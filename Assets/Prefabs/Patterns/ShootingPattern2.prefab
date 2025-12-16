@@ -47,7 +47,7 @@ MonoBehaviour:
   _counterable: 1
   _startupDelay: 3
   _cycleTime: 5
-  _bulletPrefab: {fileID: 5109388918546901027, guid: 38d725455bafedd4b89852261a702488, type: 3}
+  _bulletPrefab: {fileID: 2245060522831277793, guid: 38d725455bafedd4b89852261a702488, type: 3}
   _shootInterval: 0.1
   _shootBulletNumber: 10
   _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
