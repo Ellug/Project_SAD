@@ -1678,17 +1678,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272129008}
   m_CullTransparentMesh: 1
---- !u!114 &311972754 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6961779584357220181, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
-  m_PrefabInstance: {fileID: 1846548573}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36bd17174361dba4aa112fe7e2e5aaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponController
 --- !u!1 &331363425
 GameObject:
   m_ObjectHideFlags: 0
@@ -5086,10 +5075,10 @@ RectTransform:
   - {fileID: 393201909}
   m_Father: {fileID: 1517358069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -440}
+  m_SizeDelta: {x: 260, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &950131262
 MonoBehaviour:
@@ -5772,10 +5761,10 @@ RectTransform:
   - {fileID: 225077521}
   m_Father: {fileID: 1517358069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -160}
+  m_SizeDelta: {x: 260, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1001136829
 MonoBehaviour:
@@ -9421,10 +9410,10 @@ RectTransform:
   - {fileID: 254657081}
   m_Father: {fileID: 1517358069}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150, y: -300}
+  m_SizeDelta: {x: 260, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1688941851
 MonoBehaviour:
@@ -10471,7 +10460,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1029603718}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7904699208717546543, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
@@ -10774,7 +10764,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1886614480
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11166,7 +11156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponHandler
   _ui: {fileID: 723340661}
-  _weaponController: {fileID: 311972754}
+  _weaponController: {fileID: 0}
   _playerModel: {fileID: 1846548575}
   _rifleData: {fileID: 11400000, guid: 5697fc13d71bf064aa3433bd40f60caa, type: 2}
   _snipeData: {fileID: 11400000, guid: 05085080f1e69ad43beae1b9e96a5fc0, type: 2}

@@ -53,8 +53,8 @@ public class WeaponView : MonoBehaviour
                 Destroy(_muzzlePos.GetChild(i).gameObject);
             }
         }
-        Instantiate(_presenter.CurrentWeapon.gameObject, _muzzlePos);
-        _playerModel.SetWeapon(_presenter.CurrentWeapon);
+        GameObject weapon = Instantiate(_presenter.CurrentWeapon.gameObject, _muzzlePos);
+        _playerModel.SetWeapon(weapon.GetComponent<WeaponBase>());
     }
 
     // 특.전.처.리를 조지려면 어떻게 해야할까요?
