@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class LoadOutUI : MonoBehaviour
 {
+    [Header("WeaponButton")]
     [SerializeField] private Button _rifleButton;
     [SerializeField] private Button _snipeButton;
     [SerializeField] private Button _shotgunButton;
@@ -11,7 +12,17 @@ public class LoadOutUI : MonoBehaviour
     [SerializeField] private GameObject _snipePeck;
     [SerializeField] private GameObject _shotgunPeck;
 
+    [Header("PeckNode")]
+    [SerializeField] private Button Stage1Node;
+    [SerializeField] private Button Stage2LeftNode;
+    [SerializeField] private Button Stage2RightNode;
+    [SerializeField] private Button Stage3LeftNode;
+    [SerializeField] private Button Stage3RightNode;
+
     public event Action<Weapon> OnWeaponSelected;
+    public event Action<StagePeck> OnStagePeckSelected;
+
+    private Weapon _currentWeapon;
 
     public void OnClickRifle() => Select(Weapon.Rifle);
     public void OnClickSnipe() => Select(Weapon.Snipe);
@@ -19,6 +30,8 @@ public class LoadOutUI : MonoBehaviour
 
     private void Select(Weapon weapon)
     {
+        _currentWeapon = weapon;
+
         SetAllInActive();
 
         switch (weapon)
@@ -38,6 +51,42 @@ public class LoadOutUI : MonoBehaviour
         }
         OnWeaponSelected?.Invoke(weapon);
     }
+    public void OnClickStage1() => SelectStagePeck(Stage.Stage1, Peck.None);
+    public void OnClickStage2Left() => SelectStagePeck(Stage.Stage2, Peck.Left);
+    public void OnClickStage2Right() => SelectStagePeck(Stage.Stage2, Peck.Right);
+    public void OnClickStage3Left() => SelectStagePeck(Stage.Stage3, Peck.Left);
+    public void OnClickStage3Right() => SelectStagePeck(Stage.Stage3, Peck.Right);
+
+    private void SelectStagePeck(Stage stage, Peck peck)
+    {
+        //SetAllStageNodesInactive();
+
+        if (stage == Stage.Stage1)
+            Stage1Node.interactable = false;
+        else if (stage == Stage.Stage2 && peck == Peck.Left)
+        {
+            Stage2LeftNode.interactable = false;
+            Stage2RightNode.interactable = true;
+        }
+        else if (stage == Stage.Stage2 && peck == Peck.Right)
+        {
+            Stage2RightNode.interactable = false;
+            Stage2LeftNode.interactable = true;
+        }
+        else if (stage == Stage.Stage3 && peck == Peck.Left)
+        {
+            Stage3LeftNode.interactable = false;
+            Stage3RightNode.interactable = true;
+        }
+        else if (stage == Stage.Stage3 && peck == Peck.Right)
+        {
+            Stage3RightNode.interactable = false;
+            Stage3LeftNode.interactable = true;
+        }
+
+        OnStagePeckSelected?.Invoke(new StagePeck(stage, peck));
+    }
+
 
     public void SetAllInActive()
     {
