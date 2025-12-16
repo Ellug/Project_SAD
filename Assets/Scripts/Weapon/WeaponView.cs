@@ -38,6 +38,8 @@ public class WeaponView : MonoBehaviour
         }
     }
 
+    // 무기를 선택하면 일어날 일.
+    // 무기 정보도 가져오고 무기별 특전도 가져와야함.
     public void OnClickWeapon(int weaponId)
     {
         PanelInit();
