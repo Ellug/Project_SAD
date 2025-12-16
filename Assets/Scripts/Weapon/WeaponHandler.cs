@@ -1,5 +1,29 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
+
+public enum Stage
+{
+    Stage1,
+    Stage2,
+    Stage3
+}
+public enum Peck
+{
+    None,
+    Left,
+    Right
+}
+[System.Serializable]
+public struct StagePeck
+{
+    public Stage Stage;
+    public Peck Peck;
+
+    public StagePeck(Stage stage, Peck peck)
+    {
+        Stage = stage;
+        Peck = peck;
+    }
+}
 
 public class WeaponHandler : MonoBehaviour
 {
@@ -14,20 +38,33 @@ public class WeaponHandler : MonoBehaviour
 
     private Weapon _currentWeapon;
     private WeaponData _currentWeaponData;
+    private StagePeck _currentStagePeck = new StagePeck(Stage.Stage1, Peck.None);
 
     public Weapon CurrentWeapon => _currentWeapon;
     public WeaponData CurrentWeaponData => _currentWeaponData;
 
     private void Awake()
     {
-        _ui.OnWeaponSelected += HandleWeaponSelected;
+        if (_ui != null)
+        {
+            _ui.OnWeaponSelected += HandleWeaponSelected;
+            //TODO : LoadOutUI 에서 선택받은 값 구독
+            //_ui.OnStagePeckSelected += HandleStagePeckSelected;
+        }
+    }
 
+    void Start()
+    {
         SetCurrentWeapon(_currentWeapon, _currentWeaponData);
     }
 
     private void OnDestroy()
     {
-        _ui.OnWeaponSelected -= HandleWeaponSelected;
+        if (_ui != null)
+        {
+            _ui.OnWeaponSelected -= HandleWeaponSelected;
+            //_ui.OnStagePeckSelected += HandleStagePeckSelected;
+        }
     }
 
     private void HandleWeaponSelected(Weapon weapon)
@@ -53,11 +90,19 @@ public class WeaponHandler : MonoBehaviour
             Debug.LogError("HandlerError : 무기 데이터가 비어있습니다.");
             return;
         }
+        WeaponData selectWeaponData = Instantiate(data);
+        //TODO : (하드코딩예정 부분이라 편히 사용..) peck 계산될 부분
 
-        WeaponManager.Instance.SetWeapon(weapon, data);
-        _weaponController.Init(data);
+
+        
+
+
+        WeaponManager.Instance.SetWeapon(weapon, selectWeaponData);
+        _weaponController.Init(selectWeaponData);
         _playerModel.SetWeapon(_weaponController);
     }
+
+
     private void SetCurrentWeapon(Weapon weapon, WeaponData data)
     {
         if(data == null)

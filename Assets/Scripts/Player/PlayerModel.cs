@@ -18,24 +18,36 @@ public class PlayerModel : MonoBehaviour
     [Header("Special Attack")]
     [SerializeField] private float _specialCoolTime = 4.0f;
 
+    [Header("AttackSlow")]
+    [SerializeField] private float _onAttackSlowRate = 0.5f;
+    [SerializeField] private float _onAttackSlowDuration = 0.25f;
+
     // Internal
     private float _curHp;
     private bool _isDodging = false;
     private float _curDodgeTime = 0f;
     private bool _isInvincible = false;
+    private bool _isOnAttack = false;
     private float _curDodgeCoolTime = 0f;
 
     private float _curSpecialCoolTime = 0f;
 
+    private float _curAttackSlowTime = 0f;
+
     // Properties
-    //public IWeapon CurrentWeapon { get; private set; }
     public WeaponController CurrentWeapon { get; private set; }
+    public Weapon CurrentWeaponType { get; private set; }
+    public WeaponData CurrentWeaponData { get; private set; }
 
     public float MaxHp => _maxHp;
     public float CurHp => _curHp;
     public float MaxSpeed => _maxSpeed;
     public float AccelForce => _accelForce;
     public float RotSpeed => _rotSpeed;
+    
+    public float OnAttackSlowRate => _onAttackSlowRate;
+    public bool IsOnAttack => _isOnAttack;
+
     public float DodgeSpeed => _dodgeSpeed;
     public float DodgeDuration => _dodgeDuration;
     public float DodgeCoolTime => _dodgeCoolTime;
@@ -53,8 +65,19 @@ public class PlayerModel : MonoBehaviour
     void Start()
     {
         Init();
-        // TODO : 여기서 로드아웃에서 선택한 무기로 SetWeapon?  아니면 다른 곳에서 셋?
+
+        CurrentWeapon = GetComponentInChildren<WeaponController>();
+
+        var wm = WeaponManager.Instance;
+
+        Debug.Log($"[PlayerModel] WeaponManager : {wm.CurrentWeapon}, {wm.CurrentWeaponData}");
+
+        CurrentWeaponType = wm.CurrentWeapon;
+        CurrentWeaponData = wm.CurrentWeaponData;
+
+        CurrentWeapon.Init(CurrentWeaponData);
     }
+
 
     public void Init()
     {
@@ -64,6 +87,8 @@ public class PlayerModel : MonoBehaviour
         _curDodgeTime = 0f;
         _isDodging = false;
         _isInvincible = false;
+        _curAttackSlowTime = 0f;
+        _isOnAttack = false;
     }
 
     public void StartDodge()
@@ -98,6 +123,26 @@ public class PlayerModel : MonoBehaviour
         _isDodging = false;
     }
 
+    
+    public void StartAttackSlow()
+    {
+        _isOnAttack = true;
+        _curAttackSlowTime = _onAttackSlowDuration;
+    }
+
+    public void UpdateAttackSlow(float deltaTime)
+    {
+        if(!_isOnAttack) return;
+
+        _curAttackSlowTime -= deltaTime;
+
+        if(_curAttackSlowTime <= 0f)
+        {
+            _curAttackSlowTime = 0f;
+            _isOnAttack = false;
+        }
+    }
+
     public void StartSpecial()
     {
         _curSpecialCoolTime = _specialCoolTime;
@@ -110,9 +155,11 @@ public class PlayerModel : MonoBehaviour
 
         if (_curSpecialCoolTime > 0f)
             _curSpecialCoolTime = Mathf.Max(0, _curSpecialCoolTime - deltaTime);
+        
+        if (_curAttackSlowTime > 0f)
+            _curAttackSlowTime = Mathf.Max(0f, _curAttackSlowTime - deltaTime);
     }
 
-    //public void SetWeapon(IWeapon weapon)
     public void SetWeapon(WeaponController weapon)
     {
         CurrentWeapon = weapon;
@@ -130,6 +177,7 @@ public class PlayerModel : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("사망 처리");
+        // Game Over
+        GameManager.Instance.PlayerLose();
     }
 }

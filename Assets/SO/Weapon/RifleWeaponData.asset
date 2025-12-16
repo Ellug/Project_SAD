@@ -16,8 +16,8 @@ MonoBehaviour:
   attackSpeed: 1
   projectileCount: 1
   projectileAngle: 0
-  projectileRange: 5
-  projectileSpeed: 5
+  projectileRange: 50
+  projectileSpeed: 20
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
   SpecialAttack: 10
   SpecialAttackSpeed: 1
