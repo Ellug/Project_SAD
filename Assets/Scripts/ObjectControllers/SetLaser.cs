@@ -17,12 +17,15 @@ public class SetLaser : MonoBehaviour
 
         if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance))
         {
+            //라인 렌더러의 시작지점과 끝지점을 설정
             lineRenderer.SetPosition(0, firePoint.position);
             lineRenderer.SetPosition(1, hit.point);
 
+            //레이저 히트 지점, 스파크 튀기는 지점 설정
             sparkParticle.transform.position = hit.point + hit.normal * hitParticleOffset;
             laserHitObject.transform.position = sparkParticle.transform.position;
 
+            //회전각을 초기화 
             sparkParticle.transform.rotation = Quaternion.LookRotation(hit.normal);
             laserHitObject.transform.rotation = Quaternion.LookRotation(hit.normal);
 

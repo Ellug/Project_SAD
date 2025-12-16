@@ -5066,11 +5066,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1426861723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!198 &252404323 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8279813016778627741, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
-  m_PrefabInstance: {fileID: 1180715597}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &356866808
 GameObject:
   m_ObjectHideFlags: 0
@@ -9941,7 +9936,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &371736990
 Transform:
   m_ObjectHideFlags: 0
@@ -10085,11 +10080,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!198 &491839451 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5116547557269109683, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
-  m_PrefabInstance: {fileID: 1180715597}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &607611850
 GameObject:
   m_ObjectHideFlags: 0
@@ -10292,11 +10282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cadb616225fe9b49bb2cabc40cf4455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
---- !u!198 &1009961074 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1104488358198850519, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
-  m_PrefabInstance: {fileID: 1180715597}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1052322699
 GameObject:
   m_ObjectHideFlags: 0
@@ -10449,10 +10434,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2589168179150158865, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
-      propertyPath: sparkParticle
-      value: 
-      objectReference: {fileID: 1774736698}
+    - target: {fileID: 1104488358198850519, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1104488358198850519, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2118250703913267883, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: _lifeTime
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4792977094625391300, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4792977094625391300, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5116547557269109683, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5116547557269109683, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5583219777632683400, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 65.98
@@ -10493,22 +10502,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5955109201315107671, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
-      propertyPath: sparkParticle
-      value: 
-      objectReference: {fileID: 491839451}
+    - target: {fileID: 5838507050468157902, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5838507050468157902, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6210451511856389419, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6210451511856389419, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: InitialModule.startSize.minScalar
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7661745365747752022, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
       propertyPath: m_Name
       value: laser_Mk.4
       objectReference: {fileID: 0}
-    - target: {fileID: 8305471858281222193, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
-      propertyPath: sparkParticle
-      value: 
-      objectReference: {fileID: 1009961074}
-    - target: {fileID: 8935198277705126562, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
-      propertyPath: sparkParticle
-      value: 
-      objectReference: {fileID: 252404323}
+    - target: {fileID: 7662071065663479648, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7662071065663479648, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279813016778627741, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279813016778627741, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16004,11 +16033,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!198 &1774736698 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 7662071065663479648, guid: 64803bd2a72c66c47817899076dd340b, type: 3}
-  m_PrefabInstance: {fileID: 1180715597}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1978452458
 GameObject:
   m_ObjectHideFlags: 0
