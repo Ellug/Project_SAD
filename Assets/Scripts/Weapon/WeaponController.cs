@@ -3,10 +3,17 @@
 public class WeaponController : MonoBehaviour
 {
     private WeaponData _weaponData;
+    private bool _isPrewarmed = false;
 
     public void Init(WeaponData weaponData)
     {
         _weaponData = weaponData;
+
+        if (!_isPrewarmed)
+        {
+            PoolManager.Instance.Prewarm(_weaponData.projectilePrefab, 20);
+            _isPrewarmed = true;
+        }
     }
     
     public void Attack()
@@ -53,7 +60,8 @@ public class WeaponController : MonoBehaviour
     private void SpawnBullet(Vector3 pos, Vector3 dir)
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
-        PlayerBullet bullet = Instantiate(_weaponData.projectilePrefab, pos, rot);
+
+        PlayerBullet bullet = PoolManager.Instance.Spawn(_weaponData.projectilePrefab, pos, rot);
         bullet.Init(_weaponData, transform);
     }
 }
