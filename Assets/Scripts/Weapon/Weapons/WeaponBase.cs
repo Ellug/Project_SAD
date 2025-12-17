@@ -1,13 +1,51 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
 {
     [SerializeField] private WeaponData _weaponData;
-    
-    protected PerksNode[] _perksNode;
+
+    [Header("Perks")]
+    [SerializeField] private PerksTree _perksTree;
+
+    private WeaponRuntimeStats _baseStats;
+    private WeaponRuntimeStats _runtimeStats;
 
     public WeaponData WeaponData => _weaponData;
+    public PerksTree PerksTree => _perksTree;
+    public WeaponRuntimeStats RuntimeStats => _runtimeStats;
+
+    void Awake()
+    {
+        CaptureBaseStats();
+        _runtimeStats = _baseStats;
+    }
+
+    private void CaptureBaseStats()
+    {
+        _baseStats = new WeaponRuntimeStats
+        {
+            Attack = _weaponData.attack,
+            AttackSpeed = _weaponData.attackSpeed,
+            ProjectileCount = _weaponData.projectileCount,
+            ProjectileRange = _weaponData.projectileRange,
+            ProjectileSpeed = _weaponData.projectileSpeed,
+
+            SpecialAttack = _weaponData.SpecialAttack,
+            SpecialAttackSpeed = _weaponData.SpecialAttackSpeed,
+            SpecialAttackBeforeDelay = _weaponData.SpecialAttackBeforeDelay,
+            SpecialAttackAfterDelay = _weaponData.SpecialAttackAfterDelay,
+            SpecialProjectileCount = _weaponData.SpecialProjectileCount,
+            SpecialProjectileRange = _weaponData.SpecialProjectileRange,
+            SpecialProjectileSpeed = _weaponData.SpecialProjectileSpeed
+        };
+    }
+    public void RebuildRuntimeStats(IEnumerable<StatMod> mods)
+    {
+        _runtimeStats = _baseStats;
+        PerkCalculator.ApplyToWeapon(ref _runtimeStats, mods);
+    }
 
     public int GetWeaponId()
     {
@@ -34,19 +72,19 @@ public abstract class WeaponBase : MonoBehaviour
     private IEnumerator CoBeforeSpecialAttack(PlayerModel player)
     {
         player.SetSpecialAttackState(true);
-        yield return new WaitForSeconds(_weaponData.SpecialAttackBeforeDelay);
+        yield return new WaitForSeconds(_runtimeStats.SpecialAttackBeforeDelay);
     }
 
     private IEnumerator CoAfterSpecialAttack(PlayerModel player)
     {
-        yield return new WaitForSeconds(_weaponData.SpecialAttackAfterDelay);
+        yield return new WaitForSeconds(_runtimeStats.SpecialAttackAfterDelay);
         player.SetSpecialAttackState(false);
     }
 
     //불릿 정보 줄거
     private void FireProjectile()
     {
-        int count = Mathf.Max(1, _weaponData.projectileCount);
+        int count = Mathf.Max(1, _runtimeStats.ProjectileCount);
         float totalAngle = _weaponData.projectileAngle;
 
         Vector3 baseDir = transform.forward;

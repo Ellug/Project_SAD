@@ -27,6 +27,7 @@ public class LobbyUI : MonoBehaviour
 
     public void OnClickExit()
     {
+        GameManager.Instance.EquipPlayerWeapon();
         SetAllInActive();
         _lobbyUI.SetActive(true);
     }
