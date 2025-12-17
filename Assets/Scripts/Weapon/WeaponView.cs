@@ -7,11 +7,11 @@ public class WeaponView : MonoBehaviour
     [SerializeField] private PlayerModel _playerModel;
     [SerializeField] private Transform _muzzlePos;
     [SerializeField] private GameObject _weaponSelectPanel;
-    [SerializeField] private GameObject _peckSelectPanel;
+    [SerializeField] private GameObject _perkSelectPanel;
     [SerializeField] private WeaponBase[] _allWeaponData;
 
     private WeaponPresenter _presenter;
-    private Button[] _peckSelectList;
+    private Button[] _perkSelectList;
     private Button[] _weaponButtonList;
 
     private void Start()
@@ -28,10 +28,10 @@ public class WeaponView : MonoBehaviour
     private void Init()
     {
         _weaponButtonList = _weaponSelectPanel.GetComponentsInChildren<Button>();
-        _peckSelectList = _peckSelectPanel.GetComponentsInChildren<Button>();
+        _perkSelectList = _perkSelectPanel.GetComponentsInChildren<Button>();
 
         TextMeshProUGUI buttonText;
-        foreach (Button button in _peckSelectList)
+        foreach (Button button in _perkSelectList)
         {
             buttonText = button.transform.GetComponentInChildren<TextMeshProUGUI>();
             buttonText.text = "";
@@ -59,7 +59,7 @@ public class WeaponView : MonoBehaviour
 
     // 특.전.처.리를 조지려면 어떻게 해야할까요?
     // 특전 다 모으기? 아니요~
-    public void OnClickPeck()
+    public void OnClickPerk()
     {
 
     }
