@@ -13,6 +13,7 @@ public class WeaponView : MonoBehaviour
     private WeaponPresenter _presenter;
     private Button[] _perkSelectList;
     private Button[] _weaponButtonList;
+    private PerksTree perksTree;
 
     private void Start()
     {
@@ -46,6 +47,8 @@ public class WeaponView : MonoBehaviour
         _presenter.SelectWeapon(weaponId);
         _weaponButtonList[weaponId].interactable = false;
 
+
+        // 로비에 있는 플레이어에게 무기 쥐어줌.
         if (_muzzlePos.childCount > 0)
         {
             for (int i = _muzzlePos.childCount - 1; i >= 0; i--)
