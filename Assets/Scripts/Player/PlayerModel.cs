@@ -66,7 +66,6 @@ public class PlayerModel : MonoBehaviour
         Init();
     }
 
-
     public void Init()
     {
         _curHp = _maxHp;
@@ -111,7 +110,6 @@ public class PlayerModel : MonoBehaviour
     {
         _isDodging = false;
     }
-
     
     public void StartAttackSlow()
     {

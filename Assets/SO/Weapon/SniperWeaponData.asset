@@ -23,7 +23,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
   SpecialAttack: 0
   SpecialAttackSpeed: 0
-  SpecialAttackDelay: 0
+  SpecialAttackBeforeDelay: 2
+  SpecialAttackAfterDelay: 1
   SpecialProjectileCount: 0
   SpecialProjectileAngle: 0
   SpecialProjectileRange: 0
