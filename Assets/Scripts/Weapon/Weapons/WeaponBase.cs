@@ -12,8 +12,6 @@ public abstract class WeaponBase : MonoBehaviour
     private WeaponRuntimeStats _baseStats;
     private WeaponRuntimeStats _runtimeStats;
     
-    private bool _isSpecial;
-
     public WeaponData WeaponData => _weaponData;
     public PerksTree PerksTree => _perksTree;
     public WeaponRuntimeStats RuntimeStats => _runtimeStats;
@@ -55,21 +53,19 @@ public abstract class WeaponBase : MonoBehaviour
 
     public void Attack(PlayerModel player)
     {
-        _isSpecial = false;
-        FireProjectile(_isSpecial);
+        FireProjectile(false);
         player.StartAttackSlow();
     }
 
     public void SpecialAttack(PlayerModel player)
     {
-        _isSpecial = true;
         StartCoroutine(CoSpecialAttack(player));
     }
 
     private IEnumerator CoSpecialAttack(PlayerModel player)
     {
         yield return StartCoroutine(CoBeforeSpecialAttack(player));
-        FireProjectile(_isSpecial);
+        FireProjectile(true);
         yield return StartCoroutine(CoAfterSpecialAttack(player));
     }
     private IEnumerator CoBeforeSpecialAttack(PlayerModel player)
