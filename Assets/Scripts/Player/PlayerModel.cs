@@ -35,9 +35,7 @@ public class PlayerModel : MonoBehaviour
     private float _curAttackSlowTime = 0f;
 
     // Properties
-    public WeaponController CurrentWeapon { get; private set; }
-    public Weapon CurrentWeaponType { get; private set; }
-    public WeaponData CurrentWeaponData { get; private set; }
+    public WeaponBase CurrentWeapon { get; private set; }
 
     public float MaxHp => _maxHp;
     public float CurHp => _curHp;
@@ -66,16 +64,11 @@ public class PlayerModel : MonoBehaviour
     {
         Init();
 
-        CurrentWeapon = GetComponentInChildren<WeaponController>();
+        //CurrentWeapon = GetComponentInChildren<WeaponBase>();
 
-        var wm = WeaponManager.Instance;
+        //var wm = WeaponManager.Instance;
 
-        Debug.Log($"[PlayerModel] WeaponManager : {wm.CurrentWeapon}, {wm.CurrentWeaponData}");
-
-        CurrentWeaponType = wm.CurrentWeapon;
-        CurrentWeaponData = wm.CurrentWeaponData;
-
-        CurrentWeapon.Init(CurrentWeaponData);
+        //Debug.Log($"[PlayerModel] WeaponManager : {wm.CurrentWeapon}, {wm.CurrentWeaponData}");
     }
 
 
@@ -160,7 +153,7 @@ public class PlayerModel : MonoBehaviour
             _curAttackSlowTime = Mathf.Max(0f, _curAttackSlowTime - deltaTime);
     }
 
-    public void SetWeapon(WeaponController weapon)
+    public void SetWeapon(WeaponBase weapon)
     {
         CurrentWeapon = weapon;
     }

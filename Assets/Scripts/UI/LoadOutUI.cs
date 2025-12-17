@@ -19,7 +19,7 @@ public class LoadOutUI : MonoBehaviour
     [SerializeField] private Button Stage3LeftNode;
     [SerializeField] private Button Stage3RightNode;
 
-    public event Action<Weapon> OnWeaponSelected;
+    public event Action<WeaponBase> OnWeaponSelected;
     public event Action<StagePeck> OnStagePeckSelected;
 
     private Weapon _currentWeapon;
@@ -49,7 +49,7 @@ public class LoadOutUI : MonoBehaviour
                 _shotgunButton.interactable = false;
                 break;
         }
-        OnWeaponSelected?.Invoke(weapon);
+        //OnWeaponSelected?.Invoke(weapon);
     }
     public void OnClickStage1() => SelectStagePeck(Stage.Stage1, Peck.None);
     public void OnClickStage2Left() => SelectStagePeck(Stage.Stage2, Peck.Left);
