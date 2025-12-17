@@ -71,8 +71,7 @@ public class GameManager : SingletonePattern<GameManager>
     public void GoToLobby()
     {
         SetState(GameState.Playing);
-        // SceneManager.LoadScene("Lobby");
-        SceneManager.LoadScene("Lobby-YH");
+        SceneManager.LoadScene("Lobby");
     }
 
     public void ReloadCurrentScene()
