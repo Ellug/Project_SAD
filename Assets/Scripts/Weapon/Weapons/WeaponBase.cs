@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
 {
@@ -11,14 +12,33 @@ public abstract class WeaponBase : MonoBehaviour
         return _weaponData.WeaponId;
     }
 
-    public void Attack()
+    public void Attack(PlayerModel player)
     {
         FireProjectile();
+        player.StartAttackSlow();
     }
 
-    public void SpecialAttack()
+    public void SpecialAttack(PlayerModel player)
     {
+        StartCoroutine(CoSpecialAttack(player));
+    }
 
+    private IEnumerator CoSpecialAttack(PlayerModel player)
+    {
+        yield return StartCoroutine(CoBeforeSpecialAttack(player));
+        FireProjectile();
+        yield return StartCoroutine(CoAfterSpecialAttack(player));
+    }
+    private IEnumerator CoBeforeSpecialAttack(PlayerModel player)
+    {
+        player.SetSpecialAttackState(true);
+        yield return new WaitForSeconds(_weaponData.SpecialAttackBeforeDelay);
+    }
+
+    private IEnumerator CoAfterSpecialAttack(PlayerModel player)
+    {
+        yield return new WaitForSeconds(_weaponData.SpecialAttackAfterDelay);
+        player.SetSpecialAttackState(false);
     }
 
     //불릿 정보 줄거
