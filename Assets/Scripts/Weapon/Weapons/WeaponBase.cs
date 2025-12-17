@@ -1,29 +1,46 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
-public class WeaponController : MonoBehaviour
+public abstract class WeaponBase : MonoBehaviour
 {
-    private WeaponData _weaponData;
-    private bool _isPrewarmed = false;
-
-    public void Init(WeaponData weaponData)
-    {
-        _weaponData = weaponData;
-
-        if (!_isPrewarmed)
-        {
-            PoolManager.Instance.Prewarm(_weaponData.projectilePrefab, 20);
-            _isPrewarmed = true;
-        }
-    }
+    [SerializeField] private WeaponData _weaponData;
     
-    public void Attack()
+    protected PerksNode[] _perksNode;
+
+    public WeaponData WeaponData => _weaponData;
+
+    public int GetWeaponId()
+    {
+        return _weaponData.WeaponId;
+    }
+
+    public void Attack(PlayerModel player)
     {
         FireProjectile();
+        player.StartAttackSlow();
     }
 
-    public void SpecialAttack()
+    public void SpecialAttack(PlayerModel player)
     {
+        StartCoroutine(CoSpecialAttack(player));
+    }
 
+    private IEnumerator CoSpecialAttack(PlayerModel player)
+    {
+        yield return StartCoroutine(CoBeforeSpecialAttack(player));
+        FireProjectile();
+        yield return StartCoroutine(CoAfterSpecialAttack(player));
+    }
+    private IEnumerator CoBeforeSpecialAttack(PlayerModel player)
+    {
+        player.SetSpecialAttackState(true);
+        yield return new WaitForSeconds(_weaponData.SpecialAttackBeforeDelay);
+    }
+
+    private IEnumerator CoAfterSpecialAttack(PlayerModel player)
+    {
+        yield return new WaitForSeconds(_weaponData.SpecialAttackAfterDelay);
+        player.SetSpecialAttackState(false);
     }
 
     //불릿 정보 줄거
@@ -60,7 +77,6 @@ public class WeaponController : MonoBehaviour
     private void SpawnBullet(Vector3 pos, Vector3 dir)
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
-
         PlayerBullet bullet = PoolManager.Instance.Spawn(_weaponData.projectilePrefab, pos, rot);
         bullet.Init(_weaponData, transform);
     }

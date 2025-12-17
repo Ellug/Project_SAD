@@ -5,13 +5,13 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerModel _model;
     [SerializeField] private PlayerView _view;
-    
+
     [Header("Camera Settings")]
     [SerializeField] private Transform _cameraTarget;
     [SerializeField] private float _cameraOffset = 6f;
     [SerializeField] private float _cameraSmooth = 2f;
     [SerializeField] private float _cameraDisMultiplier = 0.2f;
-    
+
     private Camera _cam;
     private Plane _groundPlane;
     private Vector2 _moveInput;
@@ -21,19 +21,19 @@ public class PlayerController : MonoBehaviour
     {
         _groundPlane = new Plane(Vector3.up, Vector3.zero);
         _cam = Camera.main;
-    } 
+    }
 
     void Update()
     {
         _model.UpdateTimer(Time.deltaTime);
         _model.UpdateDodge(Time.deltaTime);
         _model.UpdateAttackSlow(Time.deltaTime);
-        
+
         HandleAim();
     }
 
     void FixedUpdate()
-    {        
+    {
         HandleMovement();
         HandleDodgeState();
     }
@@ -46,27 +46,24 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
-        {
-            _model.CurrentWeapon?.Attack();
-            //TODO : 현재 여기서 간단하게 처리하고있지만, 실제 Bullet이 소환된 시점으로 이전 예정
-            _model.StartAttackSlow();
-        }
+        if (!ctx.performed) return;
+        if (_model.IsOnSpecialAttack) return;
+        _model.CurrentWeapon?.Attack(_model);
     }
 
     public void OnSpecialAttack(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
         if (!_model.CanSpecialAttack) return;
-
         _model.StartSpecial();
-        _model.CurrentWeapon?.SpecialAttack();
+        _model.CurrentWeapon?.SpecialAttack(_model);
     }
 
     public void OnDodge(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
         if (!_model.CanDodge) return;
+        if (_model.IsOnSpecialAttack) return;
 
         _dodgeDirection = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
 
@@ -80,6 +77,7 @@ public class PlayerController : MonoBehaviour
     private void HandleMovement()
     {
         if (_model.IsDodging) return;
+        if (_model.IsOnSpecialAttack) return;
 
         Vector3 dir = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
         Vector3 currentVelocity = _view.Rb.linearVelocity;
@@ -101,17 +99,17 @@ public class PlayerController : MonoBehaviour
         float targetSpeed = dir.sqrMagnitude > 0.01f ? _model.MaxSpeed : 0f;
 
         float newSpeed = Mathf.MoveTowards(curSpeed, targetSpeed, _model.AccelForce * Time.fixedDeltaTime);
-        
+
         //공격이 확인되면 감속까지 추가 계산
         if (_model.IsOnAttack)
         {
             newSpeed = ApplyAttackSlow(_model.OnAttackSlowRate, newSpeed);
         }
-        
+
         // 최종 velocity 계산
         Vector3 finalVelocity = newDir * newSpeed;
 
-        
+
         _view.Move(finalVelocity);
         _view.RotateBody(newDir);
     }
@@ -140,6 +138,8 @@ public class PlayerController : MonoBehaviour
 
     public void AimAt(Vector3 worldCursorPos)
     {
+        if (_model.IsOnSpecialAttack) return;
+
         Vector3 aimDir = worldCursorPos - _view.transform.position;
         aimDir.y = 0;
         _view.RotateTurret(aimDir);

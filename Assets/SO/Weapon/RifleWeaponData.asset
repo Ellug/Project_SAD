@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a14cb1693998143813ff7874f9d5d1, type: 3}
   m_Name: RifleWeaponData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  _weaponPrefab: {fileID: 7917165348537499237, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
+  _weaponId: 0
   attack: 10
   attackSpeed: 1
   projectileCount: 1
@@ -21,7 +23,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
   SpecialAttack: 10
   SpecialAttackSpeed: 1
-  SpecialAttackDelay: 1
+  SpecialAttackBeforeDelay: 1
+  SpecialAttackAfterDelay: 0.5
   SpecialProjectileCount: 1
   SpecialProjectileAngle: 0
   SpecialProjectileRange: 5

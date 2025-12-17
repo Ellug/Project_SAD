@@ -28,6 +28,7 @@ public class PlayerModel : MonoBehaviour
     private float _curDodgeTime = 0f;
     private bool _isInvincible = false;
     private bool _isOnAttack = false;
+    private bool _isOnSpecialAttack = false;
     private float _curDodgeCoolTime = 0f;
 
     private float _curSpecialCoolTime = 0f;
@@ -35,9 +36,7 @@ public class PlayerModel : MonoBehaviour
     private float _curAttackSlowTime = 0f;
 
     // Properties
-    public WeaponController CurrentWeapon { get; private set; }
-    public Weapon CurrentWeaponType { get; private set; }
-    public WeaponData CurrentWeaponData { get; private set; }
+    public WeaponBase CurrentWeapon { get; private set; }
 
     public float MaxHp => _maxHp;
     public float CurHp => _curHp;
@@ -58,26 +57,14 @@ public class PlayerModel : MonoBehaviour
 
     public float SpecialCooldownCur => _curSpecialCoolTime;
     public float SpecialCooldownRatio => 1f - (_curSpecialCoolTime / _specialCoolTime);
-
     public bool CanDodge => !_isDodging && _curDodgeCoolTime <= 0f;
+    public bool IsOnSpecialAttack => _isOnSpecialAttack;
     public bool CanSpecialAttack => _curSpecialCoolTime <= 0f;
 
     void Start()
     {
         Init();
-
-        CurrentWeapon = GetComponentInChildren<WeaponController>();
-
-        var wm = WeaponManager.Instance;
-
-        Debug.Log($"[PlayerModel] WeaponManager : {wm.CurrentWeapon}, {wm.CurrentWeaponData}");
-
-        CurrentWeaponType = wm.CurrentWeapon;
-        CurrentWeaponData = wm.CurrentWeaponData;
-
-        CurrentWeapon.Init(CurrentWeaponData);
     }
-
 
     public void Init()
     {
@@ -89,6 +76,7 @@ public class PlayerModel : MonoBehaviour
         _isInvincible = false;
         _curAttackSlowTime = 0f;
         _isOnAttack = false;
+        _isOnSpecialAttack = false;
     }
 
     public void StartDodge()
@@ -122,7 +110,6 @@ public class PlayerModel : MonoBehaviour
     {
         _isDodging = false;
     }
-
     
     public void StartAttackSlow()
     {
@@ -142,10 +129,13 @@ public class PlayerModel : MonoBehaviour
             _isOnAttack = false;
         }
     }
-
     public void StartSpecial()
     {
         _curSpecialCoolTime = _specialCoolTime;
+    }
+    public void SetSpecialAttackState(bool value)
+    {
+        _isOnSpecialAttack = value;
     }
 
     public void UpdateTimer(float deltaTime)
@@ -160,7 +150,7 @@ public class PlayerModel : MonoBehaviour
             _curAttackSlowTime = Mathf.Max(0f, _curAttackSlowTime - deltaTime);
     }
 
-    public void SetWeapon(WeaponController weapon)
+    public void SetWeapon(WeaponBase weapon)
     {
         CurrentWeapon = weapon;
     }
