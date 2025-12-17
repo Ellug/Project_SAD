@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class SetLaser : MonoBehaviour
 {
@@ -10,6 +11,10 @@ public class SetLaser : MonoBehaviour
     [Tooltip("스파크 파티클")] public ParticleSystem sparkParticle;
     [Tooltip("레이저 히트 지점")] public GameObject laserHitObject;
     [Tooltip("히트 포인트 이격거리")] public float hitParticleOffset = 0.05f;
+    [Tooltip("그을음  프리팹")] public BurnDecal BurnDecalPrefab;
+    [Tooltip("그을음  프리팹 생성주기")] public float _DecalTime = 5f;
+
+    private bool DelayCheck = true;
 
     void Update()
     {
@@ -35,6 +40,12 @@ public class SetLaser : MonoBehaviour
             }
 
             sparkParticle.Emit(3);
+            StartCoroutine(DelayTime());
+            if (DelayCheck) 
+            {
+                BurnDecal dec = PoolManager.Instance.Spawn(BurnDecalPrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                DelayCheck = false;
+            }            
         }
         else
         {
@@ -46,6 +57,12 @@ public class SetLaser : MonoBehaviour
                 laserHitObject.SetActive(false);
             }
         }
+    }
+
+    IEnumerator DelayTime() 
+    {
+        yield return new WaitForSeconds(_DecalTime);
+        DelayCheck = true;
     }
 }
 

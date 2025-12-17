@@ -5000,6 +5000,7 @@ MonoBehaviour:
   sparkParticle: {fileID: 5116547557269109683}
   laserHitObject: {fileID: 711001074505148593}
   hitParticleOffset: 0.1
+  BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
 --- !u!1 &94225460030019979
 GameObject:
   m_ObjectHideFlags: 0
@@ -58532,6 +58533,7 @@ MonoBehaviour:
   sparkParticle: {fileID: 8279813016778627741}
   laserHitObject: {fileID: 6940806390660523444}
   hitParticleOffset: 0.1
+  BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
 --- !u!1 &7661745365747752022
 GameObject:
   m_ObjectHideFlags: 0
@@ -58827,6 +58829,7 @@ MonoBehaviour:
   sparkParticle: {fileID: 1104488358198850519}
   laserHitObject: {fileID: 9016676218997375718}
   hitParticleOffset: 0.1
+  BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
 --- !u!1 &7891909137991081298
 GameObject:
   m_ObjectHideFlags: 0
@@ -73617,6 +73620,7 @@ MonoBehaviour:
   sparkParticle: {fileID: 7662071065663479648}
   laserHitObject: {fileID: 5042523547348759684}
   hitParticleOffset: 0.1
+  BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
 --- !u!1 &9016676218997375718
 GameObject:
   m_ObjectHideFlags: 0
