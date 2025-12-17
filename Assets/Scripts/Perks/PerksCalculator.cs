@@ -40,7 +40,6 @@ public static class PerkCalculator
                 case StatId.Weapon_ProjectileSpeed: ClacFloat(ref s.ProjectileSpeed, m); break;
 
                 case StatId.Weapon_SpecialAttack: ClacFloat(ref s.SpecialAttack, m); break;
-                case StatId.Weapon_SpecialAttackSpeed: ClacFloat(ref s.SpecialAttackSpeed, m); break;
                 case StatId.Weapon_SpecialBeforeDelay: ClacFloat(ref s.SpecialAttackBeforeDelay, m); break;
                 case StatId.Weapon_SpecialAfterDelay: ClacFloat(ref s.SpecialAttackAfterDelay, m); break;
                 case StatId.Weapon_SpecialProjectileCount: CalcInt(ref s.SpecialProjectileCount, m); break;

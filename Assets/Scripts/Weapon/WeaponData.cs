@@ -19,7 +19,6 @@ public class WeaponData : ScriptableObject
 
     [Header("Special Attack")]
     public float SpecialAttack;
-    public float SpecialAttackSpeed;
     public float SpecialAttackBeforeDelay;
     public float SpecialAttackAfterDelay;
     public int SpecialProjectileCount;

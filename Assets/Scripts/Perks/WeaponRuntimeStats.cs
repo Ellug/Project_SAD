@@ -11,7 +11,6 @@ public struct WeaponRuntimeStats
 
     // Special
     public float SpecialAttack;
-    public float SpecialAttackSpeed;
     public float SpecialAttackBeforeDelay;
     public float SpecialAttackAfterDelay;
     public int SpecialProjectileCount;
@@ -33,7 +32,6 @@ public struct WeaponRuntimeStats
             ProjectilePrefab = d.projectilePrefab,
 
             SpecialAttack = d.SpecialAttack,
-            SpecialAttackSpeed = d.SpecialAttackSpeed,
             SpecialAttackBeforeDelay = d.SpecialAttackBeforeDelay,
             SpecialAttackAfterDelay = d.SpecialAttackAfterDelay,
             SpecialProjectileCount = d.SpecialProjectileCount,
