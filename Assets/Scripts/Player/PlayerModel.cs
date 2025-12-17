@@ -17,9 +17,6 @@ public class PlayerModel : MonoBehaviour
     [SerializeField] private float _dodgeSpeed = 25f;
     [SerializeField] private float _dodgeCoolTime = 5.0f;
 
-    [Header("Special Attack")]
-    [SerializeField] private float _specialCoolTime = 4.0f;
-
     [Header("AttackSlow")]
     [SerializeField] private float _attackSlowRate = 0.5f;
     [SerializeField] private float _attackSlowDuration = 0.25f;
@@ -39,6 +36,13 @@ public class PlayerModel : MonoBehaviour
 
     private float _curSpecialCoolTime = 0f;
     private float _curAttackSlowTime = 0f;
+    private float _attackSpeed = 0f; 
+    private float _attackCoolTime = 0f;
+    private float _curAttackCoolTime = 0f;
+
+    private float _specialAttackSpeed = 0f;
+    private float _specialCoolTime = 0f;
+    private float _curSpecialCoolTime = 0f;
 
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
@@ -67,6 +71,9 @@ public class PlayerModel : MonoBehaviour
     public bool CanDodge => !_isDodging && _curDodgeCoolTime <= 0f;
     public bool IsOnSpecialAttack => _isOnSpecialAttack;
     public bool CanSpecialAttack => _curSpecialCoolTime <= 0f;
+    public bool CanAttack => _curAttackCoolTime <= 0f;
+
+    
 
     // 기본 스탯 적용
     void Awake()
@@ -116,13 +123,14 @@ public class PlayerModel : MonoBehaviour
     {
         _curHp = _maxHp;
         _curDodgeCoolTime = 0f;
-        _curSpecialCoolTime = 0f;
         _curDodgeTime = 0f;
         _isDodging = false;
         _isInvincible = false;
         _curAttackSlowTime = 0f;
         _isOnAttack = false;
         _isOnSpecialAttack = false;
+        _curSpecialCoolTime = 0f;
+        _curAttackCoolTime = 0f;
     }
 
     public void StartDodge()
@@ -175,13 +183,22 @@ public class PlayerModel : MonoBehaviour
             _isOnAttack = false;
         }
     }
-    public void StartSpecial()
+    
+    public void StartSpecialAttack()
     {
+        if(!CanSpecialAttack) return;
         _curSpecialCoolTime = SpecialCoolTime;
     }
+    
     public void SetSpecialAttackState(bool value)
     {
         _isOnSpecialAttack = value;
+    }
+
+    public void StartAttack()
+    {
+        if(!CanAttack) return;
+        _curAttackCoolTime = _attackCoolTime;
     }
 
     public void UpdateTimer(float deltaTime)
@@ -194,11 +211,21 @@ public class PlayerModel : MonoBehaviour
         
         if (_curAttackSlowTime > 0f)
             _curAttackSlowTime = Mathf.Max(0f, _curAttackSlowTime - deltaTime);
+
+        if(_curAttackCoolTime > 0f)
+            _curAttackCoolTime = Mathf.Max(0f, _curAttackCoolTime - deltaTime);
     }
 
     public void SetWeapon(WeaponBase weapon)
     {
         CurrentWeapon = weapon;
+        _attackSpeed = weapon.WeaponData.attackSpeed;
+        _attackCoolTime = 1f / _attackSpeed;
+        _curAttackCoolTime = 0f;
+
+        _specialAttackSpeed = weapon.WeaponData.SpecialAttackSpeed;
+        _specialCoolTime = 1f / _specialAttackSpeed;
+        _curSpecialCoolTime = 0f;
     }
 
     public void TakeDamage(float dmg)

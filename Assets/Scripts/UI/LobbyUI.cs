@@ -2,26 +2,26 @@
 
 public class LobbyUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _lobbyUI;
+    [SerializeField] private LobbyManager _lobbyManager;
+
     [SerializeField] private GameObject _loadOutUI;
     [SerializeField] private GameObject _stageSelectUI;
     [SerializeField] private GameObject _keyGuideUI;
 
     public void OnClickLoadOutUI()
     {
-        SetAllInActive();
-        _loadOutUI.SetActive(true);
+        _lobbyManager.OpenUI(_loadOutUI);
     }
 
     public void OnClickStageSelectUI()
     {
-        SetAllInActive();
-        _stageSelectUI.SetActive(true);
+        _lobbyManager.OpenUI(_stageSelectUI);
     }
 
     public void OnClickKeyGuideUI()
     {
         SetAllInActive();
+        _lobbyManager.OpenUI(_keyGuideUI);
         _keyGuideUI.SetActive(true);
     }
 
