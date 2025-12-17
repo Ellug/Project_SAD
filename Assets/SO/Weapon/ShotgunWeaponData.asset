@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75a14cb1693998143813ff7874f9d5d1, type: 3}
+  m_Name: ShotgunWeaponData
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  _weaponPrefab: {fileID: 7016535136198836579, guid: 84565852de6988e43b1f083de2fdd742, type: 3}
+  _weaponId: 2
+  attack: 10
+  attackSpeed: 5
+  projectileCount: 10
+  projectileAngle: 20
+  projectileRange: 30
+  projectileSpeed: 15
+  projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
+  SpecialAttack: 0
+  SpecialAttackSpeed: 0
+  SpecialAttackBeforeDelay: 1
+  SpecialAttackAfterDelay: 1
+  SpecialProjectileCount: 0
+  SpecialProjectileAngle: 0
+  SpecialProjectileRange: 0
+  SpecialProjectileSpeed: 0
+  SpecialProjectilePrefab: {fileID: 8378940865896947848, guid: bd4a612256ec45a46beb3d67d910c36d, type: 3}
