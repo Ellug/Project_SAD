@@ -28,6 +28,7 @@ public class PlayerModel : MonoBehaviour
     private float _curDodgeTime = 0f;
     private bool _isInvincible = false;
     private bool _isOnAttack = false;
+    private bool _isOnSpecialAttack = false;
     private float _curDodgeCoolTime = 0f;
 
     private float _curSpecialCoolTime = 0f;
@@ -58,8 +59,8 @@ public class PlayerModel : MonoBehaviour
 
     public float SpecialCooldownCur => _curSpecialCoolTime;
     public float SpecialCooldownRatio => 1f - (_curSpecialCoolTime / _specialCoolTime);
-
     public bool CanDodge => !_isDodging && _curDodgeCoolTime <= 0f;
+    public bool IsOnSpecialAttack => _isOnSpecialAttack;
     public bool CanSpecialAttack => _curSpecialCoolTime <= 0f;
 
     void Start()
@@ -89,6 +90,7 @@ public class PlayerModel : MonoBehaviour
         _isInvincible = false;
         _curAttackSlowTime = 0f;
         _isOnAttack = false;
+        _isOnSpecialAttack = false;
     }
 
     public void StartDodge()
@@ -142,10 +144,13 @@ public class PlayerModel : MonoBehaviour
             _isOnAttack = false;
         }
     }
-
     public void StartSpecial()
     {
         _curSpecialCoolTime = _specialCoolTime;
+    }
+    public void SetSpecialAttackState(bool value)
+    {
+        _isOnSpecialAttack = value;
     }
 
     public void UpdateTimer(float deltaTime)
