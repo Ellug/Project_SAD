@@ -54,7 +54,6 @@ public static class PerkText
             StatId.Weapon_ProjectileSpeed           => "탄속",
 
             StatId.Weapon_SpecialAttack             => "특수 공격력",
-            StatId.Weapon_SpecialAttackSpeed        => "특수 공격 속도",
             StatId.Weapon_SpecialBeforeDelay        => "특수 선딜",
             StatId.Weapon_SpecialAfterDelay         => "특수 후딜",
             StatId.Weapon_SpecialProjectileCount    => "특수 발사 개수",

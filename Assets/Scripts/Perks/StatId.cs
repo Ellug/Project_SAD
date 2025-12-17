@@ -21,7 +21,6 @@ public enum StatId
 
     // Weapon (Special)
     Weapon_SpecialAttack,
-    Weapon_SpecialAttackSpeed,
     Weapon_SpecialBeforeDelay,
     Weapon_SpecialAfterDelay,
     Weapon_SpecialProjectileCount,

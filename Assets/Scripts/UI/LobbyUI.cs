@@ -20,23 +20,7 @@ public class LobbyUI : MonoBehaviour
 
     public void OnClickKeyGuideUI()
     {
-        SetAllInActive();
         _lobbyManager.OpenUI(_keyGuideUI);
         _keyGuideUI.SetActive(true);
-    }
-
-    public void OnClickExit()
-    {
-        GameManager.Instance.EquipPlayerWeapon();
-        SetAllInActive();
-        _lobbyUI.SetActive(true);
-    }
-    
-    public void SetAllInActive()
-    {
-        _lobbyUI.SetActive(false);
-        _loadOutUI.SetActive(false);
-        _stageSelectUI.SetActive(false);
-        _keyGuideUI.SetActive(false);
     }
 }

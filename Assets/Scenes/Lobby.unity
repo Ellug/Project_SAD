@@ -477,9 +477,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063490755}
-        m_TargetAssemblyTypeName: LobbyUI, Assembly-CSharp
-        m_MethodName: OnClickExit
+      - m_Target: {fileID: 1932183760}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: CloseUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -851,7 +851,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1190384101}
+      - m_Target: {fileID: 1540806932}
         m_TargetAssemblyTypeName: WeaponView, Assembly-CSharp
         m_MethodName: OnClickWeapon
         m_Mode: 3
@@ -1480,7 +1480,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PerkSelectPanelUI
   _stagePrefab: {fileID: -6615798339690751584, guid: 91dc3bdb95e01f44eb5cddaca7ee7948, type: 3}
   _root: {fileID: 249944682}
-  _toggleOff: 1
 --- !u!114 &249944684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1691,7 +1690,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1190384101}
+      - m_Target: {fileID: 1540806932}
         m_TargetAssemblyTypeName: WeaponView, Assembly-CSharp
         m_MethodName: OnClickWeapon
         m_Mode: 3
@@ -1803,54 +1802,6 @@ MonoBehaviour:
   m_Spacing: {x: 80, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!1 &372212676
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 372212677}
-  - component: {fileID: 372212678}
-  m_Layer: 5
-  m_Name: StageSelectUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &372212677
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 372212676}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 931123840}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &372212678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 372212676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f143ffaa6899f2e4f9f5095dade0482f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StageSelectUI
 --- !u!1 &397634754
 GameObject:
   m_ObjectHideFlags: 0
@@ -3210,7 +3161,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 372212678}
+      - m_Target: {fileID: 931123841}
         m_TargetAssemblyTypeName: StageSelectUI, Assembly-CSharp
         m_MethodName: OnClickStageButton
         m_Mode: 5
@@ -3480,6 +3431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 759210347}
+  - component: {fileID: 759210348}
   m_Layer: 5
   m_Name: LobbyUI
   m_TagString: Untagged
@@ -3501,7 +3453,6 @@ RectTransform:
   m_Children:
   - {fileID: 331363426}
   - {fileID: 1582341596}
-  - {fileID: 1063490756}
   m_Father: {fileID: 64478671}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3509,6 +3460,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &759210348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759210346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09224cb5fdb3f0e4ca87019bf4510667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LobbyUI
+  _lobbyManager: {fileID: 1932183760}
+  _loadOutUI: {fileID: 1540806930}
+  _stageSelectUI: {fileID: 931123839}
+  _keyGuideUI: {fileID: 1045180054}
 --- !u!1 &776319175
 GameObject:
   m_ObjectHideFlags: 0
@@ -3840,6 +3807,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &882958087 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6704405688854526168, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+  m_PrefabInstance: {fileID: 184178909}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29ac098074d214c4ca29382118538df7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1 &884969383
 GameObject:
   m_ObjectHideFlags: 0
@@ -3924,9 +3902,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063490755}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickExit
+      - m_Target: {fileID: 1932183760}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: CloseUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4119,6 +4097,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 931123840}
+  - component: {fileID: 931123841}
   m_Layer: 5
   m_Name: StageSelectUI
   m_TagString: Untagged
@@ -4141,7 +4120,6 @@ RectTransform:
   - {fileID: 1007694314}
   - {fileID: 977420933}
   - {fileID: 1380859756}
-  - {fileID: 372212677}
   m_Father: {fileID: 64478671}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4149,6 +4127,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &931123841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931123839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f143ffaa6899f2e4f9f5095dade0482f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSelectUI
 --- !u!1 &949331781
 GameObject:
   m_ObjectHideFlags: 0
@@ -4579,8 +4569,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063490755}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 759210348}
+        m_TargetAssemblyTypeName: LobbyUI, Assembly-CSharp
         m_MethodName: OnClickStageSelectUI
         m_Mode: 1
         m_Arguments:
@@ -4994,54 +4984,6 @@ Transform:
   - {fileID: 2009917275}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1063490754
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1063490756}
-  - component: {fileID: 1063490755}
-  m_Layer: 0
-  m_Name: LobbyUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1063490755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063490754}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09224cb5fdb3f0e4ca87019bf4510667, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  _lobbyUI: {fileID: 759210346}
-  _loadOutUI: {fileID: 1540806930}
-  _stageSelectUI: {fileID: 931123839}
-  _keyGuideUI: {fileID: 1045180054}
---- !u!4 &1063490756
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1063490754}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.7557983, y: 11.629089, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 759210347}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1074695013
 GameObject:
   m_ObjectHideFlags: 0
@@ -5291,63 +5233,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175834714}
   m_CullTransparentMesh: 1
---- !u!1 &1190384099
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1190384100}
-  - component: {fileID: 1190384101}
-  m_Layer: 5
-  m_Name: LoadOutUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1190384100
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190384099}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1540806931}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1190384101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190384099}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d6ab5cf56e5355478d18331a6795d54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponView
-  _playerModel: {fileID: 184178910}
-  _muzzlePos: {fileID: 184178913}
-  _weaponSelectPanel: {fileID: 141485164}
-  _perkSelectPanel: {fileID: 249944679}
-  _perkPanelUI: {fileID: 249944683}
-  _allWeaponData:
-  - {fileID: 1683954902342705239, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
-  - {fileID: 2037118111499405556, guid: 1fc66bc9096e59440bdbf73ea626377c, type: 3}
-  - {fileID: 2196959210431760054, guid: 84565852de6988e43b1f083de2fdd742, type: 3}
 --- !u!1 &1201345160
 GameObject:
   m_ObjectHideFlags: 0
@@ -6223,9 +6108,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063490755}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnClickExit
+      - m_Target: {fileID: 1932183760}
+        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+        m_MethodName: CloseUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6755,6 +6640,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1540806931}
+  - component: {fileID: 1540806932}
   m_Layer: 5
   m_Name: LoadOutUI
   m_TagString: Untagged
@@ -6776,7 +6662,6 @@ RectTransform:
   m_Children:
   - {fileID: 1467278993}
   - {fileID: 1175834715}
-  - {fileID: 1190384100}
   - {fileID: 47173047}
   m_Father: {fileID: 64478671}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6785,6 +6670,27 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1540806932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1540806930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d6ab5cf56e5355478d18331a6795d54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponView
+  _playerModel: {fileID: 184178910}
+  _muzzlePos: {fileID: 184178913}
+  _weaponSelectPanel: {fileID: 141485164}
+  _perkSelectPanel: {fileID: 249944679}
+  _perkPanelUI: {fileID: 249944683}
+  _allWeaponData:
+  - {fileID: 1683954902342705239, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
+  - {fileID: 2037118111499405556, guid: 1fc66bc9096e59440bdbf73ea626377c, type: 3}
+  - {fileID: 2196959210431760054, guid: 84565852de6988e43b1f083de2fdd742, type: 3}
 --- !u!1 &1570935102
 GameObject:
   m_ObjectHideFlags: 0
@@ -7186,8 +7092,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063490755}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 759210348}
+        m_TargetAssemblyTypeName: LobbyUI, Assembly-CSharp
         m_MethodName: OnClickLoadOutUI
         m_Mode: 1
         m_Arguments:
@@ -8283,7 +8189,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1190384101}
+      - m_Target: {fileID: 1540806932}
         m_TargetAssemblyTypeName: WeaponView, Assembly-CSharp
         m_MethodName: OnClickWeapon
         m_Mode: 3
@@ -8552,7 +8458,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 372212678}
+      - m_Target: {fileID: 931123841}
         m_TargetAssemblyTypeName: StageSelectUI, Assembly-CSharp
         m_MethodName: OnClickStageButton
         m_Mode: 5
@@ -8602,6 +8508,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885715879}
   m_CullTransparentMesh: 1
+--- !u!1 &1932183759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1932183761}
+  - component: {fileID: 1932183760}
+  m_Layer: 0
+  m_Name: '[LobbyManager]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1932183760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932183759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86797654f8e279c41943bade1791a6e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LobbyManager
+  _playerController: {fileID: 882958087}
+  _lobbyCanvas: {fileID: 64478670}
+  _lobbyUI: {fileID: 759210346}
+--- !u!4 &1932183761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1932183759}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1370, y: 666.6666, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1938223980
 GameObject:
   m_ObjectHideFlags: 0
@@ -8760,8 +8713,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1063490755}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 759210348}
+        m_TargetAssemblyTypeName: LobbyUI, Assembly-CSharp
         m_MethodName: OnClickKeyGuideUI
         m_Mode: 1
         m_Arguments:
@@ -9491,3 +9444,4 @@ SceneRoots:
   - {fileID: 184178909}
   - {fileID: 822025891}
   - {fileID: 723567117}
+  - {fileID: 1932183761}

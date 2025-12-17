@@ -25,6 +25,11 @@ public class LobbyManager : MonoBehaviour
 
     public void CloseUI()
     {
+        GameManager gm = GameManager.Instance;
+        
+        if (gm.Weapon != null)
+            gm.EquipPlayerWeapon();
+        
         SetAllUI(false);
         _lobbyUI.SetActive(true);
 

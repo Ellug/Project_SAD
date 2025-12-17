@@ -35,7 +35,6 @@ public abstract class WeaponBase : MonoBehaviour
             ProjectileSpeed = _weaponData.projectileSpeed,
 
             SpecialAttack = _weaponData.SpecialAttack,
-            SpecialAttackSpeed = _weaponData.SpecialAttackSpeed,
             SpecialAttackBeforeDelay = _weaponData.SpecialAttackBeforeDelay,
             SpecialAttackAfterDelay = _weaponData.SpecialAttackAfterDelay,
             SpecialProjectileCount = _weaponData.SpecialProjectileCount,

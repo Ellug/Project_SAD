@@ -17,6 +17,9 @@ public class PlayerModel : MonoBehaviour
     [SerializeField] private float _dodgeSpeed = 25f;
     [SerializeField] private float _dodgeCoolTime = 5.0f;
 
+    [Header("SPAttack")]
+    [SerializeField] private float _specialCoolTime = 3f;
+
     [Header("AttackSlow")]
     [SerializeField] private float _attackSlowRate = 0.5f;
     [SerializeField] private float _attackSlowDuration = 0.25f;
@@ -34,14 +37,11 @@ public class PlayerModel : MonoBehaviour
     private bool _isOnSpecialAttack = false;
     private float _curDodgeCoolTime = 0f;
 
-    private float _curSpecialCoolTime = 0f;
     private float _curAttackSlowTime = 0f;
     private float _attackSpeed = 0f; 
     private float _attackCoolTime = 0f;
     private float _curAttackCoolTime = 0f;
-
-    private float _specialAttackSpeed = 0f;
-    private float _specialCoolTime = 0f;
+    
     private float _curSpecialCoolTime = 0f;
 
     // Properties
@@ -187,7 +187,7 @@ public class PlayerModel : MonoBehaviour
     public void StartSpecialAttack()
     {
         if(!CanSpecialAttack) return;
-        _curSpecialCoolTime = SpecialCoolTime;
+        _curSpecialCoolTime = _runtimeStats.SpecialCoolTime;
     }
     
     public void SetSpecialAttackState(bool value)
@@ -223,8 +223,6 @@ public class PlayerModel : MonoBehaviour
         _attackCoolTime = 1f / _attackSpeed;
         _curAttackCoolTime = 0f;
 
-        _specialAttackSpeed = weapon.WeaponData.SpecialAttackSpeed;
-        _specialCoolTime = 1f / _specialAttackSpeed;
         _curSpecialCoolTime = 0f;
     }
 
