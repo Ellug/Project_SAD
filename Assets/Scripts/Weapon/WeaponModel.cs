@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-// 모든 무기들의 정보와 특전의 정보를 가지고 있는
+// 모든 무기들의 정보를 가지고 있는
 // 무기고 역할을 하게될 WeaponModel
 public class WeaponModel
 {

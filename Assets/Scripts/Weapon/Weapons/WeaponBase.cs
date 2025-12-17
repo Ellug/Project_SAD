@@ -4,6 +4,8 @@ using UnityEngine;
 public abstract class WeaponBase : MonoBehaviour
 {
     [SerializeField] private WeaponData _weaponData;
+    
+    protected PerksNode[] _perksNode;
 
     public WeaponData WeaponData => _weaponData;
 
