@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviour
     {
         if (!ctx.performed) return;
         if (_model.IsOnSpecialAttack) return;
+        if (!_model.CanAttack) return;
+
+        _model.StartAttack();
         _model.CurrentWeapon?.Attack(_model);
     }
 
@@ -55,7 +58,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!ctx.performed) return;
         if (!_model.CanSpecialAttack) return;
-        _model.StartSpecial();
+        _model.StartSpecialAttack();
         _model.CurrentWeapon?.SpecialAttack(_model);
     }
 
