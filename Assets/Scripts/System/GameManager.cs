@@ -21,9 +21,8 @@ public class GameManager : SingletonePattern<GameManager>
 
     public event Action<GameState> OnGameStateChanged;
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
         SceneManager.sceneLoaded += OnSceneLoad;
     }
 
@@ -72,7 +71,8 @@ public class GameManager : SingletonePattern<GameManager>
     public void GoToLobby()
     {
         SetState(GameState.Playing);
-        SceneManager.LoadScene("Lobby");
+        // SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Lobby-YH");
     }
 
     public void ReloadCurrentScene()

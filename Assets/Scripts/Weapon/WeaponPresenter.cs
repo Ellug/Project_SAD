@@ -11,6 +11,7 @@
     {
         _model = model;
         _view = view;
+        SelectWeapon(0);
     }
 
     public void Init()
