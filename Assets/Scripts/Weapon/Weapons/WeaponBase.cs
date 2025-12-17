@@ -81,7 +81,6 @@ public abstract class WeaponBase : MonoBehaviour
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
         PlayerBullet bullet = PoolManager.Instance.Spawn(_weaponData.projectilePrefab, pos, rot);
-        //bullet.Init(_weaponData, transform);
         bullet.Init(_weaponData, isSpecial);
     }
 }

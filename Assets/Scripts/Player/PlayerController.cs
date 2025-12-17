@@ -17,6 +17,13 @@ public class PlayerController : MonoBehaviour
     private Vector2 _moveInput;
     private Vector3 _dodgeDirection;
 
+    private PlayerInput _playerInput;
+
+    private void Awake()
+    {
+        _playerInput = GetComponent<PlayerInput>();
+    }
+
     void Start()
     {
         _groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -146,7 +153,7 @@ public class PlayerController : MonoBehaviour
         Vector3 aimDir = worldCursorPos - _view.transform.position;
         aimDir.y = 0;
         _view.RotateTurret(aimDir);
-
+        
         // 카메라 업데이트
         UpdateCameraTarget(aimDir);
     }
@@ -173,5 +180,13 @@ public class PlayerController : MonoBehaviour
     private float ApplyAttackSlow(float OnAttackSlowRate, float newSpeed)
     {
         return (1 - OnAttackSlowRate) * newSpeed;
+    }
+
+    public void OpenCloseUI(bool isOpen)
+    {
+        if (isOpen) 
+            _playerInput.SwitchCurrentActionMap("UI");
+        else
+            _playerInput.SwitchCurrentActionMap("Player");
     }
 }
