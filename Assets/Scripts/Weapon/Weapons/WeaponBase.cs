@@ -6,6 +6,7 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] private WeaponData _weaponData;
     
     protected PerksNode[] _perksNode;
+    private bool _isSpecial;
 
     public WeaponData WeaponData => _weaponData;
 
@@ -16,19 +17,21 @@ public abstract class WeaponBase : MonoBehaviour
 
     public void Attack(PlayerModel player)
     {
-        FireProjectile();
+        _isSpecial = false;
+        FireProjectile(_isSpecial);
         player.StartAttackSlow();
     }
 
     public void SpecialAttack(PlayerModel player)
     {
+        _isSpecial = true;
         StartCoroutine(CoSpecialAttack(player));
     }
 
     private IEnumerator CoSpecialAttack(PlayerModel player)
     {
         yield return StartCoroutine(CoBeforeSpecialAttack(player));
-        FireProjectile();
+        FireProjectile(_isSpecial);
         yield return StartCoroutine(CoAfterSpecialAttack(player));
     }
     private IEnumerator CoBeforeSpecialAttack(PlayerModel player)
@@ -44,7 +47,7 @@ public abstract class WeaponBase : MonoBehaviour
     }
 
     //불릿 정보 줄거
-    private void FireProjectile()
+    private void FireProjectile(bool isSpecial)
     {
         int count = Mathf.Max(1, _weaponData.projectileCount);
         float totalAngle = _weaponData.projectileAngle;
@@ -58,7 +61,7 @@ public abstract class WeaponBase : MonoBehaviour
         // 각도, 숫자로 산탄 계산
         if (count == 1 || totalAngle == 0f)
         {
-            SpawnBullet(spawnPos, baseDir);
+            SpawnBullet(spawnPos, baseDir, isSpecial);
             return;
         }
 
@@ -70,14 +73,15 @@ public abstract class WeaponBase : MonoBehaviour
             float angle = Mathf.Lerp(-halfAngle, halfAngle, t);
 
             Vector3 dir = Quaternion.AngleAxis(angle, Vector3.up) * baseDir;
-            SpawnBullet(spawnPos, dir);
+            SpawnBullet(spawnPos, dir, isSpecial);
         }
     }
 
-    private void SpawnBullet(Vector3 pos, Vector3 dir)
+    private void SpawnBullet(Vector3 pos, Vector3 dir, bool isSpecial)
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
         PlayerBullet bullet = PoolManager.Instance.Spawn(_weaponData.projectilePrefab, pos, rot);
-        bullet.Init(_weaponData, transform);
+        //bullet.Init(_weaponData, transform);
+        bullet.Init(_weaponData, isSpecial);
     }
 }

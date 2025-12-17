@@ -6552,7 +6552,7 @@ MonoBehaviour:
   _playerModel: {fileID: 184178910}
   _muzzlePos: {fileID: 184178913}
   _weaponSelectPanel: {fileID: 141485164}
-  _perkSelectPanel: {fileID: 0}
+  _perkSelectPanel: {fileID: 249944679}
   _allWeaponData:
   - {fileID: 1683954902342705239, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
   - {fileID: 2037118111499405556, guid: 1fc66bc9096e59440bdbf73ea626377c, type: 3}
