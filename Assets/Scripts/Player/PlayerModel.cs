@@ -63,12 +63,6 @@ public class PlayerModel : MonoBehaviour
     void Start()
     {
         Init();
-
-        //CurrentWeapon = GetComponentInChildren<WeaponBase>();
-
-        //var wm = WeaponManager.Instance;
-
-        //Debug.Log($"[PlayerModel] WeaponManager : {wm.CurrentWeapon}, {wm.CurrentWeaponData}");
     }
 
 
