@@ -42,7 +42,7 @@ public class MovingObject : MonoBehaviour
     IEnumerator DeActivateObject()
     {
         yield return new WaitForSeconds(LifeTime);
-        UnderPosition = -(this.transform.transform.localScale.y / 2);
+        UnderPosition = -((this.transform.transform.localScale.y / 2) + 0.1f);
         Moving = true;
         TargetPosition = new Vector3(this.transform.position.x, UnderPosition, this.transform.position.z);
     }

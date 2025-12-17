@@ -4,7 +4,7 @@ public class LaserObject : MonoBehaviour
 {
     private bool _moving = false;
     private bool _rotate = false;
-    [Tooltip("오브젝트 이동 속도")][SerializeField] float _moveSpeed = 0;
+    [Tooltip("오브젝트 이동 속도")][SerializeField] float _moveSpeed = 5f;
     [Tooltip("오브젝트 활성화 시간")][SerializeField] float _lifeTime = 5f;
     [Tooltip("오브젝트 회전 속도")][SerializeField] float _rotationSpeed = 5f;
     private Vector3 _targetPosition;
@@ -51,7 +51,7 @@ public class LaserObject : MonoBehaviour
     IEnumerator DeActivateObject()
     {
         yield return new WaitForSeconds(_lifeTime);
-        _underPosition = -(this.transform.transform.localScale.y / 2);
+        _underPosition = -((this.transform.transform.localScale.y / 2) + 0.1f);
         _moving = true;
         DeActivateLaser();
         _targetPosition = new Vector3(this.transform.position.x, _underPosition, this.transform.position.z);

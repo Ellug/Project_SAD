@@ -47,7 +47,7 @@ public class WeaponHandler : MonoBehaviour
     {
         if (_ui != null)
         {
-            _ui.OnWeaponSelected += HandleWeaponSelected;
+            //_ui.OnWeaponSelected += HandleWeaponSelected;
             //TODO : LoadOutUI 에서 선택받은 값 구독
             //_ui.OnStagePeckSelected += HandleStagePeckSelected;
         }
@@ -55,14 +55,14 @@ public class WeaponHandler : MonoBehaviour
 
     void Start()
     {
-        SetCurrentWeapon(_currentWeapon, _currentWeaponData);
+        // SetCurrentWeapon(_currentWeapon, _currentWeaponData);
     }
 
     private void OnDestroy()
     {
         if (_ui != null)
         {
-            _ui.OnWeaponSelected -= HandleWeaponSelected;
+            //_ui.OnWeaponSelected -= HandleWeaponSelected;
             //_ui.OnStagePeckSelected += HandleStagePeckSelected;
         }
     }
@@ -97,9 +97,9 @@ public class WeaponHandler : MonoBehaviour
         
 
 
-        WeaponManager.Instance.SetWeapon(weapon, selectWeaponData);
-        _weaponController.Init(selectWeaponData);
-        _playerModel.SetWeapon(_weaponController);
+        //WeaponManager.Instance.SetWeapon(weapon, selectWeaponData);
+        //_weaponController.Init(selectWeaponData);
+        //_playerModel.SetWeapon(_weaponController);
     }
 
 
@@ -119,6 +119,6 @@ public class WeaponHandler : MonoBehaviour
             case Weapon.Shotgun: _shotgunData = data; break;
         }
         _weaponController.Init(data);
-        _playerModel.SetWeapon(_weaponController);
+        //_playerModel.SetWeapon(_weaponController);
     }
 }
