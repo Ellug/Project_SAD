@@ -1,0 +1,46 @@
+public struct WeaponRuntimeStats
+{
+    // Normal
+    public float Attack;
+    public float AttackSpeed;
+    public int ProjectileCount;
+    public float ProjectileAngle;
+    public float ProjectileRange;
+    public float ProjectileSpeed;
+    public PlayerBullet ProjectilePrefab;
+
+    // Special
+    public float SpecialAttack;
+    public float SpecialAttackSpeed;
+    public float SpecialAttackBeforeDelay;
+    public float SpecialAttackAfterDelay;
+    public int SpecialProjectileCount;
+    public float SpecialProjectileAngle;
+    public float SpecialProjectileRange;
+    public float SpecialProjectileSpeed;
+    public PlayerBullet SpecialProjectilePrefab;
+
+    public static WeaponRuntimeStats FromData(WeaponData d)
+    {
+        return new WeaponRuntimeStats
+        {
+            Attack = d.attack,
+            AttackSpeed = d.attackSpeed,
+            ProjectileCount = d.projectileCount,
+            ProjectileAngle = d.projectileAngle,
+            ProjectileRange = d.projectileRange,
+            ProjectileSpeed = d.projectileSpeed,
+            ProjectilePrefab = d.projectilePrefab,
+
+            SpecialAttack = d.SpecialAttack,
+            SpecialAttackSpeed = d.SpecialAttackSpeed,
+            SpecialAttackBeforeDelay = d.SpecialAttackBeforeDelay,
+            SpecialAttackAfterDelay = d.SpecialAttackAfterDelay,
+            SpecialProjectileCount = d.SpecialProjectileCount,
+            SpecialProjectileAngle = d.SpecialProjectileAngle,
+            SpecialProjectileRange = d.SpecialProjectileRange,
+            SpecialProjectileSpeed = d.SpecialProjectileSpeed,
+            SpecialProjectilePrefab = d.SpecialProjectilePrefab,
+        };
+    }
+}

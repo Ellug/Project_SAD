@@ -26,18 +26,18 @@ public class StageUI : MonoBehaviour
     [SerializeField] private Image _resultColor;
     [SerializeField] private TMP_Text _remainedBossHp;
 
-    private void OnEnable()
+    void OnEnable()
     {
         GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         if (GameManager.Instance != null)
             GameManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
     }
 
-    private void Start()
+    void Start()
     {
         if (_pausePanel != null)
             _pausePanel.SetActive(false);
@@ -46,7 +46,7 @@ public class StageUI : MonoBehaviour
             _resultPanel.SetActive(false);
     }
 
-    private void Update()
+    void Update()
     {
         UpdatePlayerHP();
         UpdateBossHP();

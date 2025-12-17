@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         //공격이 확인되면 감속까지 추가 계산
         if (_model.IsOnAttack)
         {
-            newSpeed = ApplyAttackSlow(_model.OnAttackSlowRate, newSpeed);
+            newSpeed = ApplyAttackSlow(_model.AttackSlowRate, newSpeed);
         }
 
         // 최종 velocity 계산
