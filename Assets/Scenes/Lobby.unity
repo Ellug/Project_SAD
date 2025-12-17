@@ -1699,7 +1699,7 @@ GameObject:
   - component: {fileID: 249944681}
   - component: {fileID: 249944680}
   m_Layer: 5
-  m_Name: PeckSelectPanelGround
+  m_Name: PerkSelectPanelGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2319,7 +2319,7 @@ GameObject:
   - component: {fileID: 397634757}
   - component: {fileID: 397634756}
   m_Layer: 5
-  m_Name: PeckTitleText
+  m_Name: PerkTitleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6512,7 +6512,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1190384100}
-  - component: {fileID: 1190384102}
   - component: {fileID: 1190384101}
   m_Layer: 5
   m_Name: LoadOutUI
@@ -6555,34 +6554,11 @@ MonoBehaviour:
   _playerModel: {fileID: 184178910}
   _muzzlePos: {fileID: 184178913}
   _weaponSelectPanel: {fileID: 141485164}
-  _peckSelectPanel: {fileID: 249944679}
+  _perkSelectPanel: {fileID: 0}
   _allWeaponData:
   - {fileID: 1683954902342705239, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
   - {fileID: 2037118111499405556, guid: 1fc66bc9096e59440bdbf73ea626377c, type: 3}
   - {fileID: 2196959210431760054, guid: 84565852de6988e43b1f083de2fdd742, type: 3}
---- !u!114 &1190384102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1190384099}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67cdba1350b0ac841986b99d0f327e26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LoadOutUI
-  _rifleButton: {fileID: 1870214273}
-  _snipeButton: {fileID: 100855384}
-  _shotgunButton: {fileID: 283860397}
-  _riflePeck: {fileID: 0}
-  _snipePeck: {fileID: 0}
-  _shotgunPeck: {fileID: 0}
-  Stage1Node: {fileID: 0}
-  Stage2LeftNode: {fileID: 0}
-  Stage2RightNode: {fileID: 0}
-  Stage3LeftNode: {fileID: 0}
-  Stage3RightNode: {fileID: 0}
 --- !u!1 &1201345160
 GameObject:
   m_ObjectHideFlags: 0
@@ -9962,7 +9938,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1810739712}
   m_Layer: 5
-  m_Name: Peck
+  m_Name: Perk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
