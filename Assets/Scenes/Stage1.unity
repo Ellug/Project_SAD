@@ -302,7 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 0.1, y: 0.1, z: 0.1}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -659,7 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77aa77eca01fefb45bde02d5309d0b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
-  _bossMaxHp: 100
+  _bossMaxHp: 1000
   _changePhaseHpRate: 0.5
 --- !u!136 &223490256
 CapsuleCollider:
@@ -2879,6 +2879,14 @@ PrefabInstance:
     - target: {fileID: 3011927959738838156, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219096291929258750, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+      propertyPath: _maxHp
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219096291929258750, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+      propertyPath: _accelForce
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6704405688854526168, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: _cameraTarget

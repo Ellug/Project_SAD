@@ -117,16 +117,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17c1fe6f846fe29459f5260cd45736b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerModel
-  _maxHp: 50
+  _maxHp: 100
   _maxSpeed: 10
-  _accelForce: 30
+  _accelForce: 20
   _rotSpeed: 10
   _dodgeDuration: 0.1
   _dodgeSpeed: 30
   _dodgeCoolTime: 5
   _specialCoolTime: 4
-  _onAttackSlowRate: 0.5
-  _onAttackSlowDuration: 0.25
+  _attackSlowRate: 0.5
+  _attackSlowDuration: 0.25
 --- !u!114 &4771176724914495893
 MonoBehaviour:
   m_ObjectHideFlags: 0

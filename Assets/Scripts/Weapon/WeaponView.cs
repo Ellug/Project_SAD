@@ -8,17 +8,19 @@ public class WeaponView : MonoBehaviour
     [SerializeField] private Transform _muzzlePos;
     [SerializeField] private GameObject _weaponSelectPanel;
     [SerializeField] private GameObject _perkSelectPanel;
+    [SerializeField] private PerkSelectPanelUI _perkPanelUI;
     [SerializeField] private WeaponBase[] _allWeaponData;
 
     private WeaponPresenter _presenter;
     private Button[] _perkSelectList;
     private Button[] _weaponButtonList;
-    private PerksTree perksTree;
+    private PerksTree _perksTree;
 
-    private void Start()
+    void Start()
     {
         Init();
-        WeaponModel model = new WeaponModel();
+
+        WeaponModel model = new();
         model.Init(_allWeaponData);
         _presenter = new WeaponPresenter(model, this);
         _presenter.Init();
@@ -47,6 +49,8 @@ public class WeaponView : MonoBehaviour
         _presenter.SelectWeapon(weaponId);
         _weaponButtonList[weaponId].interactable = false;
 
+        // GameManager에 프리팹 저장
+        GameManager.Instance.SetPlayerWeapon(_presenter.CurrentWeapon);
 
         // 로비에 있는 플레이어에게 무기 쥐어줌.
         if (_muzzlePos.childCount > 0)
@@ -56,19 +60,43 @@ public class WeaponView : MonoBehaviour
                 Destroy(_muzzlePos.GetChild(i).gameObject);
             }
         }
+
         GameObject weapon = Instantiate(_presenter.CurrentWeapon.gameObject, _muzzlePos);
-        _playerModel.SetWeapon(weapon.GetComponent<WeaponBase>());
+
+        var weaponInstance = weapon.GetComponent<WeaponBase>();
+        _playerModel.SetWeapon(weaponInstance);
+
+        // 무기의 PerksTree 변경을 GameManager에 저장
+        BindPerksTree(weaponInstance.PerksTree);
+
+        if (_perkPanelUI != null)
+            _perkPanelUI.ApplyPerksTree(weaponInstance.PerksTree);
     }
 
-    // 특.전.처.리를 조지려면 어떻게 해야할까요?
-    // 특전 다 모으기? 아니요~
-    public void OnClickPerk()
+    private void BindPerksTree(PerksTree tree)
     {
+        if (_perksTree != null)
+            _perksTree.OnChanged -= OnPreviewPerksChanged;
 
+        _perksTree = tree;
+
+        if (_perksTree == null) return;
+
+        _perksTree.OnChanged += OnPreviewPerksChanged;
+
+        // 선택 UI 표시 갱신
+        OnPreviewPerksChanged();
     }
 
-    // 각 무기를 클릭할 때마다
-    // 모든 버튼을 접근한다. -> 불필요한 연산이 있긴 함.
+    private void OnPreviewPerksChanged()
+    {
+        // 선택 상태를 GameManager에 저장
+        GameManager.Instance.SavePerksFrom(_perksTree);
+
+        // 여기서 버튼 텍스트/하이라이트 갱신해도 됨. 현재는 
+    }
+
+    // 각 무기를 클릭할 때마다 모든 버튼을 접근 -> 불필요한 연산이 있긴 함. 개선 여지?
     private void PanelInit()
     {
         foreach (Button item in _weaponButtonList)

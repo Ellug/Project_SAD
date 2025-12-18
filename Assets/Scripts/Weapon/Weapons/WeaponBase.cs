@@ -1,13 +1,50 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
 {
     [SerializeField] private WeaponData _weaponData;
-    
-    protected PerksNode[] _perksNode;
 
+    [Header("Perks")]
+    [SerializeField] private PerksTree _perksTree;
+
+    private WeaponRuntimeStats _baseStats;
+    private WeaponRuntimeStats _runtimeStats;
+    
     public WeaponData WeaponData => _weaponData;
+    public PerksTree PerksTree => _perksTree;
+    public WeaponRuntimeStats RuntimeStats => _runtimeStats;
+
+    void Awake()
+    {
+        CaptureBaseStats();
+        _runtimeStats = _baseStats;
+    }
+
+    private void CaptureBaseStats()
+    {
+        _baseStats = new WeaponRuntimeStats
+        {
+            Attack = _weaponData.attack,
+            AttackSpeed = _weaponData.attackSpeed,
+            ProjectileCount = _weaponData.projectileCount,
+            ProjectileRange = _weaponData.projectileRange,
+            ProjectileSpeed = _weaponData.projectileSpeed,
+
+            SpecialAttack = _weaponData.SpecialAttack,
+            SpecialAttackBeforeDelay = _weaponData.SpecialAttackBeforeDelay,
+            SpecialAttackAfterDelay = _weaponData.SpecialAttackAfterDelay,
+            SpecialProjectileCount = _weaponData.SpecialProjectileCount,
+            SpecialProjectileRange = _weaponData.SpecialProjectileRange,
+            SpecialProjectileSpeed = _weaponData.SpecialProjectileSpeed
+        };
+    }
+    public void RebuildRuntimeStats(IEnumerable<StatMod> mods)
+    {
+        _runtimeStats = _baseStats;
+        PerkCalculator.ApplyToWeapon(ref _runtimeStats, mods);
+    }
 
     public int GetWeaponId()
     {
@@ -16,7 +53,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     public void Attack(PlayerModel player)
     {
-        FireProjectile();
+        FireProjectile(false);
         player.StartAttackSlow();
     }
 
@@ -28,25 +65,25 @@ public abstract class WeaponBase : MonoBehaviour
     private IEnumerator CoSpecialAttack(PlayerModel player)
     {
         yield return StartCoroutine(CoBeforeSpecialAttack(player));
-        FireProjectile();
+        FireProjectile(true);
         yield return StartCoroutine(CoAfterSpecialAttack(player));
     }
     private IEnumerator CoBeforeSpecialAttack(PlayerModel player)
     {
         player.SetSpecialAttackState(true);
-        yield return new WaitForSeconds(_weaponData.SpecialAttackBeforeDelay);
+        yield return new WaitForSeconds(_runtimeStats.SpecialAttackBeforeDelay);
     }
 
     private IEnumerator CoAfterSpecialAttack(PlayerModel player)
     {
-        yield return new WaitForSeconds(_weaponData.SpecialAttackAfterDelay);
+        yield return new WaitForSeconds(_runtimeStats.SpecialAttackAfterDelay);
         player.SetSpecialAttackState(false);
     }
 
     //불릿 정보 줄거
-    private void FireProjectile()
+    private void FireProjectile(bool isSpecial)
     {
-        int count = Mathf.Max(1, _weaponData.projectileCount);
+        int count = Mathf.Max(1, _runtimeStats.ProjectileCount);
         float totalAngle = _weaponData.projectileAngle;
 
         Vector3 baseDir = transform.forward;
@@ -58,7 +95,7 @@ public abstract class WeaponBase : MonoBehaviour
         // 각도, 숫자로 산탄 계산
         if (count == 1 || totalAngle == 0f)
         {
-            SpawnBullet(spawnPos, baseDir);
+            SpawnBullet(spawnPos, baseDir, isSpecial);
             return;
         }
 
@@ -70,14 +107,14 @@ public abstract class WeaponBase : MonoBehaviour
             float angle = Mathf.Lerp(-halfAngle, halfAngle, t);
 
             Vector3 dir = Quaternion.AngleAxis(angle, Vector3.up) * baseDir;
-            SpawnBullet(spawnPos, dir);
+            SpawnBullet(spawnPos, dir, isSpecial);
         }
     }
 
-    private void SpawnBullet(Vector3 pos, Vector3 dir)
+    private void SpawnBullet(Vector3 pos, Vector3 dir, bool isSpecial)
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
         PlayerBullet bullet = PoolManager.Instance.Spawn(_weaponData.projectilePrefab, pos, rot);
-        bullet.Init(_weaponData, transform);
+        bullet.Init(_weaponData, isSpecial);
     }
 }
