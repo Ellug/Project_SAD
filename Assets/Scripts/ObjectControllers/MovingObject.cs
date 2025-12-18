@@ -10,11 +10,20 @@ public class MovingObject : MonoBehaviour
     private float UpPosition;
     private float UnderPosition;
 
+    private void Start()
+    {
+        Vector3 initPos = transform.position;
+        initPos.y = -((transform.localScale.y / 2) + 0.1f);
+        transform.position = initPos;
+    }
+
+    // 장애물 오브젝트는 맵 아래에 항상 존재함. 그래서 패턴 수행 명령이 아닐 때도
+    // FixedUpdate는 계속 돌아갈 것임. -> 패턴 수행 됐을 때만 실행하면 안될까?
     private void FixedUpdate()
     {
         if (Moving)            
         {
-            transform.position = Vector3.MoveTowards(transform.position, TargetPosition, MoveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime);
 
             if (transform.position.y == UpPosition)
             {
@@ -34,16 +43,16 @@ public class MovingObject : MonoBehaviour
 
     public void ActivateObject()
     {
-        UpPosition = this.transform.localScale.y / 2;
+        UpPosition = transform.localScale.y / 2;
         Moving = true;
-        TargetPosition = new Vector3(this.transform.position.x, UpPosition, this.transform.position.z);
+        TargetPosition = new Vector3(transform.position.x, UpPosition, transform.position.z);
     }
 
     IEnumerator DeActivateObject()
     {
         yield return new WaitForSeconds(LifeTime);
-        UnderPosition = -((this.transform.transform.localScale.y / 2) + 0.1f);
+        UnderPosition = -((transform.localScale.y / 2) + 0.1f);
         Moving = true;
-        TargetPosition = new Vector3(this.transform.position.x, UnderPosition, this.transform.position.z);
+        TargetPosition = new Vector3(transform.position.x, UnderPosition, transform.position.z);
     }
 }
