@@ -14,40 +14,19 @@ public class PlayerLaser : MonoBehaviour
 
     void Update()
     {
-        //레이저 출발지점과 마우스 커서 포인트까지의 거리
-        float cursorDistance = Vector3.Distance(firePoint.position, CursorPoint);
-
-        // 커서가 사거리 안에 있으면 커서까지, 아니면 최대 사거리까지
-        float finalDistance = Mathf.Min(cursorDistance, maxLaserDistance);
-        Vector3 targetPoint = firePoint.position + (firePoint.forward * finalDistance);
-        bool isHittingSomething = false;
+        Vector3 targetPoint = firePoint.position + (firePoint.forward * maxLaserDistance);
         Vector3 hitNormal = Vector3.up;
+        bool isHittingObject = false;
 
         RaycastHit hit;
         if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance))
         {
-            if (hit.distance < finalDistance)
-            {
-                targetPoint = hit.point;
-                hitNormal = hit.normal;
-                isHittingSomething = true;
-            }
-            else if (cursorDistance <= hit.distance)
-            {
-                targetPoint = CursorPoint;
-                isHittingSomething = true; 
-            }
-        }
-        else
-        {
-            if (cursorDistance <= maxLaserDistance)
-            {
-                targetPoint = CursorPoint;
-                isHittingSomething = true;
-            }
+            targetPoint = hit.point;
+            hitNormal = hit.normal;
+            isHittingObject = true;
         }
 
-        UpdateLaserVisuals(targetPoint, hitNormal, isHittingSomething);
+        UpdateLaserVisuals(targetPoint, hitNormal, isHittingObject);
     }
 
     private void UpdateLaserVisuals(Vector3 endPoint, Vector3 normal, bool showEffect)
