@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private Plane _groundPlane;
     private Vector2 _moveInput;
     private Vector3 _dodgeDirection;
+    private Vector3 _aimAt;
 
     private PlayerInput _playerInput;
 
@@ -123,7 +124,6 @@ public class PlayerController : MonoBehaviour
         // 최종 velocity 계산
         Vector3 finalVelocity = newDir * newSpeed;
 
-
         _view.Move(finalVelocity);
         _view.RotateBody(newDir);
     }
@@ -160,12 +160,15 @@ public class PlayerController : MonoBehaviour
     {
         if (_model.IsOnSpecialAttack) return;
 
-        Vector3 aimDir = worldCursorPos - _view.transform.position;
-        aimDir.y = 0;
-        _view.RotateTurret(aimDir);
-        
+        _aimAt = worldCursorPos - _view.transform.position;
+        _aimAt.y = 0;
+        _view.RotateTurret(_aimAt);        
+    }
+
+    void LateUpdate()
+    {
         // 카메라 업데이트
-        UpdateCameraTarget(aimDir);
+        UpdateCameraTarget(_aimAt);        
     }
 
     // 씨네머신 카메라 페이크 타겟 추적
@@ -183,7 +186,7 @@ public class PlayerController : MonoBehaviour
         Vector3 targetPos = playerPos + dir * clampedDist;
         targetPos.y = _cameraTarget.position.y;
 
-        _cameraTarget.position = Vector3.Lerp(_cameraTarget.position, targetPos, Time.deltaTime * _cameraSmooth);
+        _cameraTarget.position = targetPos;
     }
 
     //Move할 속도에 SlowRate % 만큼 감속
