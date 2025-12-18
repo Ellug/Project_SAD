@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -11,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _cameraOffset = 6f;
     [SerializeField] private float _cameraSmooth = 2f;
     [SerializeField] private float _cameraDisMultiplier = 0.2f;
+
+    [Header("PlayerLaser Settings")]
+    [SerializeField] private PlayerLaser playerLaser;
 
     private Camera _cam;
     private Plane _groundPlane;
@@ -143,6 +147,12 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 hitPoint = ray.GetPoint(enter);
             AimAt(hitPoint);
+            if (playerLaser != null) 
+            {
+                playerLaser.CursorPoint = hitPoint;
+                if (_model.CurrentWeapon != null)
+                    playerLaser.maxLaserDistance = _model.CurrentWeapon.RuntimeStats.ProjectileRange;
+            }
         }
     }
 

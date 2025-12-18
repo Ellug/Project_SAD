@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerLaser : MonoBehaviour
 {
@@ -11,36 +10,61 @@ public class PlayerLaser : MonoBehaviour
     [Tooltip("레이저 히트 지점")] public GameObject laserHitObject;
     [Tooltip("히트 포인트 이격거리")] public float hitParticleOffset = 0.05f;
 
+    [Tooltip("마우스 커서 포인트")] public Vector3 CursorPoint;
+
     void Update()
     {
+        //레이저 출발지점과 마우스 커서 포인트까지의 거리
+        float cursorDistance = Vector3.Distance(firePoint.position, CursorPoint);
+
+        // 커서가 사거리 안에 있으면 커서까지, 아니면 최대 사거리까지
+        float finalDistance = Mathf.Min(cursorDistance, maxLaserDistance);
+        Vector3 targetPoint = firePoint.position + (firePoint.forward * finalDistance);
+        bool isHittingSomething = false;
+        Vector3 hitNormal = Vector3.up;
+
         RaycastHit hit;
-        
         if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance))
         {
-            //라인 렌더러의 시작지점과 끝지점을 설정
-            lineRenderer.SetPosition(0, firePoint.position);
-            lineRenderer.SetPosition(1, hit.point);
-
-            laserHitObject.transform.position = hit.point + hit.normal * hitParticleOffset;
-
-            //회전각을 초기화 
-            laserHitObject.transform.rotation = Quaternion.LookRotation(hit.normal);
-
-            if (!laserHitObject.activeSelf)
+            if (hit.distance < finalDistance)
             {
-                laserHitObject.SetActive(true);
+                targetPoint = hit.point;
+                hitNormal = hit.normal;
+                isHittingSomething = true;
             }
-
+            else if (cursorDistance <= hit.distance)
+            {
+                targetPoint = CursorPoint;
+                isHittingSomething = true; 
+            }
         }
         else
         {
-            lineRenderer.SetPosition(0, firePoint.position);
-            lineRenderer.SetPosition(1, firePoint.position + firePoint.forward * maxLaserDistance);
-
-            if (laserHitObject != null && laserHitObject.activeSelf)
+            if (cursorDistance <= maxLaserDistance)
             {
-                laserHitObject.SetActive(false);
+                targetPoint = CursorPoint;
+                isHittingSomething = true;
             }
+        }
+
+        UpdateLaserVisuals(targetPoint, hitNormal, isHittingSomething);
+    }
+
+    private void UpdateLaserVisuals(Vector3 endPoint, Vector3 normal, bool showEffect)
+    {
+        lineRenderer.SetPosition(0, firePoint.position);
+        lineRenderer.SetPosition(1, endPoint);
+
+        if (showEffect)
+        {
+            if (!laserHitObject.activeSelf) laserHitObject.SetActive(true);
+
+            laserHitObject.transform.position = endPoint + (normal * hitParticleOffset);
+            laserHitObject.transform.rotation = Quaternion.LookRotation(normal);
+        }
+        else
+        {
+            if (laserHitObject.activeSelf) laserHitObject.SetActive(false);
         }
     }
 }
