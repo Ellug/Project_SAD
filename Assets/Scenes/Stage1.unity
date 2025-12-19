@@ -327,7 +327,7 @@ MonoBehaviour:
   m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
-    TrackingTarget: {fileID: 449722654}
+    TrackingTarget: {fileID: 0}
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
@@ -1636,37 +1636,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 80, y: 0, z: 0}
---- !u!1 &449722653
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 449722654}
-  m_Layer: 0
-  m_Name: CameraTarget
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &449722654
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 449722653}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &481891193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2839,7 +2808,7 @@ PrefabInstance:
     - target: {fileID: -4914675555776539914, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: _cameraTarget
       value: 
-      objectReference: {fileID: 449722654}
+      objectReference: {fileID: 0}
     - target: {fileID: 1843839388801252768, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2895,39 +2864,19 @@ PrefabInstance:
     - target: {fileID: 6704405688854526168, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: _cameraTarget
       value: 
-      objectReference: {fileID: 449722654}
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6961779584357220181, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7904699208717546543, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2183015616371237757, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 996569839}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
 --- !u!1 &996569837 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1843839388801252768, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
   m_PrefabInstance: {fileID: 996569836}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &996569838 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2183015616371237757, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
-  m_PrefabInstance: {fileID: 996569836}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &996569839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 996569838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36bd17174361dba4aa112fe7e2e5aaa2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponController
 --- !u!114 &996569840 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4219096291929258750, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
@@ -6018,7 +5967,6 @@ SceneRoots:
   - {fileID: 1729118629}
   - {fileID: 223490259}
   - {fileID: 602345126}
-  - {fileID: 449722654}
   - {fileID: 996569836}
   - {fileID: 330164393}
   - {fileID: 2145932386}

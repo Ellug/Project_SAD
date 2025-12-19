@@ -54,15 +54,16 @@ public class PlayerController : MonoBehaviour
         if (!_model.CanAttack) return;
 
         _model.StartAttack();
-        _model.CurrentWeapon?.Attack(_model);
+        _model.CurrentWeapon?.Attack();
     }
 
     public void OnSpecialAttack(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
         if (!_model.CanSpecialAttack) return;
+
         _model.StartSpecialAttack();
-        _model.CurrentWeapon?.SpecialAttack(_model);
+        _model.CurrentWeapon?.SpecialAttack();
     }
 
     public void OnDodge(InputAction.CallbackContext ctx)
@@ -118,7 +119,6 @@ public class PlayerController : MonoBehaviour
         _view.Move(finalVelocity);
         _view.RotateBody(newDir);
     }
-
 
     // Dodge
     private void HandleDodgeState()

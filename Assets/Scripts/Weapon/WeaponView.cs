@@ -49,7 +49,7 @@ public class WeaponView : MonoBehaviour
         _presenter.SelectWeapon(weaponId);
         _weaponButtonList[weaponId].interactable = false;
 
-        // GameManager에 프리팹 저장
+        // EquipManager에 프리팹 저장
         EquipManager.Instance.SetPlayerWeapon(_presenter.CurrentWeapon);
 
         // 로비에 있는 플레이어에게 무기 쥐어줌.

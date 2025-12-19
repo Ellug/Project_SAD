@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
 {
-    // 기본값들
-    [Header("Status")]
+    // Base Status
+    [Header("HP")]
     [SerializeField] private float _maxHp = 50f;
 
     [Header("Movement")]
@@ -24,67 +24,73 @@ public class PlayerModel : MonoBehaviour
     [SerializeField] private float _attackSlowRate = 0.5f;
     [SerializeField] private float _attackSlowDuration = 0.25f;
 
-    // 실제 인게임 적용 값
-    private PlayerRuntimeStats _baseStats;
-    private PlayerRuntimeStats _runtimeStats;
+    // Final Stats Context
+    [SerializeField] private PlayerStatsContext _statsContext;
 
     // Internal
     private float _curHp;
+
     private bool _isDodging = false;
-    private float _curDodgeTime = 0f;
     private bool _isInvincible = false;
-    private bool _isOnAttack = false;
-    private bool _isOnSpecialAttack = false;
+    private float _curDodgeTime = 0f;
     private float _curDodgeCoolTime = 0f;
 
+    private bool _isOnAttack = false;
+    private bool _isOnSpecialAttack = false;
+
     private float _curAttackSlowTime = 0f;
-    private float _attackSpeed = 0f; 
-    private float _attackCoolTime = 0f;
     private float _curAttackCoolTime = 0f;
-    
+
     private float _curSpecialCoolTime = 0f;
 
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
+    public PlayerFinalStats FinalStats => _statsContext.Current;
 
-    public float MaxHp => _runtimeStats.MaxHp;
+    public float MaxHp => FinalStats.Player.MaxHp;
     public float CurHp => _curHp;
-    public float MaxSpeed => _runtimeStats.MaxSpeed;
-    public float AccelForce => _runtimeStats.AccelForce;
-    public float RotSpeed => _runtimeStats.RotSpeed;
-    
-    public float AttackSlowRate => _runtimeStats.AttackSlowRate;
-    public float AttackSlowDuration => _runtimeStats.AttackSlowDuration;
+    public float MaxSpeed => FinalStats.Player.MaxSpeed;
+    public float AccelForce => FinalStats.Player.AccelForce;
+    public float RotSpeed => FinalStats.Player.RotSpeed;
+
+    public float AttackSlowRate => FinalStats.Player.AttackSlowRate;
+    public float AttackSlowDuration => FinalStats.Player.AttackSlowDuration;
     public bool IsOnAttack => _isOnAttack;
 
-    public float DodgeSpeed => _runtimeStats.DodgeSpeed;
-    public float DodgeDuration => _runtimeStats.DodgeDuration;
-    public float DodgeCoolTime => _runtimeStats.DodgeCoolTime;
+    public float DodgeSpeed => FinalStats.Player.DodgeSpeed;
+    public float DodgeDuration => FinalStats.Player.DodgeDuration;
+    public float DodgeCoolTime => FinalStats.Player.DodgeCoolTime;
     public bool IsDodging => _isDodging;
 
     public float DodgeCooldownCur => _curDodgeCoolTime;
     public float DodgeCooldownRatio => 1f - (_curDodgeCoolTime / DodgeCoolTime);
 
-    public float SpecialCoolTime => _runtimeStats.SpecialCoolTime;
+    public float SpecialCoolTime => FinalStats.Player.SpecialCoolTime;
     public float SpecialCooldownCur => _curSpecialCoolTime;
     public float SpecialCooldownRatio => 1f - (_curSpecialCoolTime / SpecialCoolTime);
-    public bool CanDodge => !_isDodging && _curDodgeCoolTime <= 0f;
     public bool IsOnSpecialAttack => _isOnSpecialAttack;
-    public bool CanSpecialAttack => _curSpecialCoolTime <= 0f;
-    public bool CanAttack => _curAttackCoolTime <= 0f;
 
-    
+    public bool CanSpecialAttack => _curSpecialCoolTime <= 0f;
+    public bool CanDodge => !_isDodging && _curDodgeCoolTime <= 0f;
+    public bool CanAttack => _curAttackCoolTime <= 0f;
 
     // 기본 스탯 적용
     void Awake()
     {
-        CaptureBaseStats();
-        _runtimeStats = _baseStats;
+        // 스탯 컨텍스트 없으면 불러오고 추가
+        if (_statsContext == null)
+            _statsContext = GetComponent<PlayerStatsContext>();
+
+        if (_statsContext == null)
+            _statsContext = gameObject.AddComponent<PlayerStatsContext>();
+
+        _statsContext.Bind(this);
     }
 
-    private void CaptureBaseStats()
+    // Base 스탯 스냅샷 생성 (Final 계산용)
+    public PlayerRuntimeStats CaptureBaseStatsSnapshot()
     {
-        _baseStats = new PlayerRuntimeStats
+        return new PlayerRuntimeStats
         {
             MaxHp = _maxHp,
             MaxSpeed = _maxSpeed,
@@ -103,15 +109,9 @@ public class PlayerModel : MonoBehaviour
     }
 
     // 스탯 퍽 -> 런타임 스탯에 적용을 위한 리빌드 메서드
-    public void RebuildRuntimeStats(IEnumerable<StatMod> mods, bool resetHpToMax)
+    public void RebuildRuntimeStats(IEnumerable<StatMod> mods)
     {
-        _runtimeStats = _baseStats;
-        PerkCalculator.ApplyToPlayer(ref _runtimeStats, mods);
-
-        if (resetHpToMax)
-            _curHp = _runtimeStats.MaxHp;
-        else
-            _curHp = Mathf.Min(_curHp, _runtimeStats.MaxHp);
+        _statsContext.SetPlayerMods(mods);
     }
 
     void Start()
@@ -164,7 +164,7 @@ public class PlayerModel : MonoBehaviour
     {
         _isDodging = false;
     }
-    
+
     public void StartAttackSlow()
     {
         _isOnAttack = true;
@@ -173,23 +173,23 @@ public class PlayerModel : MonoBehaviour
 
     public void UpdateAttackSlow(float deltaTime)
     {
-        if(!_isOnAttack) return;
+        if (!_isOnAttack) return;
 
         _curAttackSlowTime -= deltaTime;
 
-        if(_curAttackSlowTime <= 0f)
+        if (_curAttackSlowTime <= 0f)
         {
             _curAttackSlowTime = 0f;
             _isOnAttack = false;
         }
     }
-    
+
     public void StartSpecialAttack()
     {
-        if(!CanSpecialAttack) return;
-        _curSpecialCoolTime = _runtimeStats.SpecialCoolTime;
+        if (!CanSpecialAttack) return;
+        _curSpecialCoolTime = SpecialCoolTime;
     }
-    
+
     public void SetSpecialAttackState(bool value)
     {
         _isOnSpecialAttack = value;
@@ -197,8 +197,8 @@ public class PlayerModel : MonoBehaviour
 
     public void StartAttack()
     {
-        if(!CanAttack) return;
-        _curAttackCoolTime = _attackCoolTime;
+        if (!CanAttack) return;
+        _curAttackCoolTime = FinalStats.AttackCoolTime;
     }
 
     public void UpdateTimer(float deltaTime)
@@ -208,21 +208,19 @@ public class PlayerModel : MonoBehaviour
 
         if (_curSpecialCoolTime > 0f)
             _curSpecialCoolTime = Mathf.Max(0, _curSpecialCoolTime - deltaTime);
-        
-        if (_curAttackSlowTime > 0f)
-            _curAttackSlowTime = Mathf.Max(0f, _curAttackSlowTime - deltaTime);
 
-        if(_curAttackCoolTime > 0f)
+        if (_curAttackCoolTime > 0f)
             _curAttackCoolTime = Mathf.Max(0f, _curAttackCoolTime - deltaTime);
     }
 
     public void SetWeapon(WeaponBase weapon)
     {
         CurrentWeapon = weapon;
-        _attackSpeed = weapon.WeaponData.attackSpeed;
-        _attackCoolTime = 1f / _attackSpeed;
-        _curAttackCoolTime = 0f;
 
+        // Weapon 교체 -> Final 재계산
+        _statsContext.SetWeapon(weapon);
+
+        _curAttackCoolTime = 0f;
         _curSpecialCoolTime = 0f;
     }
 
@@ -232,7 +230,7 @@ public class PlayerModel : MonoBehaviour
 
         _curHp -= dmg;
 
-        if(_curHp <= 0)
+        if (_curHp <= 0)
             Die();
     }
 
