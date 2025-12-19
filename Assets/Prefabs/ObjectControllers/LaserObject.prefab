@@ -158,6 +158,11 @@ MonoBehaviour:
   lineRenderer: {fileID: 4555379342207246826}
   firePoint: {fileID: 7122505622828259620}
   maxLaserDistance: 100
+  sparkParticle: {fileID: 0}
+  laserHitObject: {fileID: 0}
+  hitParticleOffset: 0.05
+  BurnDecalPrefab: {fileID: 0}
+  _DecalTime: 5
 --- !u!1 &4171321156029612469
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,6 +321,11 @@ MonoBehaviour:
   lineRenderer: {fileID: 6724663026293785938}
   firePoint: {fileID: 4254561912140290163}
   maxLaserDistance: 100
+  sparkParticle: {fileID: 0}
+  laserHitObject: {fileID: 0}
+  hitParticleOffset: 0.05
+  BurnDecalPrefab: {fileID: 0}
+  _DecalTime: 5
 --- !u!1 &4433514574762181373
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +484,11 @@ MonoBehaviour:
   lineRenderer: {fileID: 8908904887952710696}
   firePoint: {fileID: 5041641394669642539}
   maxLaserDistance: 100
+  sparkParticle: {fileID: 0}
+  laserHitObject: {fileID: 0}
+  hitParticleOffset: 0.05
+  BurnDecalPrefab: {fileID: 0}
+  _DecalTime: 5
 --- !u!1 &4604135888913103695
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,8 +603,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.9338307, z: 1}
+  m_Center: {x: 0, y: -0.03308468, z: 0}
 --- !u!114 &5247634927009240498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,3 +778,8 @@ MonoBehaviour:
   lineRenderer: {fileID: 304993008802748954}
   firePoint: {fileID: 7484294069785855525}
   maxLaserDistance: 100
+  sparkParticle: {fileID: 0}
+  laserHitObject: {fileID: 0}
+  hitParticleOffset: 0.05
+  BurnDecalPrefab: {fileID: 0}
+  _DecalTime: 5

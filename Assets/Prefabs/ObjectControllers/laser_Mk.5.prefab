@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 70898436821163749}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6011247044035427606}
+  m_Father: {fileID: 1171309468745024562}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!198 &8279813016778627741
 ParticleSystem:
@@ -48,9 +48,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4869,6 +4869,7 @@ Transform:
   m_Children:
   - {fileID: 5043754657989837820}
   - {fileID: 4381728571599770671}
+  - {fileID: 4959103785694931322}
   m_Father: {fileID: 5583219777632683400}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!120 &5876454681743686915
@@ -4999,6 +5000,7 @@ MonoBehaviour:
   sparkParticle: {fileID: 5116547557269109683}
   laserHitObject: {fileID: 711001074505148593}
   hitParticleOffset: 0.1
+  BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
 --- !u!1 &94225460030019979
 GameObject:
   m_ObjectHideFlags: 0
@@ -14701,8 +14703,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4959103785694931322}
+  m_Children: []
   m_Father: {fileID: 3633098880944382268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &4792977094625391300
@@ -14959,8 +14960,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
-      minScalar: 2
+      scalar: 7
+      minScalar: 3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -29342,12 +29343,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4966005578598667248}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: -0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 387196643715713325}
+  m_Father: {fileID: 3994385847763844669}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!198 &7662071065663479648
 ParticleSystem:
@@ -29364,9 +29365,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -34182,8 +34183,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6871087256240868615}
+  m_Children: []
   m_Father: {fileID: 3994385847763844669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &6210451511856389419
@@ -34440,8 +34440,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
-      minScalar: 2
+      scalar: 7
+      minScalar: 3
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -39037,8 +39037,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1357707734334427018}
+  m_Children: []
   m_Father: {fileID: 1171309468745024562}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &1867689293403599432
@@ -53560,12 +53559,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7282204552927995074}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4381728571599770671}
+  m_Father: {fileID: 3633098880944382268}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!198 &5116547557269109683
 ParticleSystem:
@@ -53582,9 +53581,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -58403,6 +58402,7 @@ Transform:
   m_Children:
   - {fileID: 8289092754039767212}
   - {fileID: 6011247044035427606}
+  - {fileID: 1357707734334427018}
   m_Father: {fileID: 5583219777632683400}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &3320305386036181809
@@ -58533,6 +58533,7 @@ MonoBehaviour:
   sparkParticle: {fileID: 8279813016778627741}
   laserHitObject: {fileID: 6940806390660523444}
   hitParticleOffset: 0.1
+  BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
 --- !u!1 &7661745365747752022
 GameObject:
   m_ObjectHideFlags: 0
@@ -58547,7 +58548,7 @@ GameObject:
   - component: {fileID: 6432833940320000589}
   - component: {fileID: 2118250703913267883}
   m_Layer: 0
-  m_Name: laser_Mk.4
+  m_Name: laser_Mk.5
   m_TagString: LaserObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58562,7 +58563,7 @@ Transform:
   m_GameObject: {fileID: 7661745365747752022}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 68.71186, y: -2.5, z: 11.82314}
+  m_LocalPosition: {x: 0, y: -2.5, z: 0}
   m_LocalScale: {x: 1.5, y: 5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -58662,7 +58663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
   _moveSpeed: 5
-  _lifeTime: 15
+  _lifeTime: 30
   _rotationSpeed: 20
 --- !u!1 &7806237470904723116
 GameObject:
@@ -58697,6 +58698,7 @@ Transform:
   m_Children:
   - {fileID: 5037172160768076631}
   - {fileID: 1006645703722574967}
+  - {fileID: 4210281208651200078}
   m_Father: {fileID: 5583219777632683400}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!120 &640668416307946059
@@ -58827,6 +58829,7 @@ MonoBehaviour:
   sparkParticle: {fileID: 1104488358198850519}
   laserHitObject: {fileID: 9016676218997375718}
   hitParticleOffset: 0.1
+  BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
 --- !u!1 &7891909137991081298
 GameObject:
   m_ObjectHideFlags: 0
@@ -68643,12 +68646,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8622074100099157845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1006645703722574967}
+  m_Father: {fileID: 7979794041907609450}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!198 &1104488358198850519
 ParticleSystem:
@@ -68665,9 +68668,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -73486,6 +73489,7 @@ Transform:
   m_Children:
   - {fileID: 7773157523766705725}
   - {fileID: 387196643715713325}
+  - {fileID: 6871087256240868615}
   m_Father: {fileID: 5583219777632683400}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!120 &7674455385843123955
@@ -73616,6 +73620,7 @@ MonoBehaviour:
   sparkParticle: {fileID: 7662071065663479648}
   laserHitObject: {fileID: 5042523547348759684}
   hitParticleOffset: 0.1
+  BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
 --- !u!1 &9016676218997375718
 GameObject:
   m_ObjectHideFlags: 0
@@ -73646,8 +73651,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4210281208651200078}
+  m_Children: []
   m_Father: {fileID: 7979794041907609450}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &5838507050468157902
@@ -73904,8 +73908,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
-      minScalar: 2
+      scalar: 7
+      minScalar: 3
       maxCurve:
         serializedVersion: 2
         m_Curve:

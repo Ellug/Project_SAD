@@ -12,11 +12,18 @@ public class LaserObject : MonoBehaviour
     private float _underPosition;
     private Coroutine _actionCoroutine;
 
+    private void Start()
+    {
+        Vector3 initPos = transform.position;
+        initPos.y = -((transform.localScale.y / 2) + 0.1f);
+        transform.position = initPos;
+    }
+
     private void FixedUpdate()
     {
         if (_moving)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.fixedDeltaTime);
 
             if (transform.position.y == _upPosition) 
             {
@@ -43,18 +50,18 @@ public class LaserObject : MonoBehaviour
     public void ActivateObject()
     {
         transform.rotation = Quaternion.identity;
-        _upPosition = this.transform.localScale.y / 2;
+        _upPosition = transform.localScale.y / 2;
         _moving = true;
-        _targetPosition = new Vector3(this.transform.position.x, _upPosition, this.transform.position.z);
+        _targetPosition = new Vector3(transform.position.x, _upPosition, transform.position.z);
     }
 
     IEnumerator DeActivateObject()
     {
         yield return new WaitForSeconds(_lifeTime);
-        _underPosition = -((this.transform.transform.localScale.y / 2) + 0.1f);
+        _underPosition = -((transform.localScale.y / 2) + 0.1f);
         _moving = true;
         DeActivateLaser();
-        _targetPosition = new Vector3(this.transform.position.x, _underPosition, this.transform.position.z);
+        _targetPosition = new Vector3(transform.position.x, _underPosition, transform.position.z);
     }
 
     private void ActivateLaser() 
