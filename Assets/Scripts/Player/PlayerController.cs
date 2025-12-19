@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
             {
                 playerLaser.CursorPoint = hitPoint;
                 if (_model.CurrentWeapon != null)
-                    playerLaser.maxLaserDistance = _model.CurrentWeapon.RuntimeStats.ProjectileRange;
+                    playerLaser.maxLaserDistance = _model.FinalStats.Weapon.ProjectileRange;
             }
         }
     }

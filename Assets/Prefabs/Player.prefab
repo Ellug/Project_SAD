@@ -104,6 +104,7 @@ MonoBehaviour:
   _model: {fileID: 4219096291929258750}
   _view: {fileID: 4771176724914495893}
   _cameraController: {fileID: 5050391430065633288}
+  playerLaser: {fileID: 8131634058954944426}
 --- !u!114 &4219096291929258750
 MonoBehaviour:
   m_ObjectHideFlags: 0
