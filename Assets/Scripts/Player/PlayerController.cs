@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private Transform _cameraTarget;
     [SerializeField] private float _cameraOffset = 6f;
-    [SerializeField] private float _cameraSmooth = 2f;
     [SerializeField] private float _cameraDisMultiplier = 0.2f;
 
     private Camera _cam;
