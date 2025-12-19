@@ -5,11 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerModel _model;
     [SerializeField] private PlayerView _view;
-
-    [Header("Camera Settings")]
-    [SerializeField] private Transform _cameraTarget;
-    [SerializeField] private float _cameraOffset = 6f;
-    [SerializeField] private float _cameraDisMultiplier = 0.2f;
+    [SerializeField] private PlayerCameraController _cameraController;
 
     private Camera _cam;
     private Plane _groundPlane;
@@ -151,31 +147,9 @@ public class PlayerController : MonoBehaviour
 
         _aimAt = worldCursorPos - _view.transform.position;
         _aimAt.y = 0;
-        _view.RotateTurret(_aimAt);        
-    }
 
-    void LateUpdate()
-    {
-        // 카메라 업데이트
-        UpdateCameraTarget(_aimAt);        
-    }
-
-    // 씨네머신 카메라 페이크 타겟 추적
-    private void UpdateCameraTarget(Vector3 aimDir)
-    {
-        Vector3 playerPos = _view.transform.position;
-
-        // 마우스까지의 거리
-        float dist = aimDir.magnitude;
-        float maxDist = _cameraOffset;
-        float clampedDist = Mathf.Min(dist * _cameraDisMultiplier, maxDist);
-
-        Vector3 dir = aimDir.normalized;
-
-        Vector3 targetPos = playerPos + dir * clampedDist;
-        targetPos.y = _cameraTarget.position.y;
-
-        _cameraTarget.position = targetPos;
+        _view.RotateTurret(_aimAt);
+        _cameraController.SetAimDirection(_aimAt);
     }
 
     //Move할 속도에 SlowRate % 만큼 감속

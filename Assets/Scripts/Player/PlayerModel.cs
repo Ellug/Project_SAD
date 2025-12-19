@@ -121,7 +121,7 @@ public class PlayerModel : MonoBehaviour
 
     public void Init()
     {
-        _curHp = _maxHp;
+        _curHp = MaxHp;
         _curDodgeCoolTime = 0f;
         _curDodgeTime = 0f;
         _isDodging = false;

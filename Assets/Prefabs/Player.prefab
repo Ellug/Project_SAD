@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4219096291929258750}
   - component: {fileID: 4771176724914495893}
   - component: {fileID: 761231472134827995}
+  - component: {fileID: 5050391430065633288}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -101,10 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _model: {fileID: 4219096291929258750}
   _view: {fileID: 4771176724914495893}
-  _cameraTarget: {fileID: 0}
-  _cameraOffset: 6
-  _cameraSmooth: 2
-  _cameraDisMultiplier: 0.2
+  _cameraController: {fileID: 5050391430065633288}
 --- !u!114 &4219096291929258750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,6 +274,22 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &5050391430065633288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843839388801252768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62a0c44706961bc4082628f03436a56e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCameraController
+  _player: {fileID: 3011927959738838156}
+  _cameraTarget: {fileID: 5256614632757787807, guid: 059ab911763c1d644833e797f94d2d57, type: 3}
+  _cameraOffset: 6
+  _cameraDisMultiplier: 0.2
 --- !u!1 &1890266848873841446
 GameObject:
   m_ObjectHideFlags: 0
