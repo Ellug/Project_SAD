@@ -18,21 +18,21 @@ public class PerkSelectPanelUI : MonoBehaviour
 
     void OnEnable()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnWeaponEquipped += HandleWeaponEquipped;
+        if (EquipManager.Instance != null)
+            EquipManager.Instance.OnWeaponEquipped += HandleWeaponEquipped;
     }
 
     void Start()
     {
         // 로비 진입 직후 이미 장착된 경우 처리
-        if (GameManager.Instance != null && GameManager.Instance.CurrentWeaponInstance != null)
-            HandleWeaponEquipped(GameManager.Instance.CurrentWeaponInstance);
+        if (EquipManager.Instance != null && EquipManager.Instance.CurrentWeaponInstance != null)
+            HandleWeaponEquipped(EquipManager.Instance.CurrentWeaponInstance);
     }
 
     void OnDisable()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnWeaponEquipped -= HandleWeaponEquipped;
+        if (EquipManager.Instance != null)
+            EquipManager.Instance.OnWeaponEquipped -= HandleWeaponEquipped;
     }
 
     private void HandleWeaponEquipped(WeaponBase weapon)

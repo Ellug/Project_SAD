@@ -49,8 +49,8 @@ public class WeaponView : MonoBehaviour
         _presenter.SelectWeapon(weaponId);
         _weaponButtonList[weaponId].interactable = false;
 
-        // GameManager에 프리팹 저장
-        GameManager.Instance.SetPlayerWeapon(_presenter.CurrentWeapon);
+        // EquipManager에 프리팹 저장
+        EquipManager.Instance.SetPlayerWeapon(_presenter.CurrentWeapon);
 
         // 로비에 있는 플레이어에게 무기 쥐어줌.
         if (_muzzlePos.childCount > 0)
@@ -91,7 +91,7 @@ public class WeaponView : MonoBehaviour
     private void OnPreviewPerksChanged()
     {
         // 선택 상태를 GameManager에 저장
-        GameManager.Instance.SavePerksFrom(_perksTree);
+        EquipManager.Instance.SavePerksFrom(_perksTree);
 
         // 여기서 버튼 텍스트/하이라이트 갱신해도 됨. 현재는 
     }

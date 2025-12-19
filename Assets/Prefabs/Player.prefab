@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 3006473341846917796}
   - component: {fileID: 6704405688854526168}
   - component: {fileID: 4219096291929258750}
+  - component: {fileID: 5050391430065633288}
   - component: {fileID: 4771176724914495893}
+  - component: {fileID: -3007301638430071401}
   - component: {fileID: 761231472134827995}
   m_Layer: 0
   m_Name: Player
@@ -101,11 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   _model: {fileID: 4219096291929258750}
   _view: {fileID: 4771176724914495893}
-  _cameraTarget: {fileID: 0}
-  _cameraOffset: 6
-  _cameraSmooth: 2
-  _cameraDisMultiplier: 0.2
-  playerLaser: {fileID: 8131634058954944426}
+  _cameraController: {fileID: 5050391430065633288}
 --- !u!114 &4219096291929258750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +126,21 @@ MonoBehaviour:
   _specialCoolTime: 4
   _attackSlowRate: 0.5
   _attackSlowDuration: 0.25
+  _statsContext: {fileID: -3007301638430071401}
+--- !u!114 &5050391430065633288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843839388801252768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62a0c44706961bc4082628f03436a56e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCameraController
+  _cameraOffset: 6
+  _cameraDisMultiplier: 0.2
 --- !u!114 &4771176724914495893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +156,19 @@ MonoBehaviour:
   _rb: {fileID: 3271831149191392041}
   _body: {fileID: 1855873760538859726}
   _turret: {fileID: 4851893920704698357}
+--- !u!114 &-3007301638430071401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843839388801252768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f63c70c34e1b2c64da42a8c3ee2fcbb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsContext
+  _playerModel: {fileID: 4219096291929258750}
 --- !u!114 &761231472134827995
 MonoBehaviour:
   m_ObjectHideFlags: 0
