@@ -1,15 +1,15 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerModel _model;
     [SerializeField] private PlayerView _view;
+    [SerializeField] private PlayerCameraController _cameraController;
 
-    [Header("Camera Settings")]
-    [SerializeField] private Transform _cameraTarget;
-    [SerializeField] private float _cameraOffset = 6f;
-    [SerializeField] private float _cameraDisMultiplier = 0.2f;
+    [Header("PlayerLaser Settings")]
+    [SerializeField] private PlayerLaser playerLaser;
 
     private Camera _cam;
     private Plane _groundPlane;
@@ -58,15 +58,16 @@ public class PlayerController : MonoBehaviour
         if (!_model.CanAttack) return;
 
         _model.StartAttack();
-        _model.CurrentWeapon?.Attack(_model);
+        _model.CurrentWeapon?.Attack();
     }
 
     public void OnSpecialAttack(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
         if (!_model.CanSpecialAttack) return;
+
         _model.StartSpecialAttack();
-        _model.CurrentWeapon?.SpecialAttack(_model);
+        _model.CurrentWeapon?.SpecialAttack();
     }
 
     public void OnDodge(InputAction.CallbackContext ctx)
@@ -123,7 +124,6 @@ public class PlayerController : MonoBehaviour
         _view.RotateBody(newDir);
     }
 
-
     // Dodge
     private void HandleDodgeState()
     {
@@ -142,6 +142,12 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 hitPoint = ray.GetPoint(enter);
             AimAt(hitPoint);
+            if (playerLaser != null) 
+            {
+                playerLaser.CursorPoint = hitPoint;
+                if (_model.CurrentWeapon != null)
+                    playerLaser.maxLaserDistance = _model.FinalStats.Weapon.ProjectileRange;
+            }
         }
     }
 
@@ -151,31 +157,9 @@ public class PlayerController : MonoBehaviour
 
         _aimAt = worldCursorPos - _view.transform.position;
         _aimAt.y = 0;
-        _view.RotateTurret(_aimAt);        
-    }
 
-    void LateUpdate()
-    {
-        // 카메라 업데이트
-        UpdateCameraTarget(_aimAt);        
-    }
-
-    // 씨네머신 카메라 페이크 타겟 추적
-    private void UpdateCameraTarget(Vector3 aimDir)
-    {
-        Vector3 playerPos = _view.transform.position;
-
-        // 마우스까지의 거리
-        float dist = aimDir.magnitude;
-        float maxDist = _cameraOffset;
-        float clampedDist = Mathf.Min(dist * _cameraDisMultiplier, maxDist);
-
-        Vector3 dir = aimDir.normalized;
-
-        Vector3 targetPos = playerPos + dir * clampedDist;
-        targetPos.y = _cameraTarget.position.y;
-
-        _cameraTarget.position = targetPos;
+        _view.RotateTurret(_aimAt);
+        _cameraController.SetAimDirection(_aimAt);
     }
 
     //Move할 속도에 SlowRate % 만큼 감속

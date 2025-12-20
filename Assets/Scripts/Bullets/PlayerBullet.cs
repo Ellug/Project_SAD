@@ -4,14 +4,14 @@ public class PlayerBullet : BulletBase
 {
     private bool _counterAttack;
 
-    public void Init(WeaponData weaponData, bool counterAttack = false)
+    public void Init(WeaponRuntimeStats stats, bool counterAttack = false)
     {
         _counterAttack = counterAttack;
 
         base.Init(
-            dmg: weaponData.attack,
-            speed: weaponData.projectileSpeed,
-            maxDistance: weaponData.projectileRange
+            dmg: stats.Attack,
+            speed: stats.ProjectileSpeed,
+            maxDistance: stats.ProjectileRange
         );
     }
 
