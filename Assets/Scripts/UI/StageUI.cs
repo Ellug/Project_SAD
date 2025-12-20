@@ -12,7 +12,7 @@ public class StageUI : MonoBehaviour
 
     [Header("HP UI")]
     //[SerializeField] private Slider _playerHpSlider;
-    //[SerializeField] private Slider _bossHpSlider;
+    [SerializeField] private Slider _bossHpSlider;
     [SerializeField] private TMP_Text _playerHpText;
     [SerializeField] private TMP_Text _bossHpText;
     [SerializeField] private Transform _bossIndicator;
@@ -33,10 +33,12 @@ public class StageUI : MonoBehaviour
     [SerializeField] private TMP_Text _resultText;
     [SerializeField] private Image _resultColor;
     [SerializeField] private TMP_Text _remainedBossHp;
+    [SerializeField] private TMP_Text _elapsedTime;
 
     private Transform _bossPos;
     private Camera _mainCam;
     private const float OUT_OF_SCREEN_INDI_PADDING = 50f;
+    private int _secondTimer;
     private Coroutine _timerCoroutine;
 
     void OnEnable()
@@ -135,10 +137,10 @@ public class StageUI : MonoBehaviour
         }
         
 
-        //float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp;
+        float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp;
 
-        //if (_bossHpSlider != null)
-        //    _bossHpSlider.value = ratio;
+        if (_bossHpSlider != null)
+            _bossHpSlider.value = ratio;
     }
 
     // CoolTime Update
@@ -157,12 +159,14 @@ public class StageUI : MonoBehaviour
     private IEnumerator UpdateTimer()
     {
         WaitForSeconds secondDelay = new WaitForSeconds(1f);
-        int secondTimer = 0;
+        _secondTimer = 0;
+
+        yield return secondDelay;
 
         while (true) 
         {
-            _timerText.text = $"{secondTimer / 60:D2} : {secondTimer % 60:D2}";
-            secondTimer++;
+            _secondTimer++;
+            _timerText.text = $"{_secondTimer / 60:D2} : {_secondTimer % 60:D2}";
             yield return secondDelay;
         }
     }
@@ -204,6 +208,11 @@ public class StageUI : MonoBehaviour
         {
             float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp * 100f;
             _remainedBossHp.text = $"남은 보스의 체력: {ratio:F1}%";
+        }
+        // 소요 시간 표시
+        if (_elapsedTime != null)
+        {
+            _elapsedTime.text = $"소요 시간: {_secondTimer / 60:D2}분 {_secondTimer % 60:D2}초";
         }
     }
 
