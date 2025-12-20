@@ -1215,6 +1215,7 @@ MonoBehaviour:
   _specialCooldownSlider: {fileID: 481891194}
   _pausePanel: {fileID: 2068151558}
   _resultPanel: {fileID: 1613123661}
+  _timerText: {fileID: 1238156463}
   _resultText: {fileID: 969843143}
   _resultColor: {fileID: 726559013}
   _remainedBossHp: {fileID: 2003941197}
@@ -3303,7 +3304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &842103436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4889,7 +4890,7 @@ GameObject:
   - component: {fileID: 1238156464}
   - component: {fileID: 1238156463}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TimerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

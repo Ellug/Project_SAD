@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -25,6 +26,9 @@ public class StageUI : MonoBehaviour
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private GameObject _resultPanel;
 
+    [Header("Timer")]
+    [SerializeField] private TMP_Text _timerText;
+
     [Header("GameResult")]
     [SerializeField] private TMP_Text _resultText;
     [SerializeField] private Image _resultColor;
@@ -33,14 +37,17 @@ public class StageUI : MonoBehaviour
     private Transform _bossPos;
     private Camera _mainCam;
     private const float OUT_OF_SCREEN_INDI_PADDING = 50f;
+    private Coroutine _timerCoroutine;
 
     void OnEnable()
     {
         GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+        _timerCoroutine = StartCoroutine(UpdateTimer());
     }
 
     void OnDisable()
     {
+        StopCoroutine(_timerCoroutine);
         if (GameManager.Instance != null)
             GameManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
     }
@@ -145,6 +152,21 @@ public class StageUI : MonoBehaviour
         if (_specialCooldownSlider != null)
             _specialCooldownSlider.value = _playerModel.SpecialCooldownRatio;
     }
+
+    // Timer Update
+    private IEnumerator UpdateTimer()
+    {
+        WaitForSeconds secondDelay = new WaitForSeconds(1f);
+        int secondTimer = 0;
+
+        while (true) 
+        {
+            _timerText.text = $"{secondTimer / 60:D2} : {secondTimer % 60:D2}";
+            secondTimer++;
+            yield return secondDelay;
+        }
+    }
+
 
     // 게임 상태 변경 -> 이벤트 등록
     private void HandleGameStateChanged(GameState state)
