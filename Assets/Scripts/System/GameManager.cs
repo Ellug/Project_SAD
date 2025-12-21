@@ -68,6 +68,12 @@ public class GameManager : SingletonePattern<GameManager>
         SceneManager.LoadScene("Lobby");
     }
 
+    public void GoToTitle()
+    {
+        SetState(GameState.Playing);
+        SceneManager.LoadScene("Title");
+    }
+
     public void ReloadCurrentScene()
     {
         SetState(GameState.Playing);

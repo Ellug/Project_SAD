@@ -93,6 +93,13 @@ public class PlayerController : MonoBehaviour
         _interactionObject?.Invoke();
     }
 
+    public void OnPause(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+
+        GameManager.Instance.TogglePause();
+    }
+
     // Movement
     private void HandleMovement()
     {
