@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4771176724914495893}
   - component: {fileID: -3007301638430071401}
   - component: {fileID: 761231472134827995}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ MonoBehaviour:
   _model: {fileID: 4219096291929258750}
   _view: {fileID: 4771176724914495893}
   _cameraController: {fileID: 5050391430065633288}
-  playerLaser: {fileID: 8131634058954944426}
+  playerLaser: {fileID: 0}
 --- !u!114 &4219096291929258750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,13 +121,14 @@ MonoBehaviour:
   _maxSpeed: 10
   _accelForce: 20
   _rotSpeed: 10
-  _dodgeDuration: 0.1
+  _dodgeDuration: 0.3
   _dodgeSpeed: 30
-  _dodgeCoolTime: 5
+  _dodgeCoolTime: 0.1
   _specialCoolTime: 4
-  _attackSlowRate: 0.5
-  _attackSlowDuration: 0.25
+  _attackMinSpeed: 4
+  _attackSlowRate: 2
   _statsContext: {fileID: -3007301638430071401}
+  attackImpulse: 0
 --- !u!114 &5050391430065633288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,14 +728,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6504998508182383638, guid: e0de037ddb72adc4c832cc1be87106b3, type: 3}
   m_PrefabInstance: {fileID: 4069338682999639515}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8131634058954944426 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5233305839989236337, guid: e0de037ddb72adc4c832cc1be87106b3, type: 3}
-  m_PrefabInstance: {fileID: 4069338682999639515}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e11e7ddfb25f8e4081b5e61e6113f96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerLaser
