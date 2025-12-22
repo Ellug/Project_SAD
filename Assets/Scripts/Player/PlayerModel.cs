@@ -74,7 +74,7 @@ public class PlayerModel : MonoBehaviour
     public bool CanAttack => _curAttackCoolTime <= 0f;
     public float attackImpulse = 0f;
 
-   
+    // 디버프 관련 파이널 스탯츠 or 버프 디버프 매니져로 분리 필요해 보임
     public bool IsInDebuffSlow => _curDebuffSlowTime > 0f;
     public float DebuffSlowRate => _debuffSlowRate;
 
