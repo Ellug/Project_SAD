@@ -12,7 +12,7 @@ public class TitleUIController : MonoBehaviour
 
     public void OnClickGameStart()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("Lobby");
     }
 
     public void OnClickSetting()
