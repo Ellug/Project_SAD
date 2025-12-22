@@ -14,12 +14,12 @@ TagManager:
   - 
   - Water
   - UI
-  - test
+  - Wall
   - Player
   - InteractionObject
   - Ground
-  - 
-  - 
+  - CrossHair
+  - Enemy
   - 
   - 
   - 

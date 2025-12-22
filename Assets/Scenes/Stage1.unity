@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 109415097}
   - component: {fileID: 109415096}
   - component: {fileID: 109415095}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -716,7 +716,7 @@ GameObject:
   - component: {fileID: 223490256}
   - component: {fileID: 223490255}
   - component: {fileID: 223490260}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Boss
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -3901,7 +3901,7 @@ GameObject:
   - component: {fileID: 1062655990}
   - component: {fileID: 1062655989}
   - component: {fileID: 1062655988}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5475,7 +5475,7 @@ GameObject:
   - component: {fileID: 1513005174}
   - component: {fileID: 1513005173}
   - component: {fileID: 1513005172}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6322,7 +6322,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1729118629}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6629,7 +6629,7 @@ GameObject:
   - component: {fileID: 1783105880}
   - component: {fileID: 1783105879}
   - component: {fileID: 1783105878}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: T
   m_TagString: Untagged
   m_Icon: {fileID: 0}
