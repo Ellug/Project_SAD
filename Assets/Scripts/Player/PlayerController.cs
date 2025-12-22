@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _aimAt;
 
     private PlayerInput _playerInput;
+    private Vector3 _dodgeDir;
+    private float _dodgeRemainDist;
 
     public event Action _interactionObject;
 
@@ -75,12 +77,17 @@ public class PlayerController : MonoBehaviour
     {
         if (!ctx.performed) return;
         if (!_model.CanDodge) return;
-        if (_model.IsOnSpecialAttack) return;
 
-        _dodgeDirection = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
+        // 닷지시 특수공격 취소
+        if (_model.IsOnSpecialAttack && _model.CurrentWeapon != null)
+            _model.CurrentWeapon.CancelSpecialAttack();
 
-        if (_dodgeDirection.sqrMagnitude < 0.01f)
-            _dodgeDirection = _view.Body.transform.forward;
+        Vector3 inputDir = new(_moveInput.x, 0, _moveInput.y);
+        if (inputDir.sqrMagnitude < 0.01f)
+            inputDir = _view.Body.forward;
+
+        _dodgeDir = inputDir.normalized;
+        _dodgeRemainDist = _model.DodgeSpeed * _model.DodgeDuration;
 
         _model.StartDodge();
     }
@@ -145,8 +152,16 @@ public class PlayerController : MonoBehaviour
     {
         if (!_model.IsDodging) return;
 
-        // View에 Dodge 속도 적용
-        _view.Move(_dodgeDirection * _model.DodgeSpeed);
+        float moveDist = _model.DodgeSpeed * Time.fixedDeltaTime;
+        moveDist = Mathf.Min(moveDist, _dodgeRemainDist);
+
+        Vector3 move = _dodgeDir * moveDist;
+        _view.Rb.MovePosition(_view.Rb.position + move);
+
+        _dodgeRemainDist -= moveDist;
+
+        if (_dodgeRemainDist <= 0f)
+            _model.StopDodge();
     }
 
     // Cursor Aim
@@ -169,13 +184,13 @@ public class PlayerController : MonoBehaviour
 
     public void AimAt(Vector3 worldCursorPos)
     {
-        if (_model.IsOnSpecialAttack) return;
-
         _aimAt = worldCursorPos - _view.transform.position;
         _aimAt.y = 0;
 
-        _view.RotateTurret(_aimAt);
         _cameraController.SetAimDirection(_aimAt);
+
+        if (_model.IsOnSpecialAttack) return;
+        _view.RotateTurret(_aimAt);
     }
 
     public void OpenCloseUI(bool isOpen)

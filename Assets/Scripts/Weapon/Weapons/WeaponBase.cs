@@ -8,7 +8,9 @@ public abstract class WeaponBase : MonoBehaviour
     [Header("Perks")]
     [SerializeField] private PerksTree _perksTree;
 
-     private PlayerStatsContext _statsContext;
+    private PlayerStatsContext _statsContext;
+    private Coroutine _specialAttackRoutine;
+
     public WeaponData WeaponData => _weaponData;
     public PerksTree PerksTree => _perksTree;
 
@@ -34,7 +36,22 @@ public abstract class WeaponBase : MonoBehaviour
 
     public void SpecialAttack()
     {
-        StartCoroutine(CoSpecialAttack());
+        if (_specialAttackRoutine != null)
+            StopCoroutine(_specialAttackRoutine);
+
+        _specialAttackRoutine = StartCoroutine(CoSpecialAttack());
+    }
+
+    public void CancelSpecialAttack()
+    {
+        if (_specialAttackRoutine != null)
+        {
+            StopCoroutine(_specialAttackRoutine);
+            _specialAttackRoutine = null;
+        }
+
+        if (_statsContext != null)
+            _statsContext.NotifySpecialAttackState(false);
     }
 
     private IEnumerator CoSpecialAttack()
@@ -47,6 +64,8 @@ public abstract class WeaponBase : MonoBehaviour
         yield return StartCoroutine(CoBeforeSpecialAttack(stats));
         FireProjectile(true);
         yield return StartCoroutine(CoAfterSpecialAttack(stats));
+
+        _specialAttackRoutine = null;
     }
 
     private IEnumerator CoBeforeSpecialAttack(WeaponRuntimeStats stats)
