@@ -12,6 +12,13 @@ public class PlayerLaser : MonoBehaviour
 
     [Tooltip("마우스 커서 포인트")] public Vector3 CursorPoint;
 
+    private LayerMask _layerMask;
+
+    private void Awake()
+    {
+        _layerMask = 1 << LayerMask.NameToLayer("Wall");
+    }
+
     void Update()
     {
         Vector3 targetPoint = firePoint.position + (firePoint.forward * maxLaserDistance);
@@ -19,7 +26,7 @@ public class PlayerLaser : MonoBehaviour
         bool isHittingObject = false;
 
         RaycastHit hit;
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance))
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance, _layerMask))
         {
             targetPoint = hit.point;
             hitNormal = hit.normal;
