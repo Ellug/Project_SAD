@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class StageUI : MonoBehaviour
@@ -73,8 +72,8 @@ public class StageUI : MonoBehaviour
         UpdateCooldowns();
 
         // 퍼즈, 게임 종료 임시 인풋
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-            GameManager.Instance.TogglePause();
+        //if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        //    GameManager.Instance.TogglePause();
     }
 
     // HP Bar Update
