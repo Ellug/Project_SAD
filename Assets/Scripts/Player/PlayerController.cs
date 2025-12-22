@@ -133,8 +133,6 @@ public class PlayerController : MonoBehaviour
             _model.attackImpulse = 0f;
         }
 
-        Debug.Log(newSpeed);
-
         // 최종 velocity 계산
         Vector3 finalVelocity = newDir * newSpeed;
 
