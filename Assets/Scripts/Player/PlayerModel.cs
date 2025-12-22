@@ -21,8 +21,8 @@ public class PlayerModel : MonoBehaviour
     [SerializeField] private float _specialCoolTime = 3f;
 
     [Header("AttackSlow")]
-    [SerializeField] private float _attackSlowRate = 0.5f;
-    [SerializeField] private float _attackSlowDuration = 0.25f;
+    [SerializeField] private float _attackMinSpeed = 5f;
+    [SerializeField] private float _attackSlowRate = 5f;
 
     // Final Stats Context
     [SerializeField] private PlayerStatsContext _statsContext;
@@ -35,12 +35,9 @@ public class PlayerModel : MonoBehaviour
     private float _curDodgeTime = 0f;
     private float _curDodgeCoolTime = 0f;
 
-    private bool _isOnAttack = false;
     private bool _isOnSpecialAttack = false;
 
-    private float _curAttackSlowTime = 0f;
     private float _curAttackCoolTime = 0f;
-
     private float _curSpecialCoolTime = 0f;
 
     // Properties
@@ -53,9 +50,8 @@ public class PlayerModel : MonoBehaviour
     public float AccelForce => FinalStats.Player.AccelForce;
     public float RotSpeed => FinalStats.Player.RotSpeed;
 
+    public float AttackMinSpeed => FinalStats.Player.AttackMinSpeed;
     public float AttackSlowRate => FinalStats.Player.AttackSlowRate;
-    public float AttackSlowDuration => FinalStats.Player.AttackSlowDuration;
-    public bool IsOnAttack => _isOnAttack;
 
     public float DodgeSpeed => FinalStats.Player.DodgeSpeed;
     public float DodgeDuration => FinalStats.Player.DodgeDuration;
@@ -73,6 +69,7 @@ public class PlayerModel : MonoBehaviour
     public bool CanSpecialAttack => _curSpecialCoolTime <= 0f;
     public bool CanDodge => !_isDodging && _curDodgeCoolTime <= 0f;
     public bool CanAttack => _curAttackCoolTime <= 0f;
+    public float attackImpulse = 0f;
 
     // 기본 스탯 적용
     void Awake()
@@ -103,8 +100,8 @@ public class PlayerModel : MonoBehaviour
 
             SpecialCoolTime = _specialCoolTime,
 
+            AttackMinSpeed = _attackMinSpeed,
             AttackSlowRate = _attackSlowRate,
-            AttackSlowDuration = _attackSlowDuration
         };
     }
 
@@ -126,8 +123,6 @@ public class PlayerModel : MonoBehaviour
         _curDodgeTime = 0f;
         _isDodging = false;
         _isInvincible = false;
-        _curAttackSlowTime = 0f;
-        _isOnAttack = false;
         _isOnSpecialAttack = false;
         _curSpecialCoolTime = 0f;
         _curAttackCoolTime = 0f;
@@ -167,21 +162,7 @@ public class PlayerModel : MonoBehaviour
 
     public void StartAttackSlow()
     {
-        _isOnAttack = true;
-        _curAttackSlowTime = AttackSlowDuration;
-    }
-
-    public void UpdateAttackSlow(float deltaTime)
-    {
-        if (!_isOnAttack) return;
-
-        _curAttackSlowTime -= deltaTime;
-
-        if (_curAttackSlowTime <= 0f)
-        {
-            _curAttackSlowTime = 0f;
-            _isOnAttack = false;
-        }
+        attackImpulse = AttackSlowRate;
     }
 
     public void StartSpecialAttack()

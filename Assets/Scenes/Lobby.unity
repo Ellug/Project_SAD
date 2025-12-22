@@ -1064,6 +1064,10 @@ PrefabInstance:
       propertyPath: _accelForce
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 4219096291929258750, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+      propertyPath: _attackSlowRate
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6704405688854526168, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: _cameraOffset
       value: 6

@@ -302,7 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 0.1, y: 0.1, z: 0.1}
+    PositionDamping: {x: 0, y: 0, z: 0}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
@@ -903,15 +903,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StageUI
   _playerModel: {fileID: 996569840}
   _bossController: {fileID: 223490255}
-  _playerHpSlider: {fileID: 1892532661}
   _bossHpSlider: {fileID: 1903378239}
+  _playerHpText: {fileID: 0}
+  _bossHpText: {fileID: 0}
+  _bossIndicator: {fileID: 0}
+  _outOfScreenBoss: {fileID: 0}
   _dodgeCooldownSlider: {fileID: 716401763}
   _specialCooldownSlider: {fileID: 481891194}
   _pausePanel: {fileID: 2068151558}
   _resultPanel: {fileID: 1613123661}
+  _timerText: {fileID: 0}
   _resultText: {fileID: 969843143}
   _resultColor: {fileID: 726559013}
   _remainedBossHp: {fileID: 2003941197}
+  _elapsedTime: {fileID: 0}
 --- !u!1 &331599640
 GameObject:
   m_ObjectHideFlags: 0
