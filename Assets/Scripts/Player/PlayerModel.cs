@@ -167,7 +167,6 @@ public class PlayerModel : MonoBehaviour
 
     public void StartSpecialAttack()
     {
-        if (!CanSpecialAttack) return;
         _curSpecialCoolTime = SpecialCoolTime;
     }
 

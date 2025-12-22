@@ -121,9 +121,9 @@ MonoBehaviour:
   _maxSpeed: 10
   _accelForce: 20
   _rotSpeed: 10
-  _dodgeDuration: 0.1
+  _dodgeDuration: 0.3
   _dodgeSpeed: 30
-  _dodgeCoolTime: 5
+  _dodgeCoolTime: 0.1
   _specialCoolTime: 4
   _attackMinSpeed: 4
   _attackSlowRate: 2
