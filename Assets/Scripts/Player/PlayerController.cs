@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
     {
         _model.UpdateTimer(Time.deltaTime);
         _model.UpdateDodge(Time.deltaTime);
-        _model.UpdateAttackSlow(Time.deltaTime);
 
         HandleAim();
     }
@@ -127,10 +126,11 @@ public class PlayerController : MonoBehaviour
 
         float newSpeed = Mathf.MoveTowards(curSpeed, targetSpeed, _model.AccelForce * Time.fixedDeltaTime);
 
-        //공격이 확인되면 감속까지 추가 계산
-        if (_model.IsOnAttack)
+        //공격이 확인되면 즉시 감속 처리
+        if (_model.attackImpulse > 0f)
         {
-            newSpeed = ApplyAttackSlow(_model.AttackSlowRate, newSpeed);
+            newSpeed = Mathf.Max(newSpeed - _model.AttackSlowRate, _model.AttackMinSpeed);
+            _model.attackImpulse = 0f;
         }
 
         // 최종 velocity 계산
@@ -176,12 +176,6 @@ public class PlayerController : MonoBehaviour
 
         _view.RotateTurret(_aimAt);
         _cameraController.SetAimDirection(_aimAt);
-    }
-
-    //Move할 속도에 SlowRate % 만큼 감속
-    private float ApplyAttackSlow(float OnAttackSlowRate, float newSpeed)
-    {
-        return (1 - OnAttackSlowRate) * newSpeed;
     }
 
     public void OpenCloseUI(bool isOpen)

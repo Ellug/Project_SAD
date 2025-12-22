@@ -5530,6 +5530,11 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &178294159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1843839388801252768, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+  m_PrefabInstance: {fileID: 950801052}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &180171065
 GameObject:
   m_ObjectHideFlags: 0
@@ -13949,7 +13954,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4219096291929258750, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
   m_PrefabInstance: {fileID: 950801052}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 178294159}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17c1fe6f846fe29459f5260cd45736b2, type: 3}
@@ -15733,6 +15738,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 879529372}
   m_CullTransparentMesh: 1
+--- !u!1 &882537376
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882537378}
+  - component: {fileID: 882537377}
+  m_Layer: 0
+  m_Name: PrecisionStrikePattern
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &882537377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882537376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e754c91e62c43b498d4bcbe437c249c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PrecisionStrikePattern
+  _counterable: 0
+  _startupDelay: 0
+  _cycleTime: 0
+  _predictiveAim: {fileID: 1680629466}
+  _WarnningArea: {fileID: 9187577247112015702, guid: a7707071d8bb7e045b17d5423e23b415, type: 3}
+  _ExplosionParticle: {fileID: 812378661102294709, guid: 187071337b106b349849ead5649d38df, type: 3}
+  _ChaseOffset: 0
+  _WarnningTime: 3
+  _ExpolsionTime: 0
+  _ExplosionRange: 5
+  _ChaseSpeed: 10
+  _WarnningDTime: 0.5
+  Player: {fileID: 178294159}
+--- !u!4 &882537378
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882537376}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.75555, y: 0, z: -3.49918}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &884437328
 GameObject:
   m_ObjectHideFlags: 0
@@ -15984,7 +16046,7 @@ PrefabInstance:
     - target: {fileID: 6704405688854526168, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: playerLaser
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 950801053}
     - target: {fileID: 6704405688854526168, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: _cameraOffset
       value: 6
@@ -16011,6 +16073,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2095994446}
   m_SourcePrefab: {fileID: 100100000, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+--- !u!114 &950801053 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8131634058954944426, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+  m_PrefabInstance: {fileID: 950801052}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e11e7ddfb25f8e4081b5e61e6113f96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerLaser
 --- !u!1 &964535812
 GameObject:
   m_ObjectHideFlags: 0
@@ -19754,7 +19827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PredictiveAim
   _CheckSecond: 0.5
-  _StayCheck: 0.3
+  _StayCheck: 0.7
   _MinRange: 2
   _PredictiveAimOn: 1
   targetLayer:
@@ -19769,7 +19842,7 @@ Transform:
   m_GameObject: {fileID: 1680629465}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.25952, y: 0, z: 1.74208}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26940,9 +27013,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1978452459}
-        m_TargetAssemblyTypeName: ObjectSpawnPattern, Assembly-CSharp
-        m_MethodName: ActivateObjects
+      - m_Target: {fileID: 882537377}
+        m_TargetAssemblyTypeName: PrecisionStrikePattern, Assembly-CSharp
+        m_MethodName: WarnningEffect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -32759,3 +32832,4 @@ SceneRoots:
   - {fileID: 845142744}
   - {fileID: 950801052}
   - {fileID: 1680629467}
+  - {fileID: 882537378}
