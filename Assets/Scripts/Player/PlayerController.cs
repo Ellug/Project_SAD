@@ -1,4 +1,4 @@
-﻿using Unity.VisualScripting;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 _aimAt;
 
     private PlayerInput _playerInput;
+
+    public event Action _interactionObject;
 
     private void Awake()
     {
@@ -82,6 +84,20 @@ public class PlayerController : MonoBehaviour
             _dodgeDirection = _view.Body.transform.forward;
 
         _model.StartDodge();
+    }
+
+    public void OnInteraction(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+
+        _interactionObject?.Invoke();
+    }
+
+    public void OnPause(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+
+        GameManager.Instance.TogglePause();
     }
 
     // Movement

@@ -1,6 +1,6 @@
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class StageUI : MonoBehaviour
@@ -10,8 +10,12 @@ public class StageUI : MonoBehaviour
     [SerializeField] private BossController _bossController;
 
     [Header("HP UI")]
-    [SerializeField] private Slider _playerHpSlider;
+    //[SerializeField] private Slider _playerHpSlider;
     [SerializeField] private Slider _bossHpSlider;
+    [SerializeField] private TMP_Text _playerHpText;
+    [SerializeField] private TMP_Text _bossHpText;
+    [SerializeField] private Transform _bossIndicator;
+    [SerializeField] private Transform _outOfScreenBoss;
 
     [Header("Cooldown UI")]
     [SerializeField] private Slider _dodgeCooldownSlider;
@@ -21,18 +25,30 @@ public class StageUI : MonoBehaviour
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private GameObject _resultPanel;
 
+    [Header("Timer")]
+    [SerializeField] private TMP_Text _timerText;
+
     [Header("GameResult")]
     [SerializeField] private TMP_Text _resultText;
     [SerializeField] private Image _resultColor;
     [SerializeField] private TMP_Text _remainedBossHp;
+    [SerializeField] private TMP_Text _elapsedTime;
+
+    private Transform _bossPos;
+    private Camera _mainCam;
+    private const float OUT_OF_SCREEN_INDI_PADDING = 50f;
+    private int _secondTimer;
+    private Coroutine _timerCoroutine;
 
     void OnEnable()
     {
         GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+        _timerCoroutine = StartCoroutine(UpdateTimer());
     }
 
     void OnDisable()
     {
+        StopCoroutine(_timerCoroutine);
         if (GameManager.Instance != null)
             GameManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
     }
@@ -44,6 +60,9 @@ public class StageUI : MonoBehaviour
 
         if (_resultPanel != null)
             _resultPanel.SetActive(false);
+
+        _bossPos = _bossController.GetComponent<Transform>();
+        _mainCam = Camera.main;
     }
 
     void Update()
@@ -53,8 +72,8 @@ public class StageUI : MonoBehaviour
         UpdateCooldowns();
 
         // 퍼즈, 게임 종료 임시 인풋
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-            GameManager.Instance.TogglePause();
+        //if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        //    GameManager.Instance.TogglePause();
     }
 
     // HP Bar Update
@@ -62,15 +81,60 @@ public class StageUI : MonoBehaviour
     {
         if (_playerModel == null) return;
 
-        float ratio = _playerModel.CurHp / _playerModel.MaxHp;
+        _playerHpText.text = $"{_playerModel.CurHp} / {_playerModel.MaxHp}";
+        //float ratio = _playerModel.CurHp / _playerModel.MaxHp;
 
-        if (_playerHpSlider != null)
-            _playerHpSlider.value = ratio;
+        //if (_playerHpSlider != null)
+        //    _playerHpSlider.value = ratio;
     }
 
     private void UpdateBossHP()
     {
         if (_bossController == null) return;
+
+        Vector3 curPos = _mainCam.WorldToScreenPoint(_bossController.transform.position);
+
+        // 위치가 모니터 내에 있다면
+        if (curPos.x > 0 && curPos.x < Screen.width && curPos.y > 0 && curPos.y < Screen.height)
+        {
+            if(_outOfScreenBoss.gameObject.activeSelf)
+            {
+                _bossIndicator.gameObject.SetActive(true);
+                _outOfScreenBoss.gameObject.SetActive(false);
+            }
+            _bossIndicator.transform.position = curPos;
+            _bossHpText.text = $"BOSS -- {_bossController.BossCurrentHp / _bossController.BossMaxHp * 100f}%";
+        }
+        // 위치가 모니터 밖에 있다면 (화살표로 변경)
+        else
+        {
+            if(_bossIndicator.gameObject.activeSelf)
+            {
+                _bossIndicator.gameObject.SetActive(false);
+                _outOfScreenBoss.gameObject.SetActive(true);
+            }
+            if (curPos.y <= 0)
+            {
+                _outOfScreenBoss.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+                _outOfScreenBoss.transform.position = new Vector3(Mathf.Clamp(curPos.x, 0f, Screen.width), OUT_OF_SCREEN_INDI_PADDING, 0f);
+            }
+            else if (curPos.y >= Screen.height)
+            {
+                _outOfScreenBoss.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
+                _outOfScreenBoss.transform.position = new Vector3(Mathf.Clamp(curPos.x, 0f, Screen.width), Screen.height - OUT_OF_SCREEN_INDI_PADDING, 0f);
+            }
+            else if (curPos.x <= 0)
+            {
+                _outOfScreenBoss.transform.rotation = Quaternion.Euler(0f, 0f, 270f);
+                _outOfScreenBoss.transform.position = new Vector3(OUT_OF_SCREEN_INDI_PADDING, Mathf.Clamp(curPos.y, 0f, Screen.height), 0f);
+            }
+            else if (curPos.x >= Screen.width)
+            {
+                _outOfScreenBoss.transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+                _outOfScreenBoss.transform.position = new Vector3(Screen.width - OUT_OF_SCREEN_INDI_PADDING, Mathf.Clamp(curPos.y, 0f, Screen.height), 0f);
+            }
+        }
+        
 
         float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp;
 
@@ -89,6 +153,23 @@ public class StageUI : MonoBehaviour
         if (_specialCooldownSlider != null)
             _specialCooldownSlider.value = _playerModel.SpecialCooldownRatio;
     }
+
+    // Timer Update
+    private IEnumerator UpdateTimer()
+    {
+        WaitForSeconds secondDelay = new WaitForSeconds(1f);
+        _secondTimer = 0;
+
+        yield return secondDelay;
+
+        while (true) 
+        {
+            _secondTimer++;
+            _timerText.text = $"{_secondTimer / 60:D2} : {_secondTimer % 60:D2}";
+            yield return secondDelay;
+        }
+    }
+
 
     // 게임 상태 변경 -> 이벤트 등록
     private void HandleGameStateChanged(GameState state)
@@ -126,6 +207,11 @@ public class StageUI : MonoBehaviour
         {
             float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp * 100f;
             _remainedBossHp.text = $"남은 보스의 체력: {ratio:F1}%";
+        }
+        // 소요 시간 표시
+        if (_elapsedTime != null)
+        {
+            _elapsedTime.text = $"소요 시간: {_secondTimer / 60:D2}분 {_secondTimer % 60:D2}초";
         }
     }
 
