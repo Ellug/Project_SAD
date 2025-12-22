@@ -40,6 +40,9 @@ public class PlayerModel : MonoBehaviour
     private float _curAttackCoolTime = 0f;
     private float _curSpecialCoolTime = 0f;
 
+    private float _curDebuffSlowTime = 0f;
+    private float _debuffSlowRate = 0f;
+
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
     public PlayerFinalStats FinalStats => _statsContext.Current;
@@ -70,6 +73,10 @@ public class PlayerModel : MonoBehaviour
     public bool CanDodge => !_isDodging && _curDodgeCoolTime <= 0f;
     public bool CanAttack => _curAttackCoolTime <= 0f;
     public float attackImpulse = 0f;
+
+   
+    public bool IsInDebuffSlow => _curDebuffSlowTime > 0f;
+    public float DebuffSlowRate => _debuffSlowRate;
 
     // 기본 스탯 적용
     void Awake()
@@ -180,6 +187,11 @@ public class PlayerModel : MonoBehaviour
         if (!CanAttack) return;
         _curAttackCoolTime = FinalStats.AttackCoolTime;
     }
+    public void SlowDebuff(float rate, float duration)
+    {
+        _debuffSlowRate = Mathf.Clamp01(rate); 
+        _curDebuffSlowTime = duration;         
+    }
 
     public void UpdateTimer(float deltaTime)
     {
@@ -191,6 +203,11 @@ public class PlayerModel : MonoBehaviour
 
         if (_curAttackCoolTime > 0f)
             _curAttackCoolTime = Mathf.Max(0f, _curAttackCoolTime - deltaTime);
+
+        if (_curDebuffSlowTime > 0f)
+        {
+            _curDebuffSlowTime = Mathf.Max(0f, _curDebuffSlowTime - deltaTime);
+        }
     }
 
     public void SetWeapon(WeaponBase weapon)
