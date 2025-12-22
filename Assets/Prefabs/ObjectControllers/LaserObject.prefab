@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 5414888227669834040}
   - component: {fileID: 932479875836591444}
   - component: {fileID: 5247634927009240498}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LaserObject
   m_TagString: LaserObject
   m_Icon: {fileID: 0}

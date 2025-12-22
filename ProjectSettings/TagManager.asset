@@ -14,13 +14,13 @@ TagManager:
   - 
   - Water
   - UI
-  - test
+  - Wall
   - Player
   - InteractionObject
   - Ground
   - 
-  - 
-  - 
+  - Enemy
+  - Bullet
   - 
   - 
   - 

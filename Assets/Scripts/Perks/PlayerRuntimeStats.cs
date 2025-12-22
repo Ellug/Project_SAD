@@ -11,6 +11,6 @@ public struct PlayerRuntimeStats
 
     public float SpecialCoolTime;
 
+    public float AttackMinSpeed;
     public float AttackSlowRate;
-    public float AttackSlowDuration;
 }

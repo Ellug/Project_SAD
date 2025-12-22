@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3797243289089728083}
   - component: {fileID: 871475426177684305}
   - component: {fileID: 8378940865896947848}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: SpecialBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,3 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15838215dc68b164eb99ec6c2db93924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerNormalBullet
+  _speed: 20
+  _maxDistance: 50
+  _dmg: 10
