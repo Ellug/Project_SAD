@@ -18,9 +18,9 @@ TagManager:
   - Player
   - InteractionObject
   - Ground
-  - CrossHair
-  - Enemy
   - 
+  - Enemy
+  - Bullet
   - 
   - 
   - 
