@@ -16,7 +16,8 @@ public class PlayerLaser : MonoBehaviour
 
     private void Awake()
     {
-        _layerMask = 1 << LayerMask.NameToLayer("Wall");
+        _layerMask += 1 << LayerMask.NameToLayer("Wall");
+        _layerMask += 1 << LayerMask.NameToLayer("Enemy");
     }
 
     void Update()
