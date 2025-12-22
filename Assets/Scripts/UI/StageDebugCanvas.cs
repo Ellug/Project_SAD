@@ -83,7 +83,6 @@ public class StatsDebugCanvas : MonoBehaviour
             sb.AppendLine($"CurHp: {Fmt(_player.CurHp)} / {Fmt(_player.MaxHp)}");
             sb.AppendLine($"DodgeCD: {Fmt(_player.DodgeCooldownCur)} (ratio {Fmt(_player.DodgeCooldownRatio)})");
             sb.AppendLine($"SpecialCD: {Fmt(_player.SpecialCooldownCur)} (ratio {Fmt(_player.SpecialCooldownRatio)})");
-            sb.AppendLine($"State: Dodging={_player.IsDodging}, OnAttack={_player.IsOnAttack}, OnSP={_player.IsOnSpecialAttack}");
             sb.AppendLine();
         }
 
@@ -102,7 +101,6 @@ public class StatsDebugCanvas : MonoBehaviour
         AppendFloatLine(sb, "SpecialCoolTime", pBase.SpecialCoolTime, pFinal.SpecialCoolTime);
 
         AppendFloatLine(sb, "AttackSlowRate", pBase.AttackSlowRate, pFinal.AttackSlowRate);
-        AppendFloatLine(sb, "AttackSlowDuration", pBase.AttackSlowDuration, pFinal.AttackSlowDuration);
 
         sb.AppendLine();
 
