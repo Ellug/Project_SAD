@@ -15,12 +15,19 @@ public class SetLaser : MonoBehaviour
     [Tooltip("그을음  프리팹 생성주기")] public float _DecalTime = 5f;
 
     private bool DelayCheck = true;
+    private LayerMask _layerMask;
+
+    private void Awake()
+    {
+        _layerMask += 1 << LayerMask.NameToLayer("Player");
+        _layerMask += 1 << LayerMask.NameToLayer("Wall");
+    }
 
     void Update()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance))
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance, _layerMask))
         {
             //라인 렌더러의 시작지점과 끝지점을 설정
             lineRenderer.SetPosition(0, firePoint.position);
