@@ -13,8 +13,8 @@ public class StageUI : MonoBehaviour
     //[SerializeField] private Slider _playerHpSlider;
     [SerializeField] private Slider _bossHpSlider;
     [SerializeField] private TMP_Text _playerHpText;
-    [SerializeField] private TMP_Text _bossHpText;
-    [SerializeField] private Transform _bossIndicator;
+    // [SerializeField] private TMP_Text _bossHpText;
+    // [SerializeField] private Transform _bossIndicator;
     [SerializeField] private Transform _outOfScreenBoss;
 
     [Header("Cooldown UI")]
@@ -99,20 +99,22 @@ public class StageUI : MonoBehaviour
         {
             if(_outOfScreenBoss.gameObject.activeSelf)
             {
-                _bossIndicator.gameObject.SetActive(true);
+                // _bossIndicator.gameObject.SetActive(true);
                 _outOfScreenBoss.gameObject.SetActive(false);
             }
-            _bossIndicator.transform.position = curPos;
-            _bossHpText.text = $"BOSS -- {_bossController.BossCurrentHp / _bossController.BossMaxHp * 100f}%";
+            // _bossIndicator.transform.position = curPos;
+            // _bossHpText.text = $"BOSS -- {_bossController.BossCurrentHp / _bossController.BossMaxHp * 100f}%";
         }
         // 위치가 모니터 밖에 있다면 (화살표로 변경)
         else
         {
-            if(_bossIndicator.gameObject.activeSelf)
-            {
-                _bossIndicator.gameObject.SetActive(false);
-                _outOfScreenBoss.gameObject.SetActive(true);
-            }
+            // if(_bossIndicator.gameObject.activeSelf)
+            // {
+            //     _bossIndicator.gameObject.SetActive(false);
+            //     _outOfScreenBoss.gameObject.SetActive(true);
+            // }
+            _outOfScreenBoss.gameObject.SetActive(true);
+            
             if (curPos.y <= 0)
             {
                 _outOfScreenBoss.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
