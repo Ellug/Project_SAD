@@ -10,7 +10,7 @@ public class PredictiveAim : MonoBehaviour
     [Tooltip("마지막 플레이어 위치 갱신 간격")]public float _CheckSecond = 0.5f;
     [Tooltip("플레이어 제자리 체크 간격")] public float _StayCheck = 0.3f;
     [Tooltip("플레이어 제자리 체크 거리")] public float _MinRange = 0.1f;
-    [Tooltip("플레이어 제자리 체크 거리")] public bool _PredictiveAimOn = true;
+    [Tooltip("플레이어 예고 장판 여부")] public bool _PredictiveAimOn = true;
     private float stayTimer = 0;
     private bool isHit = false;
     
