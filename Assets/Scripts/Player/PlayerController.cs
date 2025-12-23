@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!ctx.performed) return;
 
-        GameManager.Instance.TogglePause();
+        UIManager.Instance.TogglePause();
     }
 
     // Movement

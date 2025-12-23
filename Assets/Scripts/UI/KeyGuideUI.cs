@@ -4,6 +4,6 @@ public class KeyGuideUI : MonoBehaviour
 {
     public void OnClickExit()
     {
-        gameObject.SetActive(false);
+        UIManager.Instance.TogglePause();
     }
 }

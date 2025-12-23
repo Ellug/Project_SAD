@@ -7,7 +7,7 @@ public class UIPanelInteration : InteractionableObject
     public override void OnInteract()
     {
         _interactionKey.SetActive(false);
-        _uiPanel.SetActive(true);
+        UIManager.Instance.OpenUI(_uiPanel);
     }
 
     protected override void OnTriggerExit(Collider other)
