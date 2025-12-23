@@ -8,7 +8,10 @@ public class FireArea : MonoBehaviour, IPoolable
     [Tooltip("화염장판 판정 범위")][SerializeField] float _FireAreaRange;
     [Tooltip("화염장판 지속 시간")][SerializeField] float _FireAreaLifeTime;
     [Tooltip("화염장판 데미지")][SerializeField] float _Dmg;
-    [Tooltip("데미지 딜레이")][SerializeField] float DmgDelay;
+    [Tooltip("데미지 딜레이")][SerializeField] float _DmgDelay;
+    [Tooltip("화상 지속시간")][SerializeField] float _BurnDebuffTime;
+    [Tooltip("화상 데미지")][SerializeField] float _BurnDmg;
+    [Tooltip("화상 틱")][SerializeField] float _TickInterval;
     [Tooltip("타겟 레이어")][SerializeField] LayerMask Layer;
     private ParticleSystem _FireArea;
     private GameObject Player;
@@ -29,9 +32,9 @@ public class FireArea : MonoBehaviour, IPoolable
             if (CheckDelay) 
             {
                 player.TakeDamage(_Dmg);
+                player.BurnDebuff(_BurnDmg, _BurnDebuffTime, _TickInterval);
                 CheckDelay = false;
-                DelayCoroutine = StartCoroutine(DmgDelayTime());
-                //플레이어 화상 디버프 추가 필요
+                DelayCoroutine = StartCoroutine(DmgDelayTime());                
             }     
         }
     }
@@ -42,12 +45,13 @@ public class FireArea : MonoBehaviour, IPoolable
 
     private void DespawnFireArea() 
     {
-        StopCoroutine(DelayCoroutine);
+        if (DelayCoroutine != null)
+            StopCoroutine(DelayCoroutine);
         PoolManager.Instance.Despawn(gameObject);
     }
     IEnumerator DmgDelayTime()
     {
-        yield return new WaitForSeconds(DmgDelay);
+        yield return new WaitForSeconds(_DmgDelay);
         CheckDelay = true;
     }
 
