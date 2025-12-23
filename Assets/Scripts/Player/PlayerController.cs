@@ -148,6 +148,12 @@ public class PlayerController : MonoBehaviour
             _model.attackImpulse = 0f;
         }
 
+        //공격중이면서 이동입력X
+        if (_isAttackHold && dir.sqrMagnitude < 0.01f)
+        {
+            newSpeed = 0f;
+        }
+
         // 최종 velocity 계산
         Vector3 finalVelocity = newDir * newSpeed;
 
