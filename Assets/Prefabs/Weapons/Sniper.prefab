@@ -59,4 +59,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db34da1562d668408913ac0f25a019a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PerksTree
-  _stageDefs: []
+  _stageDefs:
+  - left:
+      mods:
+      - stat: 10
+        op: 1
+        value: 1.5
+      - stat: 11
+        op: 1
+        value: -0.2
+      buffs: []
+    right:
+      mods:
+      - stat: 10
+        op: 1
+        value: 0.5
+      - stat: 11
+        op: 1
+        value: 0.4
+      buffs: []
+  - left:
+      mods: []
+      buffs:
+      - trigger: 0
+        duration: 5
+        mods:
+        - stat: 10
+          op: 1
+          value: 2
+        - stat: 11
+          op: 1
+          value: 0.4
+    right:
+      mods: []
+      buffs:
+      - trigger: 1
+        duration: 4
+        mods:
+        - stat: 1
+          op: 1
+          value: 1
+  - left:
+      mods:
+      - stat: 10
+        op: 1
+        value: 3
+      buffs: []
+    right:
+      mods:
+      - stat: 11
+        op: 1
+        value: 0.25
+      buffs: []

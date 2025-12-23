@@ -12,5 +12,6 @@ public struct StatMod
 public class PerksNode
 {
     public StatMod[] mods;
-    public string Description => PerkText.Build(mods);
+    public TriggeredBuff[] buffs;
+    public string Description => $"{PerkText.Build(mods)}\n\n{PerkText.Build(buffs)}";
 }

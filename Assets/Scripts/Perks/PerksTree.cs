@@ -114,6 +114,23 @@ public class PerksTree : MonoBehaviour
         }
     }
 
+    // 선택된 노드의 버프들을 전부 반환
+    public IEnumerable<TriggeredBuff> GetActiveBuffs()
+    {
+        EnsureBuilt();
+
+        if (_nodes == null || _selected == null) yield break;
+
+        for (int s = 0; s < _selected.Length; s++)
+        {
+            var node = GetSelectedNode(s);
+            if (node?.buffs == null) continue;
+
+            for (int i = 0; i < node.buffs.Length; i++)
+                yield return node.buffs[i];
+        }
+    }
+
     // 현재 선택 상태를 외부 저장용 배열로 반환 -> GM
     public int[] ExportSelections()
     {
