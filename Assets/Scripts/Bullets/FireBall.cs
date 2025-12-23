@@ -1,49 +1,32 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class FireBall : MonoBehaviour, IPoolable
 {
     private PoolMember _poolMember;
     [Tooltip("폭발 파티클")][SerializeField] ParticleSystem _ExplosionParticle;
+    [Tooltip("화염장판 오브젝트")][SerializeField] FireArea _FireAreaPrefab;
     [Tooltip("그을음  프리팹")] public BurnDecal BurnDecalPrefab;
-    [Tooltip("파이어볼 판정 범위")][SerializeField] float _FireBallRange;
-    [Tooltip("파이어볼 지속 시간")][SerializeField] float _FireBallLifeTime;
-    [Tooltip("파이어볼 이동 속도")][SerializeField] float _FireBallSpeed = 15f;
-    [Tooltip("데미지")][SerializeField] float _Dmg;
-    [Tooltip("플레이어")][SerializeField] private GameObject Player;
+    [Tooltip("화염구 판정 범위")][SerializeField] float _FireCannonRange;
+    [Tooltip("화염구 이동 속도")][SerializeField] float _FireCannonSpeed = 15f;
     [Tooltip("충돌 레이어")][SerializeField] private LayerMask Layer;
     private ParticleSystem _Explosion;
+    private Transform FireTargetPoint;
 
-    void Awake()
+    private void Update()
     {
-        _poolMember = GetComponent<PoolMember>();
-        if (_FireBallLifeTime != 0)
+        if (FireTargetPoint == null) return;
+
+        transform.position = Vector3.MoveTowards(transform.position, FireTargetPoint.position, _FireCannonSpeed * Time.deltaTime);
+
+        bool TargetHit = Physics.CheckSphere(transform.position, _FireCannonRange, Layer);
+        if (TargetHit)
         {
-            Invoke("DespawnFireBall", _FireBallLifeTime);
-        }
-    }
-
-    void Update()
-    {
-        if (Player == null) return;
-
-        transform.Translate(Vector3.forward * (_FireBallSpeed * Time.deltaTime), Space.Self);
-
-        bool isHit = Physics.CheckSphere(transform.position, _FireBallRange, Player.layer);
-        if (isHit)
-        {
-            Player.TryGetComponent<PlayerModel>(out var player);
-            player.TakeDamage(_Dmg);
-            DespawnFireBall();
-        }
-
-        bool objectHit = Physics.CheckSphere(transform.position, _FireBallRange, Layer);
-        if (objectHit)
-        {
+            FireArea fireArea = PoolManager.Instance.Spawn(_FireAreaPrefab, FireTargetPoint.position, FireTargetPoint.rotation);
             BurnDecal dec = PoolManager.Instance.Spawn(BurnDecalPrefab, transform.position, transform.rotation);
             DespawnFireBall();
         }
     }
-
     private void DespawnFireBall()
     {
         _Explosion = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
@@ -51,6 +34,11 @@ public class FireBall : MonoBehaviour, IPoolable
         main.stopAction = ParticleSystemStopAction.Destroy;
         _Explosion.Play();
         PoolManager.Instance.Despawn(gameObject);
+    }
+
+    public void setTarget(Transform transform) 
+    {
+        FireTargetPoint = transform;
     }
     public void OnSpawned()
     {

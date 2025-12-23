@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5402806395246707928
+--- !u!1 &5855609506812090800
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4912814905393010811}
-  - component: {fileID: 984882148718182705}
+  - component: {fileID: 8849822664075782055}
+  - component: {fileID: 5915148834135745965}
   m_Layer: 0
   m_Name: FireBallPattern
   m_TagString: Untagged
@@ -17,31 +17,31 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4912814905393010811
+--- !u!4 &8849822664075782055
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5402806395246707928}
+  m_GameObject: {fileID: 5855609506812090800}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6.48184, y: -0, z: -0.80228}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &984882148718182705
+--- !u!114 &5915148834135745965
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5402806395246707928}
+  m_GameObject: {fileID: 5855609506812090800}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3253869d6d874fa419a6a3cfa2bd31e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 79ef85231e8acad488d9ee2503ceadf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireBallPattern
   _counterable: 0
@@ -53,6 +53,6 @@ MonoBehaviour:
   _WarnningTime: 0
   _ChaseSpeed: 0
   _WarnningDTime: 0
-  _FireBallPrefab: {fileID: 0}
+  _FireBallPrefab: {fileID: 3146484714131750423, guid: c85a7a8f39ebfa74b9364a7dbe16cff3, type: 3}
   _SpawnPoint: {fileID: 0}
   Player: {fileID: 0}

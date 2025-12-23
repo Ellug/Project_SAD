@@ -1,55 +1,50 @@
 ﻿using UnityEngine;
-using UnityEngine.UIElements;
 
-public class GuidedMissile : MonoBehaviour, IPoolable
+public class FireCannon : MonoBehaviour, IPoolable
 {
     private PoolMember _poolMember;
     [Tooltip("폭발 파티클")][SerializeField] ParticleSystem _ExplosionParticle;
-    [Tooltip("미사일 판정 범위")][SerializeField] float _MisssileRange;
-    [Tooltip("미사일 지속 시간")][SerializeField] float _MisssileLifeTime;
-    [Tooltip("미사일 이동 속도")][SerializeField] float _MisssileSpeed = 15f;
-    [Tooltip("미사일 회전 속도")][SerializeField] float _MisssileRotationSpeed = 3f;
+    [Tooltip("그을음  프리팹")] public BurnDecal BurnDecalPrefab;
+    [Tooltip("화염포 판정 범위")][SerializeField] float _FireCannonRange;
+    [Tooltip("화염포 지속 시간")][SerializeField] float _FireCannonLifeTime;
+    [Tooltip("화염포 이동 속도")][SerializeField] float _FireCannonSpeed = 15f;
     [Tooltip("데미지")][SerializeField] float _Dmg;
     [Tooltip("플레이어")][SerializeField] private GameObject Player;
     [Tooltip("충돌 레이어")][SerializeField] private LayerMask Layer;
     private ParticleSystem _Explosion;
 
-    void Awake() 
+    void Awake()
     {
         _poolMember = GetComponent<PoolMember>();
-        if (_MisssileLifeTime != 0) 
+        if (_FireCannonLifeTime != 0)
         {
-            Invoke("DespawnMissile", _MisssileLifeTime);
+            Invoke("DespawnFireBall", _FireCannonLifeTime);
         }
     }
 
-    void Update() 
+    void Update()
     {
         if (Player == null) return;
 
-        Vector3 direction = (Player.transform.position - transform.position).normalized;
+        transform.Translate(Vector3.forward * (_FireCannonSpeed * Time.deltaTime), Space.Self);
 
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * _MisssileRotationSpeed);
-
-        transform.Translate(Vector3.forward * _MisssileSpeed * Time.deltaTime);
-
-        bool isHit = Physics.CheckSphere(transform.position, _MisssileRange, Player.layer);
+        bool isHit = Physics.CheckSphere(transform.position, _FireCannonRange, Player.layer);
         if (isHit)
         {
             Player.TryGetComponent<PlayerModel>(out var player);
             player.TakeDamage(_Dmg);
-            DespawnMissile();
+            DespawnFireBall();
         }
 
-        bool objectHit = Physics.CheckSphere(transform.position, _MisssileRange, Layer);
+        bool objectHit = Physics.CheckSphere(transform.position, _FireCannonRange, Layer);
         if (objectHit)
         {
-            DespawnMissile();
+            BurnDecal dec = PoolManager.Instance.Spawn(BurnDecalPrefab, transform.position, transform.rotation);
+            DespawnFireBall();
         }
     }
 
-    private void DespawnMissile() 
+    private void DespawnFireBall()
     {
         _Explosion = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
         var main = _Explosion.main;
@@ -63,13 +58,13 @@ public class GuidedMissile : MonoBehaviour, IPoolable
         if (transform.position == null) return;
 
         // 실제 로직과 동일한 체크 수행 (디버그용)
-        bool isHit = Physics.CheckSphere(transform.position, _MisssileRange, Layer);
+        bool isHit = Physics.CheckSphere(transform.position, _FireCannonRange, Layer);
 
         // 감지되면 초록색, 아니면 빨간색
         Gizmos.color = isHit ? Color.green : Color.red;
 
         // 원 그리기
-        Gizmos.DrawWireSphere(transform.position, _MisssileRange);
+        Gizmos.DrawWireSphere(transform.position, _FireCannonRange);
     }
     public void OnSpawned()
     {

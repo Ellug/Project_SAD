@@ -18,6 +18,7 @@ public class PrecisionStrikePattern : PatternBase
     private ParticleSystem _Warnning;
     private ParticleSystem _Explosion;    
     private bool chase = false;
+    private Coroutine WarnningDelayCoroutine;
 
     void Update()
     {
@@ -36,12 +37,13 @@ public class PrecisionStrikePattern : PatternBase
         _Warnning = Instantiate(_WarnningArea);
         _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
         chase = true;
-        StartCoroutine(Chase());
+        WarnningDelayCoroutine = StartCoroutine(Chase());
         _Warnning.Play();
     }
 
     private void PrecisionStrike() 
     {
+        StopCoroutine(WarnningDelayCoroutine);
         chase = false;
         StartCoroutine(Explosion());
         Destroy(_Warnning.gameObject, _WarnningDTime);
