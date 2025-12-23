@@ -133,12 +133,6 @@ public class PlayerController : MonoBehaviour
         float curSpeed = currentVelocity.magnitude;
         float targetSpeed = dir.sqrMagnitude > 0.01f ? _model.MaxSpeed : 0f;
 
-        if (_model.IsInDebuffSlow)
-        {
-            targetSpeed *= (1f - _model.DebuffSlowRate);
-        }
-
-
         float newSpeed = Mathf.MoveTowards(curSpeed, targetSpeed, _model.AccelForce * Time.fixedDeltaTime);
 
         //공격이 확인되면 즉시 감속 처리

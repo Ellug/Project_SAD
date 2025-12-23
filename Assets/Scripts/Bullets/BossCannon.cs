@@ -1,16 +1,20 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public class BossCannon : BulletBase
 {
-    [Tooltip("폭발 파티클")] public ParticleSystem ExplosionParticle;
+    [Tooltip("폭발 파티클")] public ParticleSystem _ExplosionParticle;
+    private ParticleSystem Explosion;
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Obstacle"))
 
-            if (ExplosionParticle != null) 
+            if (_ExplosionParticle != null) 
             {
-                ExplosionParticle.transform.position = transform.position;
-                ExplosionParticle.Play();
+                Explosion = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
+                var main = Explosion.main;
+                main.stopAction = ParticleSystemStopAction.Destroy;
+                Explosion.Play();
             }               
 
             Despawn();
@@ -20,10 +24,12 @@ public class BossCannon : BulletBase
             if (other.TryGetComponent<PlayerModel>(out var player))
                 player.TakeDamage(_dmg);
 
-            if (ExplosionParticle != null)
+            if (_ExplosionParticle != null)
             {
-                ExplosionParticle.transform.position = transform.position;
-                ExplosionParticle.Play();
+                Explosion = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
+                var main = Explosion.main;
+                main.stopAction = ParticleSystemStopAction.Destroy;
+                Explosion.Play();
             }
 
             Despawn();
