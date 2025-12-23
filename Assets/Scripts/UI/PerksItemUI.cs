@@ -28,10 +28,10 @@ public class PerksItemUI : MonoBehaviour
         var rightNode = _tree.GetNode(stageIndex, PerksTree.SideRight);
 
         if (_leftButtonText != null)
-            _leftButtonText.text = leftNode == null ? "-" : PerkText.Build(leftNode.mods);
+            _leftButtonText.text = leftNode == null ? "-" : leftNode.Description;
 
         if (_rightButtonText != null)
-            _rightButtonText.text = rightNode == null ? "-" : PerkText.Build(rightNode.mods);
+            _rightButtonText.text = rightNode == null ? "-" : rightNode.Description;
 
         if (_leftButton != null)
         {

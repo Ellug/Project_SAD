@@ -25,11 +25,70 @@ public static class PerkText
 
             if (sb.Length > 0)
                 sb.AppendLine();
-            
+
             sb.Append(statName).Append(" ").Append(opText);
         }
 
         return sb.ToString();
+    }
+
+    // 버프 케이스 오버로드
+    public static string Build(TriggeredBuff[] buffs)
+    {
+        if (buffs == null || buffs.Length == 0)
+            return "버프 없음";
+
+        StringBuilder sb = new(192);
+
+        for (int i = 0; i < buffs.Length; i++)
+        {
+            var b = buffs[i];
+            if (b == null) continue;
+
+            if (sb.Length > 0)
+                sb.AppendLine();
+
+            sb.Append($"[{GetTriggerName(b.trigger)}] (지속 {FormatSeconds(b.duration)})");
+
+            if (b.mods == null || b.mods.Length == 0)
+            {
+                sb.AppendLine().Append("- 효과 없음");
+                continue;
+            }
+
+            for (int m = 0; m < b.mods.Length; m++)
+            {
+                var mod = b.mods[m];
+                string statName = GetStatName(mod.stat);
+                string opText = FormatOp(mod.stat, mod.op, mod.value);
+
+                sb.AppendLine();
+                sb.Append("- ").Append(statName).Append(" ").Append(opText);
+            }
+        }
+
+        if (sb.Length == 0)
+            return "버프 없음";
+
+        return sb.ToString();
+    }
+
+    private static string GetTriggerName(PerkTrigger trigger)
+    {
+        return trigger switch
+        {
+            PerkTrigger.OnSpecialUsed => "특수공격 사용 후",
+            PerkTrigger.OnDodgeUsed   => "회피기 사용 후",
+            _ => trigger.ToString()
+        };
+    }
+
+    private static string FormatSeconds(float sec)
+    {
+        if (sec <= 0f) return "0초";
+        if (Mathf.Abs(sec - Mathf.Round(sec)) < 0.0001f)
+            return $"{Mathf.RoundToInt(sec)}초";
+        return $"{sec:0.##}초";
     }
 
     private static string GetStatName(StatId id)
@@ -44,7 +103,7 @@ public static class PerkText
             StatId.Player_DodgeSpeed                => "회피 속도",
             StatId.Player_DodgeCoolTime             => "회피 쿨타임",
             StatId.Player_SpecialCoolTime           => "특수 공격 쿨타임",
-            StatId.Player_AttackSlowRate            => "공격 시 이동속도 감소 비율",
+            StatId.Player_AttackSlowRate            => "공격 시 이동속도 감소량",
             StatId.Player_AttackSlowDuration        => "공격 시 감속 시간",
 
             StatId.Weapon_Attack                    => "공격력",
@@ -98,7 +157,7 @@ public static class PerkText
 
         if (Mathf.Abs(v - Mathf.Round(v)) < 0.0001f)
             return Mathf.RoundToInt(v).ToString();
-            
+
         return v.ToString("0.##");
     }
 }

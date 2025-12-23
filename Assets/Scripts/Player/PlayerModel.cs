@@ -141,6 +141,9 @@ public class PlayerModel : MonoBehaviour
         _isInvincible = true;
         _curDodgeTime = DodgeDuration;
         _curDodgeCoolTime = DodgeCoolTime;
+
+        if (_statsContext != null)
+            _statsContext.Trigger(PerkTrigger.OnDodgeUsed);
     }
 
     public void UpdateDodge(float deltaTime)
@@ -175,6 +178,9 @@ public class PlayerModel : MonoBehaviour
     public void StartSpecialAttack()
     {
         _curSpecialCoolTime = SpecialCoolTime;
+
+        if (_statsContext != null)
+            _statsContext.Trigger(PerkTrigger.OnSpecialUsed);
     }
 
     public void SetSpecialAttackState(bool value)
@@ -205,9 +211,10 @@ public class PlayerModel : MonoBehaviour
             _curAttackCoolTime = Mathf.Max(0f, _curAttackCoolTime - deltaTime);
 
         if (_curDebuffSlowTime > 0f)
-        {
             _curDebuffSlowTime = Mathf.Max(0f, _curDebuffSlowTime - deltaTime);
-        }
+
+        if (_statsContext != null)
+            _statsContext.TickBuffs(deltaTime);
     }
 
     public void SetWeapon(WeaponBase weapon)

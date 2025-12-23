@@ -62,31 +62,52 @@ MonoBehaviour:
   _stageDefs:
   - left:
       mods:
-      - stat: 1
-        op: 0
-        value: 50
-    right:
-      mods:
-      - stat: 5
-        op: 0
-        value: 10
-  - left:
-      mods:
-      - stat: 0
-        op: 0
-        value: 5
+      - stat: 10
+        op: 1
+        value: 2
+      - stat: 11
+        op: 1
+        value: -0.5
+      buffs: []
     right:
       mods:
       - stat: 10
-        op: 0
-        value: 5
+        op: 1
+        value: 0.5
+      - stat: 11
+        op: 1
+        value: 1
+      buffs: []
+  - left:
+      mods: []
+      buffs:
+      - trigger: 0
+        duration: 4
+        mods:
+        - stat: 10
+          op: 1
+          value: 1
+        - stat: 11
+          op: 1
+          value: 1
+    right:
+      mods: []
+      buffs:
+      - trigger: 1
+        duration: 3
+        mods:
+        - stat: 1
+          op: 1
+          value: 1
   - left:
       mods:
-      - stat: 1
-        op: 0
-        value: 8
+      - stat: 10
+        op: 1
+        value: 2
+      buffs: []
     right:
       mods:
-      - stat: 0
-        op: 0
-        value: 7
+      - stat: 11
+        op: 1
+        value: 0.1
+      buffs: []

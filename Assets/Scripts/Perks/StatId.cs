@@ -29,3 +29,9 @@ public enum StatId
 }
 
 public enum ModOp { Add, Mul, Override }
+
+public enum PerkTrigger
+{
+    OnSpecialUsed,
+    OnDodgeUsed,
+}
