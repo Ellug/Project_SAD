@@ -20,8 +20,7 @@ public class UIManager : SingletonePattern<UIManager>
     private void Start()
     {
         SearchPlayer();
-        if (_inputSystem != null) 
-            _inputSystem.SwitchCurrentActionMap("Player");
+        
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -34,6 +33,7 @@ public class UIManager : SingletonePattern<UIManager>
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SearchPlayer();
+        Init();
     }
 
     // 플레이어가 esc 키를 눌렀을 때 실행되는 메서드.
@@ -53,7 +53,7 @@ public class UIManager : SingletonePattern<UIManager>
     {
         if (panel != null) 
         {
-            if (_uiStack.Count == 0)
+            if (_inputSystem != null && _uiStack.Count == 0)
             {
                 GameManager.Instance.TogglePause();
                 _inputSystem.SwitchCurrentActionMap("UI");
@@ -74,8 +74,11 @@ public class UIManager : SingletonePattern<UIManager>
             prev.SetActive(true);
         else
         {
-            GameManager.Instance.TogglePause();
-            _inputSystem.SwitchCurrentActionMap("Player");
+            if (_inputSystem != null)
+            {
+                GameManager.Instance.TogglePause();
+                _inputSystem.SwitchCurrentActionMap("Player");
+            }
         }
     }
 
@@ -84,6 +87,15 @@ public class UIManager : SingletonePattern<UIManager>
         if (_uiStack.Count > 0)
             return true;
         return false;
+    }
+
+    private void Init()
+    {
+        if (_uiStack.Count > 0)
+        {
+            _uiStack.Clear();
+            GameManager.Instance.ResumeGame();
+        }
     }
 
     private void SearchPlayer()
@@ -95,5 +107,8 @@ public class UIManager : SingletonePattern<UIManager>
             _inputSystem = player.GetComponent<PlayerInput>();
         else
             _inputSystem = null;
+
+        if (_inputSystem != null)
+            _inputSystem.SwitchCurrentActionMap("Player");
     }
 }

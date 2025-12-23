@@ -15,12 +15,12 @@ public class TitleUIController : MonoBehaviour
 
     public void OnClickSetting()
     {
-        _settingPanel.SetActive(true);
+        UIManager.Instance.OpenUI(_settingPanel);
     }
 
     public void OnClickKeyGuide()
     {
-        _keyGuidePanel.SetActive(true);
+        UIManager.Instance.OpenUI(_keyGuidePanel);
     }
 
     public void OnClickCredit()
