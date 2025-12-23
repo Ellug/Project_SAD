@@ -2,63 +2,54 @@
 
 public class LobbyUI : MonoBehaviour
 {
-    [SerializeField] private LobbyManager _lobbyManager;
-
     [SerializeField] private GameObject _loadOutUI;
     [SerializeField] private GameObject _stageSelectUI;
+    [SerializeField] private GameObject _settingsUI;
     [SerializeField] private GameObject _keyGuideUI;
     [SerializeField] private GameObject _pausePanel;
 
-
     private void Start()
     {
-        GameManager.Instance.OnGameStateChanged += HandleGameStateChanged;
+        UIManager.Instance.PauseUItrigger += OnOpenPausePanel;
     }
 
     private void OnDestroy()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnGameStateChanged -= HandleGameStateChanged;
+        if (UIManager.Instance != null)
+            UIManager.Instance.PauseUItrigger -= OnOpenPausePanel;
     }
 
     public void OnClickLoadOutUI()
     {
-        _lobbyManager.OpenUI(_loadOutUI);
+        UIManager.Instance.OpenUI(_loadOutUI);
     }
 
     public void OnClickStageSelectUI()
     {
-        _lobbyManager.OpenUI(_stageSelectUI);
+        UIManager.Instance.OpenUI(_stageSelectUI);
     }
 
     public void OnClickKeyGuideUI()
     {
-        _lobbyManager.OpenUI(_keyGuideUI);
-        _keyGuideUI.SetActive(true);
+        UIManager.Instance.OpenUI(_keyGuideUI);
     }
 
-    public void OnOpenKeyGuideUI()
+    public void OnClickSettingsUI()
     {
-        _keyGuideUI.SetActive(true);
-        _pausePanel.SetActive(false);
+        UIManager.Instance.OpenUI(_settingsUI);
     }
 
-    public void OnCloseKeyGuideUI()
+    public void OnCloseUI()
     {
-        _keyGuideUI.SetActive(false);
-        _pausePanel.SetActive(true);
+        UIManager.Instance.TogglePause();
     }
 
-    private void HandleGameStateChanged(GameState state)
+    private void OnOpenPausePanel()
     {
         if (_pausePanel != null)
-            _pausePanel.SetActive(state == GameState.Paused);
-    }
-
-    // UI Btn OnClick Events
-    public void Resume()
-    {
-        GameManager.Instance.ResumeGame();
+        {
+            UIManager.Instance.OpenUI(_pausePanel);
+        }
     }
 
     public void GoToTitle()
