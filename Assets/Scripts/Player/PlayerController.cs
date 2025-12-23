@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _playerInput;
     private Vector3 _dodgeDir;
     private float _dodgeRemainDist;
+    private bool _isAttackHold;
 
     public event Action _interactionObject;
 
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
         _model.UpdateDodge(Time.deltaTime);
 
         HandleAim();
+
+        Fire();
     }
 
     void FixedUpdate()
@@ -56,13 +59,12 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext ctx)
     {
-        if (!ctx.performed) return;
-        if (_model.IsOnSpecialAttack) return;
-        if (!_model.CanAttack) return;
-
-        _model.StartAttack();
-        _model.CurrentWeapon?.Attack();
+        if (ctx.started)
+            _isAttackHold = true;
+        else if (ctx.canceled)
+            _isAttackHold = false;
     }
+
 
     public void OnSpecialAttack(InputAction.CallbackContext ctx)
     {
@@ -179,7 +181,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 hitPoint = ray.GetPoint(enter);
             AimAt(hitPoint);
-            if (playerLaser != null) 
+            if (playerLaser != null)
             {
                 playerLaser.CursorPoint = hitPoint;
                 if (_model.CurrentWeapon != null)
@@ -199,9 +201,19 @@ public class PlayerController : MonoBehaviour
         _view.RotateTurret(_aimAt);
     }
 
+    private void Fire()
+    {
+        if (!_isAttackHold) return;
+        if (_model.IsOnSpecialAttack) return;
+        if (!_model.CanAttack) return;
+
+        _model.StartAttack();
+        _model.CurrentWeapon?.Attack();
+    }
+
     public void OpenCloseUI(bool isOpen)
     {
-        if (isOpen) 
+        if (isOpen)
             _playerInput.SwitchCurrentActionMap("UI");
         else
             _playerInput.SwitchCurrentActionMap("Player");
