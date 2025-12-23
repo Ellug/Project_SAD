@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TitleUIController : MonoBehaviour
 {
@@ -8,24 +7,19 @@ public class TitleUIController : MonoBehaviour
     [SerializeField] private GameObject _settingPanel;
     [SerializeField] private GameObject _keyGuidePanel;
     [SerializeField] private GameObject _creditPanel;
-    [SerializeField] private GameObject _settingMenuPanel;
 
     public void OnClickGameStart()
     {
-        SceneManager.LoadScene("Lobby");
+        GameManager.Instance.GoToLobby();
     }
 
     public void OnClickSetting()
     {
-        CloseAll();
         _settingPanel.SetActive(true);
-        _settingMenuPanel.SetActive(true);
     }
 
     public void OnClickKeyGuide()
     {
-        CloseAll();
-        _settingPanel.SetActive(true);
         _keyGuidePanel.SetActive(true);
     }
 
@@ -43,7 +37,7 @@ public class TitleUIController : MonoBehaviour
 
     public void OnClickExit()
     {
-        Application.Quit();
+        GameManager.Instance.GameExit();
     }
 
     private void CloseAll()
