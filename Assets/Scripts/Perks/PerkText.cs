@@ -35,9 +35,6 @@ public static class PerkText
     // 버프 케이스 오버로드
     public static string Build(TriggeredBuff[] buffs)
     {
-        if (buffs == null || buffs.Length == 0)
-            return "버프 없음";
-
         StringBuilder sb = new(192);
 
         for (int i = 0; i < buffs.Length; i++)
@@ -66,9 +63,6 @@ public static class PerkText
                 sb.Append("- ").Append(statName).Append(" ").Append(opText);
             }
         }
-
-        if (sb.Length == 0)
-            return "버프 없음";
 
         return sb.ToString();
     }
