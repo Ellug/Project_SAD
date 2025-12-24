@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shotgun
   _weaponData: {fileID: 11400000, guid: 2a559d7c706ae2f4ba02927ae1cd0a8f, type: 2}
   _perksTree: {fileID: 3088357781340253219}
+  _burnDps: 50
+  _burnDuration: 5
 --- !u!114 &3088357781340253219
 MonoBehaviour:
   m_ObjectHideFlags: 0
