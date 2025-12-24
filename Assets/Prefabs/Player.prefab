@@ -123,7 +123,7 @@ MonoBehaviour:
   _rotSpeed: 10
   _dodgeDuration: 0.3
   _dodgeSpeed: 30
-  _dodgeCoolTime: 0.1
+  _dodgeCoolTime: 5
   _specialCoolTime: 4
   _attackMinSpeed: 4
   _attackSlowRate: 2

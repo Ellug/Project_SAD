@@ -9,6 +9,10 @@ public enum ShotgunPerkMode
 
 public class Shotgun : WeaponBase
 {
+    [Header("Tripple Shot Burn Op")]
+    [SerializeField] private float _burnDps = 5f;
+    [SerializeField] private float _burnDuration = 5f;
+
     private int _dynOwnerId;
 
     private ShotgunPerkMode CurrentMode
@@ -38,8 +42,8 @@ public class Shotgun : WeaponBase
 
         switch (mode)
         {
-            case ShotgunPerkMode.Slug:
-                FireSlug();
+            case ShotgunPerkMode.Slug: // 탄퍼짐은 퍽즈 노드 옵션에서 적용
+                FireProjectile(false);
                 break;
 
             case ShotgunPerkMode.Tripple:
@@ -47,7 +51,7 @@ public class Shotgun : WeaponBase
                 break;
 
             default:
-                FireDefault();
+                FireProjectile(false);
                 break;
         }
 
@@ -55,24 +59,48 @@ public class Shotgun : WeaponBase
         return true;
     }
 
-    private void FireDefault()
-    {
-        // 기본 산탄 발사
-        FireProjectile(false);
-    }
-
-    private void FireSlug()
-    {
-        // 탄퍼짐 없는 슬러그턴 발사
-        // 노드에서 사거리 증가, 탄퍼짐 감소 옵션 적용
-        FireProjectile(false);
-    }
-
     private void FireTriple()
     {
-        // 탄환 갯수2개 추가
-        // TODO: 화상 피해 탄환 추가 필요
         FireProjectile(false);
+
+        if (_statsContext == null) return;
+
+        WeaponRuntimeStats stats = _statsContext.Current.Weapon;
+
+        // 탄환에 화상 payload 추가
+        BulletEffectPayload burn = new()
+        {
+            effect = BulletEffect.Burn,
+            burnDps = _burnDps,
+            burnDuration = _burnDuration
+        };
+
+        int count = Mathf.Max(1, stats.ProjectileCount);
+        float totalAngle = stats.ProjectileAngle;
+
+        Vector3 baseDir = transform.forward;
+        baseDir.y = 0f;
+        baseDir.Normalize();
+
+        Vector3 spawnPos = transform.position + baseDir * 0.5f;
+
+        float halfAngle = totalAngle * 0.5f;
+
+        for (int i = 0; i < count; i++)
+        {
+            float t = (count == 1) ? 0.5f : (float)i / (count - 1);
+            float angle = Mathf.Lerp(-halfAngle, halfAngle, t);
+
+            Vector3 dir = Quaternion.AngleAxis(angle, Vector3.up) * baseDir;
+            SpawnTripleBurnBullet(spawnPos, dir, stats, burn);
+        }
+    }
+
+    private void SpawnTripleBurnBullet(Vector3 pos, Vector3 dir, WeaponRuntimeStats stats, BulletEffectPayload burn)
+    {
+        Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
+        PlayerBullet bullet = PoolManager.Instance.Spawn(stats.ProjectilePrefab, pos, rot);
+        bullet.Init(stats, counterAttack: false, payload: burn);
     }
 
     private void Clear()
