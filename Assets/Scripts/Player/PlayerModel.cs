@@ -193,6 +193,7 @@ public class PlayerModel : MonoBehaviour
         if (!CanAttack) return;
         _curAttackCoolTime = FinalStats.AttackCoolTime;
     }
+    
     public void SlowDebuff(float rate, float duration)
     {
         _debuffSlowRate = Mathf.Clamp01(rate); 
