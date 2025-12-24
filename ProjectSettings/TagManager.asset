@@ -7,6 +7,7 @@ TagManager:
   - LaserObject
   - Boss
   - Obstacle
+  - UI_Animation
   layers:
   - Default
   - TransparentFX
