@@ -17,15 +17,15 @@ MonoBehaviour:
   attack: 10
   attackSpeed: 10
   projectileCount: 1
-  projectileAngle: 0
-  projectileRange: 50
-  projectileSpeed: 20
+  projectileAngle: 3
+  projectileRange: 30
+  projectileSpeed: 50
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
   SpecialAttack: 10
   SpecialAttackBeforeDelay: 1
   SpecialAttackAfterDelay: 0.5
   SpecialProjectileCount: 1
   SpecialProjectileAngle: 0
-  SpecialProjectileRange: 5
-  SpecialProjectileSpeed: 5
+  SpecialProjectileRange: 30
+  SpecialProjectileSpeed: 40
   SpecialProjectilePrefab: {fileID: 8378940865896947848, guid: bd4a612256ec45a46beb3d67d910c36d, type: 3}

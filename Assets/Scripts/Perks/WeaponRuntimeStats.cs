@@ -19,6 +19,11 @@ public struct WeaponRuntimeStats
     public float SpecialProjectileSpeed;
     public PlayerBullet SpecialProjectilePrefab;
 
+    // Dynamic Mode
+    public int RifleMode; // 0 none 1 Nobrain 2 Minigun
+    public int ShotgunMode; // 0 none 1 Slug 2 Triple
+    public int SniperMode; // 0 none 1 Bouncing 2 CurtainCall
+
     public static WeaponRuntimeStats FromData(WeaponData d)
     {
         return new WeaponRuntimeStats
@@ -39,6 +44,10 @@ public struct WeaponRuntimeStats
             SpecialProjectileRange = d.SpecialProjectileRange,
             SpecialProjectileSpeed = d.SpecialProjectileSpeed,
             SpecialProjectilePrefab = d.SpecialProjectilePrefab,
+
+            RifleMode = 0,
+            ShotgunMode = 0,
+            SniperMode = 0,
         };
     }
 }

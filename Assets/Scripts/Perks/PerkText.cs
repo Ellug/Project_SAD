@@ -13,7 +13,7 @@ public static class PerkText
     public static string Build(StatMod[] mods)
     {
         if (mods == null || mods.Length == 0)
-            return "효과 없음";
+            return string.Empty;
 
         StringBuilder sb = new(128);
 
@@ -29,12 +29,15 @@ public static class PerkText
             sb.Append(statName).Append(" ").Append(opText);
         }
 
-        return sb.ToString();
+        return sb.Length > 0 ? sb.ToString() : string.Empty;
     }
 
     // 버프 케이스 오버로드
     public static string Build(TriggeredBuff[] buffs)
     {
+        if (buffs == null || buffs.Length == 0)
+            return string.Empty;
+
         StringBuilder sb = new(192);
 
         for (int i = 0; i < buffs.Length; i++)
@@ -42,37 +45,38 @@ public static class PerkText
             var b = buffs[i];
             if (b == null) continue;
 
-            if (sb.Length > 0)
-                sb.AppendLine();
+            int startLen = sb.Length;
 
             sb.Append($"[{GetTriggerName(b.trigger)}] (지속 {FormatSeconds(b.duration)})");
 
-            if (b.mods == null || b.mods.Length == 0)
+            if (b.mods != null && b.mods.Length > 0)
             {
-                sb.AppendLine().Append("- 효과 없음");
-                continue;
+                for (int m = 0; m < b.mods.Length; m++)
+                {
+                    var mod = b.mods[m];
+                    string statName = GetStatName(mod.stat);
+                    string opText = FormatOp(mod.stat, mod.op, mod.value);
+
+                    sb.AppendLine();
+                    sb.Append("- ").Append(statName).Append(" ").Append(opText);
+                }
             }
 
-            for (int m = 0; m < b.mods.Length; m++)
-            {
-                var mod = b.mods[m];
-                string statName = GetStatName(mod.stat);
-                string opText = FormatOp(mod.stat, mod.op, mod.value);
+            if (sb.Length == startLen) continue;
 
-                sb.AppendLine();
-                sb.Append("- ").Append(statName).Append(" ").Append(opText);
-            }
+            if (i < buffs.Length - 1)
+                sb.AppendLine().AppendLine();
         }
 
-        return sb.ToString();
+        return sb.Length > 0 ? sb.ToString() : string.Empty;
     }
 
     private static string GetTriggerName(PerkTrigger trigger)
     {
         return trigger switch
         {
-            PerkTrigger.OnSpecialUsed => "특수공격 사용 후",
-            PerkTrigger.OnDodgeUsed   => "회피기 사용 후",
+            PerkTrigger.OnSpecialUsed => "특수공격 사용시",
+            PerkTrigger.OnDodgeUsed   => "회피기 사용시",
             _ => trigger.ToString()
         };
     }
@@ -98,13 +102,14 @@ public static class PerkText
             StatId.Player_DodgeCoolTime             => "회피 쿨타임",
             StatId.Player_SpecialCoolTime           => "특수 공격 쿨타임",
             StatId.Player_AttackSlowRate            => "공격 시 이동속도 감소량",
-            StatId.Player_AttackSlowDuration        => "공격 시 감속 시간",
+            StatId.Player_AttackMinSpeed            => "공격 이동속도 감소시 최소 이동속도",
 
             StatId.Weapon_Attack                    => "공격력",
             StatId.Weapon_AttackSpeed               => "공격 속도",
             StatId.Weapon_ProjectileCount           => "발사 개수",
             StatId.Weapon_ProjectileRange           => "사거리",
             StatId.Weapon_ProjectileSpeed           => "탄속",
+            StatId.Weapon_ProjectileAngle           => "탄퍼짐",
 
             StatId.Weapon_SpecialAttack             => "특수 공격력",
             StatId.Weapon_SpecialBeforeDelay        => "특수 선딜",
@@ -113,12 +118,52 @@ public static class PerkText
             StatId.Weapon_SpecialProjectileRange    => "특수 사거리",
             StatId.Weapon_SpecialProjectileSpeed    => "특수 탄속",
 
+            StatId.Weapon_RifleMode => "라이플 변형 : ",
+            StatId.Weapon_ShotgunMode => "샷건 변형 : ",
+            StatId.Weapon_SniperMode => "저격총 변형 : ",
+
             _ => id.ToString()
         };
     }
 
     private static string FormatOp(StatId stat, ModOp op, float value)
     {
+        if (stat == StatId.Weapon_RifleMode && op == ModOp.Override)
+        {
+            int v = Mathf.RoundToInt(value);
+            string mode = v switch
+            {
+                1 => "무지성 난사",
+                2 => "미니건",
+                _ => "없음"
+            };
+            return $"{mode}";
+        }
+
+        if (stat == StatId.Weapon_ShotgunMode && op == ModOp.Override)
+        {
+            int v = Mathf.RoundToInt(value);
+            string mode = v switch
+            {
+                1 => "슬러그탄",
+                2 => "트리플샷",
+                _ => "없음"
+            };
+            return $"{mode}";
+        }
+
+        if (stat == StatId.Weapon_SniperMode && op == ModOp.Override)
+        {
+            int v = Mathf.RoundToInt(value);
+            string mode = v switch
+            {
+                1 => "도탄",
+                2 => "땅땅땅빵",
+                _ => "없음"
+            };
+            return $"{mode}";
+        }
+
         bool isInt = _intStats.Contains(stat);
 
         switch (op)
