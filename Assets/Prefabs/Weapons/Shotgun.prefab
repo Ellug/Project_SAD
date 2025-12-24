@@ -114,3 +114,24 @@ MonoBehaviour:
         op: 1
         value: 0.2
       buffs: []
+  - left:
+      mods:
+      - stat: 23
+        op: 2
+        value: 1
+      - stat: 13
+        op: 1
+        value: 2
+      - stat: 15
+        op: 2
+        value: 3
+      buffs: []
+    right:
+      mods:
+      - stat: 23
+        op: 2
+        value: 2
+      - stat: 12
+        op: 0
+        value: 2
+      buffs: []

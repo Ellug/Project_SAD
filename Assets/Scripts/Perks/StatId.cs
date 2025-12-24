@@ -10,7 +10,7 @@ public enum StatId
     Player_DodgeCoolTime,
     Player_SpecialCoolTime,
     Player_AttackSlowRate,
-    Player_AttackSlowDuration,
+    Player_AttackMinSpeed,
 
     // Weapon (Normal)
     Weapon_Attack,
@@ -18,6 +18,7 @@ public enum StatId
     Weapon_ProjectileCount,
     Weapon_ProjectileRange,
     Weapon_ProjectileSpeed,
+    Weapon_ProjectileAngle,
 
     // Weapon (Special)
     Weapon_SpecialAttack,
@@ -26,6 +27,11 @@ public enum StatId
     Weapon_SpecialProjectileCount,
     Weapon_SpecialProjectileRange,
     Weapon_SpecialProjectileSpeed,
+
+    // Weapon Dynamic Mode
+    Weapon_RifleMode,
+    Weapon_ShotgunMode,
+    Weapon_SniperMode,
 }
 
 public enum ModOp { Add, Mul, Override }
