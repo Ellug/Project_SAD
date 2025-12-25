@@ -9,6 +9,15 @@ public enum SniperPerkMode
 
 public class Sniper : WeaponBase
 {
+    [Header("Bouncing")]
+    [SerializeField] private int _maxBounces = 3;
+    [SerializeField] private float _bouncedDamageMul = 3f;
+
+    [Header("CurtainCall")]
+    [SerializeField] private int _shotsPerCycle = 4;
+    [SerializeField] private float _fourthShotMul = 2f;
+
+    private int _cycleShotCount;
     private int _dynOwnerId;
 
     private SniperPerkMode CurrentMode
@@ -58,19 +67,52 @@ public class Sniper : WeaponBase
     private void FireDefault()
     {
         // 기본 저격탄 발사
-        FireProjectile(false);
+        FireSniperBullet(payload: default);
     }
 
     private void FireBouncing()
     {
+        BulletEffectPayload payload = new()
+        {
+            enableBounce = true,
+            maxBounces = _maxBounces,
+            bouncedDamageMul = _bouncedDamageMul,
+            damageMul = 1f
+        };
+
         // 도탄 기능 총알 발사
-        FireProjectile(false);
+        FireSniperBullet(payload);
     }
 
     private void FireCurtainCall()
     {
-        // 4번째 총알 강화 개념 도입
-        FireProjectile(false);
+        _cycleShotCount++;
+
+        bool isBuffShot = _cycleShotCount >= _shotsPerCycle;
+
+        BulletEffectPayload payload = new() { damageMul = isBuffShot ? _fourthShotMul : 1f };
+        
+        FireSniperBullet(payload);
+
+        if (isBuffShot)
+            _cycleShotCount = 0;
+    }
+
+    private void FireSniperBullet(BulletEffectPayload payload)
+    {
+        if (_statsContext == null) return;
+
+        WeaponRuntimeStats stats = _statsContext.Current.Weapon;
+
+        Vector3 dir = transform.forward;
+        dir.y = 0f;
+        dir.Normalize();
+
+        Vector3 spawnPos = transform.position + dir * 0.5f;
+        Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
+
+        PlayerBullet bullet = PoolManager.Instance.Spawn(stats.ProjectilePrefab, spawnPos, rot);
+        bullet.Init(stats, counterAttack: false, payload: payload);
     }
 
     private void Clear()
