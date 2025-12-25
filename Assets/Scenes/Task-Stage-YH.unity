@@ -910,6 +910,8 @@ MonoBehaviour:
   _dodgeCooldownBar: {fileID: 1268262325}
   _specialCooldownBar: {fileID: 23044218}
   _specialCooldownText: {fileID: 599680782}
+  _elapsedTime: {fileID: 1852281958}
+  _bossRemainHp: {fileID: 1344549648}
 --- !u!1 &331599640
 GameObject:
   m_ObjectHideFlags: 0
@@ -2644,7 +2646,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &906277219
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3638,10 +3640,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 611c98f7c23745145a4d5f87418356a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageStaticUI
-  _pausePanel: {fileID: 2068151558}
-  _gameResultUI: {fileID: 1613123661}
-  _settingsUI: {fileID: 912731347}
   _curStage: {fileID: 2122256029}
+  _pausePanel: {fileID: 2068151558}
+  _settingsUI: {fileID: 912731347}
+  _gameResultUI: {fileID: 1613123661}
+  _missionCompletePanel: {fileID: 906277218}
+  _missionFailedPanel: {fileID: 28375724}
 --- !u!1 &974748951
 GameObject:
   m_ObjectHideFlags: 0
@@ -4116,8 +4120,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StageUI, Assembly-CSharp
+      - m_Target: {fileID: 939889753}
+        m_TargetAssemblyTypeName: StageStaticUI, Assembly-CSharp
         m_MethodName: GoToLobby
         m_Mode: 1
         m_Arguments:
@@ -5019,7 +5023,7 @@ GameObject:
   - component: {fileID: 1344549649}
   - component: {fileID: 1344549648}
   m_Layer: 5
-  m_Name: BossRemainHp (1)
+  m_Name: BossRemainHp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5915,8 +5919,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StageUI, Assembly-CSharp
+      - m_Target: {fileID: 939889753}
+        m_TargetAssemblyTypeName: StageStaticUI, Assembly-CSharp
         m_MethodName: Retry
         m_Mode: 1
         m_Arguments:

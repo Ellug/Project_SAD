@@ -22,6 +22,10 @@ public class StageDynamicUI : MonoBehaviour
     [SerializeField] private Image _specialCooldownBar;
     [SerializeField] private TextMeshProUGUI _specialCooldownText;
 
+    [Header("Result Info")]
+    [SerializeField] private TextMeshProUGUI _elapsedTime;
+    [SerializeField] private TextMeshProUGUI _bossRemainHp;
+
     private const float OUT_OF_SCREEN_INDI_PADDING = 50f;
 
     private Camera _mainCam;
@@ -33,11 +37,14 @@ public class StageDynamicUI : MonoBehaviour
     {
         _hpBarVector = Vector3.zero;
         _mainCam = Camera.main;
+        GameManager.Instance.OnGameStateChanged += GameResultProcess;
         _timerCoroutine = StartCoroutine(UpdateTimer());
     }
 
     private void OnDestroy()
     {
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnGameStateChanged -= GameResultProcess;
         StopCoroutine(_timerCoroutine);
     }
 
@@ -158,6 +165,20 @@ public class StageDynamicUI : MonoBehaviour
         {
             _secondTimer++;
             yield return secondDelay;
+        }
+    }
+
+    // 다이나믹 UI가 게임 결과에서 처리할 일.
+    private void GameResultProcess(GameState state)
+    {
+        if (state != GameState.Result) return;
+
+        if (_playerIndicator != null)
+        {
+            _playerIndicator.gameObject.SetActive(false);
+
+            _elapsedTime.text = $"{_secondTimer / 60:D2} : {_secondTimer % 60:D2}";
+            _bossRemainHp.text = $"{(_bossController.BossCurrentHp / _bossController.BossMaxHp * 100f):F2}%";
         }
     }
 }
