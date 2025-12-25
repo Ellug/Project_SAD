@@ -212,12 +212,4 @@ public class PlayerController : MonoBehaviour
         if (_model.CurrentWeapon != null && _model.CurrentWeapon.TryAttack())
             _model.StartAttack();
     }
-
-    public void OpenCloseUI(bool isOpen)
-    {
-        if (isOpen)
-            _playerInput.SwitchCurrentActionMap("UI");
-        else
-            _playerInput.SwitchCurrentActionMap("Player");
-    }
 }
