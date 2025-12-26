@@ -20,7 +20,7 @@ public class LobbyManager : MonoBehaviour
         SetAllUI(false);
         targetUI.SetActive(true);
 
-        _playerController.OpenCloseUI(true);
+        //_playerController.OpenCloseUI(true);
     }
 
     public void CloseUI()
@@ -33,7 +33,7 @@ public class LobbyManager : MonoBehaviour
         SetAllUI(false);
         _lobbyUI.SetActive(true);
 
-        _playerController.OpenCloseUI(false);
+        //_playerController.OpenCloseUI(false);
     }
 
     private void SetAllUI(bool isActive)

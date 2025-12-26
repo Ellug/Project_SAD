@@ -13,6 +13,7 @@ public class GameManager : SingletonePattern<GameManager>
 {
     public GameState CurrentState { get; private set; } = GameState.Playing;
     public bool IsPlayerWin { get; private set; }
+    public int UnlockStage { get; private set; }
 
     public bool IsPlaying => CurrentState == GameState.Playing;
     public bool IsPaused  => CurrentState == GameState.Paused;
@@ -20,9 +21,16 @@ public class GameManager : SingletonePattern<GameManager>
 
     public event Action<GameState> OnGameStateChanged;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        UnlockStage = 1;
+    }
+
     public void PlayerWin()
     {
         IsPlayerWin = true;
+        UnlockStage++;
         SetState(GameState.Result);
     }
 

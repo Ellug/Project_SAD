@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
@@ -8,13 +9,16 @@ public abstract class WeaponBase : MonoBehaviour
     [Header("Perks")]
     [SerializeField] private PerksTree _perksTree;
 
-    private PlayerStatsContext _statsContext;
+    protected PlayerStatsContext _statsContext;
     private Coroutine _specialAttackRoutine;
 
     public WeaponData WeaponData => _weaponData;
     public PerksTree PerksTree => _perksTree;
 
-    void Awake()
+    public event Action<WeaponRuntimeStats> OnFire;
+    public event Action<WeaponRuntimeStats> OnReload;
+
+    protected virtual void Awake()
     {
         if (_statsContext == null)
             _statsContext = GetComponentInParent<PlayerStatsContext>();
@@ -25,13 +29,15 @@ public abstract class WeaponBase : MonoBehaviour
         return _weaponData.WeaponId;
     }
 
-    public void Attack()
+    public virtual bool TryAttack()
     {
         FireProjectile(false);
 
         // 공격 감속 트리거는 Context를 통해 PlayerModel로 전달
         if (_statsContext != null)
             _statsContext.NotifyAttackSlow();
+
+        return true;
     }
 
     public void SpecialAttack()
@@ -81,13 +87,12 @@ public abstract class WeaponBase : MonoBehaviour
     }
 
     //불릿 정보 줄거
-    private void FireProjectile(bool isSpecial)
+    protected void FireProjectile(bool isSpecial)
     {
-        if (_statsContext == null)
-            return;
+        if (_statsContext == null) return;
 
         WeaponRuntimeStats stats = _statsContext.Current.Weapon;
-
+        
         int count = Mathf.Max(1, isSpecial ? stats.SpecialProjectileCount : stats.ProjectileCount);
         float totalAngle = isSpecial ? stats.SpecialProjectileAngle : stats.ProjectileAngle;
 
@@ -116,12 +121,17 @@ public abstract class WeaponBase : MonoBehaviour
         }
     }
 
-    private void SpawnBullet(Vector3 pos, Vector3 dir, WeaponRuntimeStats stats, bool isSpecial)
+    protected void SpawnBullet(Vector3 pos, Vector3 dir, WeaponRuntimeStats stats, bool isSpecial)
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
         
         PlayerBullet prefab = isSpecial ? stats.SpecialProjectilePrefab : stats.ProjectilePrefab;
         PlayerBullet bullet = PoolManager.Instance.Spawn(prefab, pos, rot);
         bullet.Init(stats, isSpecial);
+    }
+
+    protected void FireSound(WeaponRuntimeStats stats)
+    {
+        OnFire?.Invoke(stats);
     }
 }

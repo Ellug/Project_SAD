@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     private Camera _cam;
     private Plane _groundPlane;
     private Vector2 _moveInput;
-    private Vector3 _dodgeDirection;
     private Vector3 _aimAt;
 
     private PlayerInput _playerInput;
@@ -22,7 +21,7 @@ public class PlayerController : MonoBehaviour
     private float _dodgeRemainDist;
     private bool _isAttackHold;
 
-    public event Action _interactionObject;
+    public event Action interactionObject;
 
     private void Awake()
     {
@@ -63,6 +62,9 @@ public class PlayerController : MonoBehaviour
             _isAttackHold = true;
         else if (ctx.canceled)
             _isAttackHold = false;
+
+        if (_model.CurrentWeapon is Rifle rifle)
+            rifle.SetAttackHold(_isAttackHold);
     }
 
 
@@ -98,7 +100,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!ctx.performed) return;
 
-        _interactionObject?.Invoke();
+        interactionObject?.Invoke();
     }
 
     public void OnPause(InputAction.CallbackContext ctx)
@@ -207,15 +209,7 @@ public class PlayerController : MonoBehaviour
         if (_model.IsOnSpecialAttack) return;
         if (!_model.CanAttack) return;
 
-        _model.StartAttack();
-        _model.CurrentWeapon?.Attack();
-    }
-
-    public void OpenCloseUI(bool isOpen)
-    {
-        if (isOpen)
-            _playerInput.SwitchCurrentActionMap("UI");
-        else
-            _playerInput.SwitchCurrentActionMap("Player");
+        if (_model.CurrentWeapon != null && _model.CurrentWeapon.TryAttack())
+            _model.StartAttack();
     }
 }

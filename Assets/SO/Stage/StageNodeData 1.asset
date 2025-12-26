@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae57b753d0dd8a24b947cdb625f06555, type: 3}
   m_Name: StageNodeData 1
   m_EditorClassIdentifier: Assembly-CSharp::StageNodeData
-  _stageNumber: Stage 2
-  _areaInfo: "\uC5D8\uB9AC\uB12C"
-  _bossInfo: "\uBCF4\uC2A4 \uC815\uBCF4"
+  _stageNumber: 1
+  _areaInfo: "\uC5EC\uC12F\uAC08\uB798 \uAE38"
+  _bossInfo: "(\uC608\uC2DC) \uBE60\uB978 \uC5F0\uC0AC \uACF5\uACA9\uC744 \uC8FC\uCD95\uC73C\uB85C
+    \uB2E4\uC591\uD55C \uC885\uB958\uC758 \uD0C4\uD658 \uD328\uD134\uC744 \uAD6C\uC0AC\uD55C\uB2E4."

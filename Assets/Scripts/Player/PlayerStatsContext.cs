@@ -21,6 +21,8 @@ public class PlayerStatsContext : MonoBehaviour
     private IEnumerable<StatMod> _playerMods;
     private IEnumerable<StatMod> _weaponMods;
     private IEnumerable<TriggeredBuff> _triggeredBuffs;
+    private readonly Dictionary<int, StatMod[]> _dynamicModsByOwner = new();
+
 
     // Result
     public PlayerFinalStats Current { get; private set; } = new PlayerFinalStats();
@@ -121,30 +123,31 @@ public class PlayerStatsContext : MonoBehaviour
     }
 
     // 최종 스탯 리빌드
-    // - Player Base + Player Mods -> Player Runtime
-    // - Weapon Base + Weapon Mods -> Weapon Runtime
     public void Rebuild()
     {
         if (_playerModel == null)
             return;
 
-        // 활성 버프 mods 적용
         IEnumerable<StatMod> buffMods = EnumerateActiveBuffMods();
+        IEnumerable<StatMod> dynMods  = EnumerateDynamicMods();
 
-        // Player
+        // Player = PlayerMods + BuffMods + DynMods
+        var playerAll = ConcatMods(ConcatMods(_playerMods, buffMods), dynMods);
+
         PlayerRuntimeStats playerStats = _playerModel.CaptureBaseStatsSnapshot();
-        PerkCalculator.ApplyToPlayer(ref playerStats, ConcatMods(_playerMods, buffMods));
+        PerkCalculator.ApplyToPlayer(ref playerStats, playerAll);
 
-        // Weapon
+        // Weapon = WeaponMods + BuffMods + DynMods
         WeaponRuntimeStats weaponStats = default;
 
         if (_weapon != null && _weapon.WeaponData != null)
         {
+            var weaponAll = ConcatMods(ConcatMods(_weaponMods, buffMods), dynMods);
+
             weaponStats = WeaponRuntimeStats.FromData(_weapon.WeaponData);
-            PerkCalculator.ApplyToWeapon(ref weaponStats, ConcatMods(_playerMods, buffMods));
+            PerkCalculator.ApplyToWeapon(ref weaponStats, weaponAll);
         }
 
-        // Final
         Current.Player = playerStats;
         Current.Weapon = weaponStats;
         Current.UpdateDerived();
@@ -240,5 +243,37 @@ public class PlayerStatsContext : MonoBehaviour
 
         if (b != null)
             foreach (var x in b) yield return x;
+    }
+
+    public void SetDynamicMods(int ownerId, StatMod[] mods)
+    {
+        if (ownerId == 0) return;
+
+        bool changed;
+
+        if (mods == null || mods.Length == 0)
+        {
+            changed = _dynamicModsByOwner.Remove(ownerId);
+        }
+        else
+        {
+            _dynamicModsByOwner[ownerId] = mods;
+            changed = true;
+        }
+
+        if (changed)
+            Rebuild();
+    }
+
+    private IEnumerable<StatMod> EnumerateDynamicMods()
+    {
+        foreach (var kv in _dynamicModsByOwner)
+        {
+            var arr = kv.Value;
+            if (arr == null) continue;
+
+            for (int i = 0; i < arr.Length; i++)
+                yield return arr[i];
+        }
     }
 }

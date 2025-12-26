@@ -47,6 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Rifle
   _weaponData: {fileID: 11400000, guid: 5697fc13d71bf064aa3433bd40f60caa, type: 2}
   _perksTree: {fileID: -1396832517224262730}
+  _stackInterval: 1
+  _maxStacks: 5
+  _breakInterval: 0.5
+  _attackMulPerStack: 0.05
+  _atkSpdMulPerStack: 0.05
 --- !u!114 &-1396832517224262730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,4 +115,25 @@ MonoBehaviour:
       - stat: 11
         op: 1
         value: 0.1
+      buffs: []
+  - left:
+      mods:
+      - stat: 22
+        op: 2
+        value: 1
+      buffs: []
+    right:
+      mods:
+      - stat: 22
+        op: 2
+        value: 2
+      - stat: 10
+        op: 1
+        value: 0.2
+      - stat: 11
+        op: 1
+        value: 2
+      - stat: 9
+        op: 1
+        value: -0.5
       buffs: []
