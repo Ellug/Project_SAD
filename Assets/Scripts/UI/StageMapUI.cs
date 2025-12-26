@@ -1,4 +1,5 @@
 ﻿using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,10 +12,24 @@ public class StageMapUI : MonoBehaviour
     private TextMeshProUGUI[] _infoText;
     private Image _bossImage;
     private StageNodeData _selectedStage;
+    private Button[] _buttons;
 
     void Start()
     {
         _infoText = _nodeDataPanel.GetComponentsInChildren<TextMeshProUGUI>();
+
+        _buttons = GetComponentsInChildren<Button>();
+        int unlock = GameManager.Instance.UnlockStage;
+        Transform[] buttonChilds;
+        for (int i = 0; i < _buttons.Length; i++) 
+        {
+            buttonChilds = _buttons[i].GetComponentsInChildren<Transform>();
+            if (i < unlock)
+                buttonChilds[2].gameObject.SetActive(false);
+            else
+                buttonChilds[1].gameObject.SetActive(false);
+        }
+
         Image[] images = _nodeDataPanel.GetComponentsInChildren<Image>();
         if (images.Length > 1)
             _bossImage = images[1];
