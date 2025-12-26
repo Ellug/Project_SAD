@@ -15,17 +15,20 @@ public class StageMapUI : MonoBehaviour
         _infoText = _nodeDataPanel.GetComponentsInChildren<TextMeshProUGUI>();
     }
 
-    public GameObject GetPanel()
+    private void OnDisable()
     {
-        return _nodeDataPanel;
+        _selectedStage = null;
     }
 
-    public void SetInfoPanel(StageNodeData data)
+    public void SetInfoPanel(StageNodeData data, bool isUnlock)
     {
         if (_infoText != null && _infoText.Length >= 2) 
         {
             _infoText[0].text = $"STAGE {data.StageNumber}";
-            _infoText[1].text = data.BossInfo;
+            if (isUnlock)
+                _infoText[1].text = data.BossInfo;
+            else
+                _infoText[1].text = "잠금 상태";
         }
         else
         {
@@ -45,6 +48,11 @@ public class StageMapUI : MonoBehaviour
             Debug.Log("스테이지 선택 안했다 이 양반아");
             return;
         }
+        if (int.Parse(_selectedStage.StageNumber) > GameManager.Instance.UnlockStage)
+        {
+            Debug.Log("잠금된 스테이지다 이 필멸자야");
+            return;
+        }
 
         string sceneName = "Stage"+_selectedStage.StageNumber;
 
@@ -54,6 +62,6 @@ public class StageMapUI : MonoBehaviour
     public void OnClickStage(int index)
     {
         _selectedStage = _stageNodeData[index];
-        SetInfoPanel(_selectedStage);
+        SetInfoPanel(_selectedStage, index < GameManager.Instance.UnlockStage);
     }
 }
