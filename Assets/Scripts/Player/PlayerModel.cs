@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
 {
+    [SerializeField] private WeaponSound _weaponSound;
+
     // Base Status
     [Header("HP")]
     [SerializeField] private float _maxHp = 50f;
@@ -224,6 +226,8 @@ public class PlayerModel : MonoBehaviour
 
         // Weapon 교체 -> Final 재계산
         _statsContext.SetWeapon(weapon);
+
+        _weaponSound.Bind(weapon);
 
         _curAttackCoolTime = 0f;
         _curSpecialCoolTime = 0f;
