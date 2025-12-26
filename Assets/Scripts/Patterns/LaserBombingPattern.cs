@@ -1,130 +1,106 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserBombingPattern : PatternBase
+public class MultiLaserBombingPattern : PatternBase
 {
     [Header("경고 장판")]
-    [Tooltip("추적용 경고 파티클")][SerializeField] private ParticleSystem _WarnningArea;
-    [Tooltip("정지용 경고 파티클")][SerializeField] private ParticleSystem _StaticWarnningArea;
-    [Tooltip("경고 파티클 추적 시간")][SerializeField] private float _WarnningTime;
-    [Tooltip("경고 장판 정지 후 대기 시간")][SerializeField] private float _WarnningDTime;
+    [SerializeField][Tooltip("경고 장판 프리팹")] private ParticleSystem _warningAreaPrefab;
+    [SerializeField][Tooltip("경고 장판 추적 시간")] private float _chaseTime = 2.0f;     
+    [SerializeField][Tooltip("경고 장판 고정 시간")] private float _readyTime = 0.5f;     
+    [SerializeField][Tooltip("경고 장판 이격 거리")] private float _chaseOffset = 0.2f;   
 
-    [Header("폭발 설정")]
-    [Tooltip("첫 번째 폭발 파티클")][SerializeField] private ParticleSystem _FirstExplosionParticle;
-    [Tooltip("두 번째 폭발 파티클")][SerializeField] private ParticleSystem _SecondExplosionParticle;
-    [Tooltip("생성 위치 예측 오프셋")][SerializeField] private float _ChaseOffset;
-    [Tooltip("폭발 사이의 간격 시간")][SerializeField] private float _ExpolsionTime;
-    [Tooltip("폭발 판정 범위")][SerializeField] private float _ExplosionRange;
-
-    [Header("데미지")]
-    [Tooltip("데미지")][SerializeField] private float _Dmg;
+    [Header("레이저 포격 설정")]
+    [SerializeField][Tooltip("레이저 프리팹")] private ParticleSystem _laserParticlePrefab; 
+    [SerializeField][Tooltip("레이저 포격 갯수")] private int _laserCount = 5;                 
+    [SerializeField][Tooltip("레이저 포격 반경")] private float _bombingRadius = 3.0f;         
+    [SerializeField][Tooltip("레이저 포격 간격")] private float _intervalBetweenLasers = 0.1f; 
+    [SerializeField][Tooltip("레이저 폭발 판정 범위")] private float _explosionRange = 1.5f;       
+    [SerializeField][Tooltip("데미지")] private float _damage = 10f;
 
     private PredictiveAim _predictiveAim;
-    private GameObject Player;
-    private ParticleSystem _Warnning;
-    private ParticleSystem _StaticWarnning;
-    private bool chase = false;
+    private GameObject _player;
+    private ParticleSystem _currentWarning;
+    private bool Chase = false;
 
-    private Vector3 _debugFirstPos;
-    private Vector3 _debugSecondPos;
-    private bool _showDebug = false;
-
-    void Update()
+    public override void Init(GameObject target)
     {
-        if (chase && _Warnning != null && _predictiveAim != null)
-        {
-            _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
-        }
-    }
-
-    public void WarnningEffect()
-    {
-        if (_WarnningArea == null) return;
-
-        _showDebug = false;
-        _Warnning = Instantiate(_WarnningArea);
-        _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
-        chase = true;
-
-        _Warnning.Play();
-        StartCoroutine(ChaseRoutine());
-    }
-
-    private IEnumerator ChaseRoutine()
-    {
-        yield return new WaitForSeconds(_WarnningTime);
-
-        chase = false;
-
-        if (_Warnning != null)
-        {
-            Vector3 stopPos = _Warnning.transform.position;
-            Destroy(_Warnning.gameObject);
-
-            if (_StaticWarnningArea != null)
-            {
-                _StaticWarnning = Instantiate(_StaticWarnningArea, stopPos, Quaternion.identity);
-                _StaticWarnning.Play();
-            }
-        }
-
-        yield return new WaitForSeconds(_WarnningDTime);
-
-        if (_StaticWarnning != null) Destroy(_StaticWarnning.gameObject);
-
-        StartCoroutine(ExplosionSequence());
-    }
-
-    private IEnumerator ExplosionSequence()
-    {
-        Vector3 explosionPos = (_StaticWarnning != null) ? _StaticWarnning.transform.position : transform.position;
-        _debugFirstPos = explosionPos;
-        _showDebug = true;
-
-        SpawnExplosion(_FirstExplosionParticle, explosionPos);
-        CheckDamage(explosionPos);
-
-        yield return new WaitForSeconds(_ExpolsionTime);
-
-        _debugSecondPos = explosionPos;
-        SpawnExplosion(_SecondExplosionParticle, explosionPos);
-        CheckDamage(explosionPos);
-    }
-
-    private void SpawnExplosion(ParticleSystem particlePrefab, Vector3 position)
-    {
-        if (particlePrefab == null) return;
-
-        ParticleSystem exp = Instantiate(particlePrefab, position, Quaternion.identity);
-        var main = exp.main;
-        main.stopAction = ParticleSystemStopAction.Destroy;
-        exp.Play();
-    }
-
-    private void CheckDamage(Vector3 position)
-    {
-        Collider[] colliders = Physics.OverlapSphere(position, _ExplosionRange);
-        foreach (var hit in colliders)
-        {
-            if (hit.gameObject == Player)
-            {
-                if (Player.TryGetComponent<PlayerModel>(out var player))
-                {
-                    player.TakeDamage(_Dmg);
-                }
-                break;
-            }
-        }
+        _player = target;
+        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
     }
 
     protected override void PatternLogic()
     {
-        WarnningEffect();
+        StartCoroutine(ExecutePattern());
     }
 
-    public override void Init(GameObject target)
+    private IEnumerator ExecutePattern()
     {
-        Player = target;
-        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
+        if (_warningAreaPrefab == null || _predictiveAim == null) yield break;
+
+        _currentWarning = Instantiate(_warningAreaPrefab);
+        Chase = true;
+        _currentWarning.Play();
+
+        float elapsed = 0;
+        while (elapsed < _chaseTime)
+        {
+            if (_currentWarning != null)
+                _currentWarning.transform.position = _predictiveAim.PredictiveAimCalc(_chaseOffset);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        Chase = false;
+        Vector3 finalCenterPos = _currentWarning.transform.position;
+
+        yield return new WaitForSeconds(_readyTime);
+
+        if (_currentWarning != null) Destroy(_currentWarning.gameObject);
+
+        StartCoroutine(FireMultiLasers(finalCenterPos));
+    }
+
+    private IEnumerator FireMultiLasers(Vector3 centerPos)
+    {
+        for (int i = 0; i < _laserCount; i++)
+        {
+            Vector2 randomCircle = Random.insideUnitCircle * _bombingRadius;
+            Vector3 firePos = centerPos + new Vector3(randomCircle.x, 0, randomCircle.y);
+
+            SpawnLaser(firePos);
+
+            CheckDamage(firePos);
+
+            yield return new WaitForSeconds(_intervalBetweenLasers);
+        }
+    }
+
+    private void SpawnLaser(Vector3 position)
+    {
+        if (_laserParticlePrefab == null) return;
+
+        ParticleSystem laser = Instantiate(_laserParticlePrefab, position, Quaternion.identity);
+
+        var main = laser.main;
+        main.stopAction = ParticleSystemStopAction.Destroy;
+
+        laser.Play();
+    }
+
+    private void CheckDamage(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, _explosionRange);
+        foreach (var hit in colliders)
+        {
+            if (hit.gameObject == _player)
+            {
+                if (_player.TryGetComponent<PlayerModel>(out var player))
+                {
+                    player.TakeDamage(_damage);
+                }
+                break;
+            }
+        }
     }
 }
