@@ -16,17 +16,11 @@ public class PlayerController : MonoBehaviour
     private Vector2 _moveInput;
     private Vector3 _aimAt;
 
-    private PlayerInput _playerInput;
     private Vector3 _dodgeDir;
     private float _dodgeRemainDist;
     private bool _isAttackHold;
 
     public event Action interactionObject;
-
-    private void Awake()
-    {
-        _playerInput = GetComponent<PlayerInput>();
-    }
 
     void Start()
     {
@@ -211,13 +205,5 @@ public class PlayerController : MonoBehaviour
 
         if (_model.CurrentWeapon != null && _model.CurrentWeapon.TryAttack())
             _model.StartAttack();
-    }
-
-    public void OpenCloseUI(bool isOpen)
-    {
-        if (isOpen)
-            _playerInput.SwitchCurrentActionMap("UI");
-        else
-            _playerInput.SwitchCurrentActionMap("Player");
     }
 }
