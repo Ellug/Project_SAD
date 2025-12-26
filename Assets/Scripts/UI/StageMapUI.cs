@@ -1,17 +1,40 @@
 ﻿using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageMapUI : MonoBehaviour
 {
     [SerializeField] private GameObject _nodeDataPanel;
     [SerializeField] private StageNodeData[] _stageNodeData;
+    [SerializeField] private Sprite _unknownImage;
 
     private TextMeshProUGUI[] _infoText;
+    private Image _bossImage;
     private StageNodeData _selectedStage;
+    private Button[] _buttons;
 
-    private void Start()
+    void Start()
     {
         _infoText = _nodeDataPanel.GetComponentsInChildren<TextMeshProUGUI>();
+
+        _buttons = GetComponentsInChildren<Button>();
+        int unlock = GameManager.Instance.UnlockStage;
+        Transform[] buttonChilds;
+        for (int i = 0; i < _buttons.Length; i++) 
+        {
+            buttonChilds = _buttons[i].GetComponentsInChildren<Transform>();
+            if (i < unlock)
+                buttonChilds[2].gameObject.SetActive(false);
+            else
+                buttonChilds[1].gameObject.SetActive(false);
+        }
+
+        Image[] images = _nodeDataPanel.GetComponentsInChildren<Image>();
+        if (images.Length > 1)
+            _bossImage = images[1];
+        else
+            Debug.LogError("Not Found Image Component in Stage Select UI");
     }
 
     private void OnDisable()
@@ -25,9 +48,15 @@ public class StageMapUI : MonoBehaviour
         {
             _infoText[0].text = $"STAGE {data.StageNumber}";
             if (isUnlock)
+            {
                 _infoText[1].text = data.BossInfo;
+                _bossImage.sprite = _selectedStage.BossImage;
+            }
             else
+            {
                 _infoText[1].text = "잠금 상태";
+                _bossImage.sprite = _unknownImage;
+            }
         }
         else
         {

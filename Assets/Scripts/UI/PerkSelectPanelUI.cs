@@ -1,15 +1,14 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PerkSelectPanelUI : MonoBehaviour
 {
     [Header("Prefab / Root")]
     [SerializeField] private PerksItemUI _stagePrefab;
-    [SerializeField] private Transform _root;
 
     [Header("UI")]
-    [SerializeField] private TMP_Text _status;
     [SerializeField] private TMP_Text _desc;
 
     private readonly List<PerksItemUI> _items = new();
@@ -17,12 +16,6 @@ public class PerkSelectPanelUI : MonoBehaviour
 
     private int _lastStage = -1;
     private int _lastSide = -1;
-
-    void Awake()
-    {
-        if (_root == null)
-            _root = transform;
-    }
 
     void OnEnable()
     {
@@ -57,7 +50,7 @@ public class PerkSelectPanelUI : MonoBehaviour
         int count = _tree.StageCount;
         for (int i = 0; i < count; i++)
         {
-            PerksItemUI item = Instantiate(_stagePrefab, _root);
+            PerksItemUI item = Instantiate(_stagePrefab, transform);
             item.gameObject.SetActive(true);
 
             item.ApplyStageNodes(_tree, i);
@@ -66,6 +59,24 @@ public class PerkSelectPanelUI : MonoBehaviour
             item.OnOptionClicked += HandleOptionClicked;
 
             _items.Add(item);
+
+            // 스테이지 클리어 현황에 따라 버튼 해금 or 잠금 설정 로직
+            Button[] buttons = item.GetComponentsInChildren<Button>();
+            if (i < GameManager.Instance.UnlockStage) // 해금 로직
+            {
+                foreach (Button button in buttons) 
+                {
+                    button.transform.Find("LockedImage").gameObject.SetActive(false);
+                }
+            }
+            else // 잠금 로직
+            {
+                foreach (Button button in buttons)
+                {
+                    button.interactable = false;
+                    button.transform.Find("UnlockImage").gameObject.SetActive(false);
+                }
+            }
         }
 
         _tree.OnChanged += Refresh;
@@ -97,7 +108,7 @@ public class PerkSelectPanelUI : MonoBehaviour
     {
         if (_tree == null)
         {
-            SetTexts("", "");
+            SetTexts("");
             return;
         }
 
@@ -116,20 +127,18 @@ public class PerkSelectPanelUI : MonoBehaviour
 
         if (selectedSide < 0)
         {
-            SetTexts($"Perks {selectedCount}/{stageCount}  |  Stage {stage + 1}: 미선택", "-");
+            SetTexts("-");
             return;
         }
 
         var node = _tree.GetNode(stage, selectedSide);
-        string sideText = selectedSide == PerksTree.SideLeft ? "Left" : "Right";
-        string desc = node != null ? node.Description : "-";
+        string desc = node != null ? node.Description : "";
 
-        SetTexts($"Perks {selectedCount}/{stageCount}  |  Stage {stage + 1}: {sideText} 선택", desc);
+        SetTexts(desc);
     }
 
-    private void SetTexts(string status, string desc)
+    private void SetTexts(string desc)
     {
-        if (_status != null) _status.text = status;
         if (_desc != null) _desc.text = desc;
     }
 
@@ -152,7 +161,7 @@ public class PerkSelectPanelUI : MonoBehaviour
         _lastStage = -1;
         _lastSide = -1;
 
-        SetTexts("", "");
+        SetTexts("");
     }
 
     void OnDestroy()

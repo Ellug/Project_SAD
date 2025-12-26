@@ -7,14 +7,16 @@ public class PerksItemUI : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField] private TMP_Text _stageText;
-
     [SerializeField] private Button _leftButton;
     [SerializeField] private Button _rightButton;
+
+    [Header("Sprites")]
+    [SerializeField] private Sprite _normalSprite;
+    [SerializeField] private Sprite _selectedSprite;
 
     private PerksTree _tree;
     private int _stageIndex;
 
-    // Panel이 구독해서 어느 스테이지/어느 쪽이 클릭됐는지 알 수 있게 함
     public event Action<int, int> OnOptionClicked; // (stageIndex, side)
 
     public void ApplyStageNodes(PerksTree tree, int stageIndex)
@@ -30,10 +32,9 @@ public class PerksItemUI : MonoBehaviour
             _leftButton.onClick.RemoveAllListeners();
             _leftButton.onClick.AddListener(() =>
             {
-                if (_tree != null)
-                    _tree.Select(_stageIndex, PerksTree.SideLeft);
-
+                _tree?.Select(_stageIndex, PerksTree.SideLeft);
                 OnOptionClicked?.Invoke(_stageIndex, PerksTree.SideLeft);
+                Refresh();
             });
         }
 
@@ -42,10 +43,9 @@ public class PerksItemUI : MonoBehaviour
             _rightButton.onClick.RemoveAllListeners();
             _rightButton.onClick.AddListener(() =>
             {
-                if (_tree != null)
-                    _tree.Select(_stageIndex, PerksTree.SideRight);
-
+                _tree?.Select(_stageIndex, PerksTree.SideRight);
                 OnOptionClicked?.Invoke(_stageIndex, PerksTree.SideRight);
+                Refresh();
             });
         }
 
@@ -58,16 +58,17 @@ public class PerksItemUI : MonoBehaviour
 
         int selected = _tree.GetSelectedSide(_stageIndex);
 
-        ApplyButtonStyle(_leftButton, isSelected: selected == PerksTree.SideLeft);
-        ApplyButtonStyle(_rightButton, isSelected: selected == PerksTree.SideRight);
+        SetSprite(_leftButton, selected == PerksTree.SideLeft);
+        SetSprite(_rightButton, selected == PerksTree.SideRight);
     }
 
-    private void ApplyButtonStyle(Button button, bool isSelected)
+    private void SetSprite(Button button, bool isSelected)
     {
         if (button == null) return;
 
-        Image img = button.GetComponent<Image>();
-        if (img != null)
-            img.color = isSelected ? Color.red : Color.white;
+        var img = button.targetGraphic as Image;
+        if (img == null) return;
+
+        img.sprite = isSelected ? _selectedSprite : _normalSprite;
     }
 }
