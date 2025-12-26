@@ -10,6 +10,7 @@ public class UIManager : SingletonePattern<UIManager>
     private Stack<GameObject> _uiStack;
 
     public event Action PauseUItrigger;
+    public event Action AllUIClosed;
 
     protected override void Awake()
     {
@@ -77,6 +78,7 @@ public class UIManager : SingletonePattern<UIManager>
             if (_inputSystem != null)
             {
                 GameManager.Instance.TogglePause();
+                AllUIClosed?.Invoke();
                 _inputSystem.SwitchCurrentActionMap("Player");
             }
         }

@@ -20,6 +20,7 @@ public static class PerkCalculator
                 case StatId.Player_DodgeCoolTime: ClacFloat(ref s.DodgeCoolTime, m); break;
                 case StatId.Player_SpecialCoolTime: ClacFloat(ref s.SpecialCoolTime, m); break;
                 case StatId.Player_AttackSlowRate: ClacFloat(ref s.AttackSlowRate, m); break;
+                case StatId.Player_AttackMinSpeed: ClacFloat(ref s.AttackMinSpeed, m); break;                
             }
         }
     }
@@ -37,6 +38,7 @@ public static class PerkCalculator
                 case StatId.Weapon_ProjectileCount: CalcInt(ref s.ProjectileCount, m); break;
                 case StatId.Weapon_ProjectileRange: ClacFloat(ref s.ProjectileRange, m); break;
                 case StatId.Weapon_ProjectileSpeed: ClacFloat(ref s.ProjectileSpeed, m); break;
+                case StatId.Weapon_ProjectileAngle: ClacFloat(ref s.ProjectileAngle, m); break;
 
                 case StatId.Weapon_SpecialAttack: ClacFloat(ref s.SpecialAttack, m); break;
                 case StatId.Weapon_SpecialBeforeDelay: ClacFloat(ref s.SpecialAttackBeforeDelay, m); break;
@@ -44,6 +46,18 @@ public static class PerkCalculator
                 case StatId.Weapon_SpecialProjectileCount: CalcInt(ref s.SpecialProjectileCount, m); break;
                 case StatId.Weapon_SpecialProjectileRange: ClacFloat(ref s.SpecialProjectileRange, m); break;
                 case StatId.Weapon_SpecialProjectileSpeed: ClacFloat(ref s.SpecialProjectileSpeed, m); break;
+
+                case StatId.Weapon_RifleMode:
+                    CalcInt(ref s.RifleMode, m);
+                    break;
+
+                case StatId.Weapon_ShotgunMode:
+                    CalcInt(ref s.ShotgunMode, m);
+                    break;
+
+                case StatId.Weapon_SniperMode:
+                    CalcInt(ref s.SniperMode, m);
+                    break;
             }
         }
     }

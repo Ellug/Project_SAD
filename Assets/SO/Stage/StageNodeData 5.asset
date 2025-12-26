@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae57b753d0dd8a24b947cdb625f06555, type: 3}
-  m_Name: StageNodeData
+  m_Name: StageNodeData 5
   m_EditorClassIdentifier: Assembly-CSharp::StageNodeData
-  _stageNumber: Stage 1
-  _areaInfo: "\uC5EC\uC12F\uAC08\uB798 \uAE38"
-  _bossInfo: "\uBCF4\uC2A4 \uC815\uBCF4"
+  _stageNumber: 5
+  _bossImage: {fileID: 21300000, guid: 8d11ecb25118b8b4c8cd9a901e884fbb, type: 3}
+  _bossInfo: "(\uC608\uC2DC) \uAC70\uC758 \uBAA8\uB4E0 \uD328\uD134\uC744 \uB3D9\uC2DC
+    \uB2E4\uBC1C\uC801\uC73C\uB85C \uAD6C\uC0AC\uD55C\uB2E4."

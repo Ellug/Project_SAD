@@ -47,6 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sniper
   _weaponData: {fileID: 11400000, guid: 05085080f1e69ad43beae1b9e96a5fc0, type: 2}
   _perksTree: {fileID: 729990337974837786}
+  _maxBounces: 3
+  _bouncedDamageMul: 3
+  _shotsPerCycle: 4
+  _fourthShotMul: 2
 --- !u!114 &729990337974837786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,4 +114,46 @@ MonoBehaviour:
       - stat: 11
         op: 1
         value: 0.25
+      buffs: []
+  - left:
+      mods:
+      - stat: 24
+        op: 2
+        value: 1
+      buffs: []
+    right:
+      mods:
+      - stat: 24
+        op: 2
+        value: 2
+      buffs: []
+  - left:
+      mods: []
+      buffs:
+      - trigger: 0
+        duration: 1
+        mods:
+        - stat: 16
+          op: 0
+          value: 1
+    right:
+      mods:
+      - stat: 6
+        op: 0
+        value: 2
+      - stat: 10
+        op: 1
+        value: 0.5
+      - stat: 11
+        op: 1
+        value: 0.5
+      - stat: 14
+        op: 1
+        value: 0.5
+      - stat: 1
+        op: 1
+        value: 0.5
+      - stat: 2
+        op: 1
+        value: 0.5
       buffs: []

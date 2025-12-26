@@ -26,7 +26,7 @@ public abstract class InteractionableObject : MonoBehaviour
         if ( other.CompareTag("Player") )
         {
             GameManager.Instance.OnGameStateChanged += OffInteractionKey;
-            other.gameObject.GetComponent<PlayerController>()._interactionObject += OnInteract;
+            other.gameObject.GetComponent<PlayerController>().interactionObject += OnInteract;
             _interactionKey.SetActive(true);
             _keyTransform = _interactionKey.GetComponent<RectTransform>();
         }
@@ -48,7 +48,7 @@ public abstract class InteractionableObject : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<PlayerController>()._interactionObject -= OnInteract;
+            other.gameObject.GetComponent<PlayerController>().interactionObject -= OnInteract;
             _interactionKey.SetActive(false);
             GameManager.Instance.OnGameStateChanged -= OffInteractionKey;
         }

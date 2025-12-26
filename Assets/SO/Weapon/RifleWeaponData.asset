@@ -14,18 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   _weaponPrefab: {fileID: 7917165348537499237, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
   _weaponId: 0
-  attack: 10
+  _fireClip: {fileID: 8300000, guid: 13a19d51bbc14a24db723db8b5b11911, type: 3}
+  _reloadClip: {fileID: 0}
+  attack: 6
   attackSpeed: 10
   projectileCount: 1
-  projectileAngle: 0
-  projectileRange: 50
-  projectileSpeed: 20
+  projectileAngle: 3
+  projectileRange: 30
+  projectileSpeed: 50
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
   SpecialAttack: 10
   SpecialAttackBeforeDelay: 1
   SpecialAttackAfterDelay: 0.5
   SpecialProjectileCount: 1
   SpecialProjectileAngle: 0
-  SpecialProjectileRange: 5
-  SpecialProjectileSpeed: 5
+  SpecialProjectileRange: 30
+  SpecialProjectileSpeed: 40
   SpecialProjectilePrefab: {fileID: 8378940865896947848, guid: bd4a612256ec45a46beb3d67d910c36d, type: 3}
