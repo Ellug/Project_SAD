@@ -12,7 +12,7 @@ public class StageMapUI : MonoBehaviour
     private Image _bossImage;
     private StageNodeData _selectedStage;
 
-    private void Start()
+    void Start()
     {
         _infoText = _nodeDataPanel.GetComponentsInChildren<TextMeshProUGUI>();
         Image[] images = _nodeDataPanel.GetComponentsInChildren<Image>();
