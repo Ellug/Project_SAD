@@ -24,7 +24,7 @@ public class WeaponSound : MonoBehaviour
 
     void PlayFire(WeaponRuntimeStats stats)
     {
-        audioSource.PlayOneShot(stats.FireClip);
+        audioSource.PlayOneShot(stats.FireClip, 0.5f);
     }
 
     void PlayReload(WeaponRuntimeStats stats)
