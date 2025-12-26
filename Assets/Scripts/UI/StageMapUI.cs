@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageMapUI : MonoBehaviour
 {
@@ -8,11 +9,17 @@ public class StageMapUI : MonoBehaviour
     [SerializeField] private Sprite _unknownImage;
 
     private TextMeshProUGUI[] _infoText;
+    private Image _bossImage;
     private StageNodeData _selectedStage;
 
     private void Start()
     {
         _infoText = _nodeDataPanel.GetComponentsInChildren<TextMeshProUGUI>();
+        Image[] images = _nodeDataPanel.GetComponentsInChildren<Image>();
+        if (images.Length > 1)
+            _bossImage = images[1];
+        else
+            Debug.LogError("Not Found Image Component in Stage Select UI");
     }
 
     private void OnDisable()
@@ -26,9 +33,15 @@ public class StageMapUI : MonoBehaviour
         {
             _infoText[0].text = $"STAGE {data.StageNumber}";
             if (isUnlock)
+            {
                 _infoText[1].text = data.BossInfo;
+                _bossImage.sprite = _selectedStage.BossImage;
+            }
             else
+            {
                 _infoText[1].text = "잠금 상태";
+                _bossImage.sprite = _unknownImage;
+            }
         }
         else
         {
