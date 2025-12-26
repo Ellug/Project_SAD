@@ -1,3 +1,5 @@
+﻿using UnityEngine;
+
 public struct WeaponRuntimeStats
 {
     // Normal
@@ -18,6 +20,10 @@ public struct WeaponRuntimeStats
     public float SpecialProjectileRange;
     public float SpecialProjectileSpeed;
     public PlayerBullet SpecialProjectilePrefab;
+
+    //Audio
+    public AudioClip FireClip;
+    public AudioClip ReloadClip;
 
     // Dynamic Mode
     public int RifleMode; // 0 none 1 Nobrain 2 Minigun
@@ -44,6 +50,9 @@ public struct WeaponRuntimeStats
             SpecialProjectileRange = d.SpecialProjectileRange,
             SpecialProjectileSpeed = d.SpecialProjectileSpeed,
             SpecialProjectilePrefab = d.SpecialProjectilePrefab,
+
+            FireClip = d.FireClip,
+            ReloadClip = d.ReloadClip,
 
             RifleMode = 0,
             ShotgunMode = 0,

@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   _weaponPrefab: {fileID: 7917165348537499237, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
   _weaponId: 0
-  attack: 10
+  _fireClip: {fileID: 8300000, guid: 13a19d51bbc14a24db723db8b5b11911, type: 3}
+  _reloadClip: {fileID: 0}
+  attack: 6
   attackSpeed: 10
   projectileCount: 1
   projectileAngle: 3
