@@ -1,81 +1,90 @@
 ﻿using UnityEngine;
 using System.Collections;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class FireArea : MonoBehaviour, IPoolable
 {
-    private PoolMember _poolMember;
-    [Tooltip("화염장판 판정 범위")][SerializeField] float _FireAreaRange;
-    [Tooltip("화염장판 지속 시간")][SerializeField] float _FireAreaLifeTime;
-    [Tooltip("화염장판 데미지")][SerializeField] float _Dmg;
-    [Tooltip("데미지 딜레이")][SerializeField] float _DmgDelay;
-    [Tooltip("화상 지속시간")][SerializeField] float _BurnDebuffTime;
-    [Tooltip("화상 데미지")][SerializeField] float _BurnDmg;
-    [Tooltip("화상 틱")][SerializeField] float _TickInterval;
-    [Tooltip("타겟 레이어")][SerializeField] LayerMask Layer;
-    private ParticleSystem _FireArea;
-    private GameObject Player;
-    private bool CheckDelay = true;
-    private Coroutine DelayCoroutine;
+    [Header("화염장판 설정")]
+    [Tooltip("실제 타격 판정 범위 (지름)")][SerializeField] float _FireAreaRange = 5.0f;
+    [Tooltip("화염장판 지속 시간")][SerializeField] float _FireAreaLifeTime = 5.0f;
+    [Tooltip("화염장판 데미지")][SerializeField] float _Dmg = 10.0f;
+    [Tooltip("데미지 딜레이")][SerializeField] float _DmgDelay = 0.5f;
 
-    private void Start()
+    [Header("디버프 설정")]
+    [Tooltip("화상 지속시간")][SerializeField] float _BurnDebuffTime = 2.0f;
+    [Tooltip("화상 데미지")][SerializeField] float _BurnDmg = 5.0f;
+    [Tooltip("화상 틱")][SerializeField] float _TickInterval = 0.5f;
+
+    private GameObject _player;
+    private bool _checkDelay = true;
+    private Coroutine _delayCoroutine;
+
+    private void OnValidate()
     {
-        Invoke("DespawnFireArea", _FireAreaLifeTime);
+        UpdateVisuals();
+    }
+
+    public void Init(GameObject player)
+    {
+        _player = player;
+        _checkDelay = true;
+        UpdateVisuals();
+        Invoke(nameof(DespawnFireArea), _FireAreaLifeTime);
+    }
+
+    private void UpdateVisuals()
+    {
+        if (transform.childCount == 0) return;
+        Transform bottom = transform.GetChild(0);
+        if (bottom == null) return;
+
+        for (int i = 0; i < bottom.childCount; i++)
+        {
+            Transform child = bottom.GetChild(i);
+
+            float multiplier = child.name.Contains("Aura") ? 1.6f : 1.0f;
+
+            float finalScale = (_FireAreaRange / 5.0f) * multiplier;
+
+            child.localScale = new Vector3(finalScale, finalScale, finalScale);
+        }
     }
 
     private void Update()
     {
-        bool TargetHit = Physics.CheckSphere(transform.position, _FireAreaRange, Layer);
-        if (TargetHit) 
+        if (_player == null || !_checkDelay) return;
+
+        if (Physics.CheckSphere(transform.position, _FireAreaRange * 0.5f, 1 << _player.layer))
         {
-            Player.TryGetComponent<PlayerModel>(out var player);
-            if (CheckDelay) 
+            if (_player.TryGetComponent<PlayerModel>(out var playerModel))
             {
-                player.TakeDamage(_Dmg);
-                player.BurnDebuff(_BurnDmg, _BurnDebuffTime, _TickInterval);
-                CheckDelay = false;
-                DelayCoroutine = StartCoroutine(DmgDelayTime());                
-            }     
+                playerModel.TakeDamage(_Dmg);
+                playerModel.BurnDebuff(_BurnDmg, _BurnDebuffTime, _TickInterval);
+
+                _checkDelay = false;
+                _delayCoroutine = StartCoroutine(DmgDelayTime());
+            }
         }
     }
-    public void SetTarget(GameObject player) 
-    {
-        Player = player;
-    }
 
-    private void DespawnFireArea() 
+    private void DespawnFireArea()
     {
-        if (DelayCoroutine != null)
-            StopCoroutine(DelayCoroutine);
+        CancelInvoke();
+        if (_delayCoroutine != null) StopCoroutine(_delayCoroutine);
         PoolManager.Instance.Despawn(gameObject);
     }
-    IEnumerator DmgDelayTime()
+
+    private IEnumerator DmgDelayTime()
     {
         yield return new WaitForSeconds(_DmgDelay);
-        CheckDelay = true;
+        _checkDelay = true;
     }
 
-    //판정 범위 체크용 함수 씬에서 확인할 것
     private void OnDrawGizmos()
     {
-        if (transform.position == null) return;
-
-        // 실제 로직과 동일한 체크 수행 (디버그용)
-        bool isHit = Physics.CheckSphere(transform.position, _FireAreaRange, Layer);
-
-        // 감지되면 초록색, 아니면 빨간색
-        Gizmos.color = isHit ? Color.green : Color.red;
-
-        // 원 그리기
-        Gizmos.DrawWireSphere(transform.position, _FireAreaRange);
+        Gizmos.color = _checkDelay ? Color.red : Color.green;
+        Gizmos.DrawWireSphere(transform.position, _FireAreaRange * 0.5f);
     }
 
-
-    public void OnSpawned()
-    {
-    }
-
-    public void OnDespawned()
-    {
-    }
+    public void OnSpawned() { }
+    public void OnDespawned() { }
 }

@@ -17,15 +17,20 @@ public class FireCannon : BulletBase
     [Tooltip("화상 틱 인터벌")] public float BurnDebuffInterval = 0.1f;
 
 
-    public override void OnSpawned()
+    void Start()
     {
-        base.OnSpawned();
-
         if (_MuzzlePrefab != null)
         {
             GameObject muzzleVFX = Instantiate(_MuzzlePrefab, transform.position, transform.rotation);
-            var ps = muzzleVFX.GetComponent<ParticleSystem>() ?? muzzleVFX.GetComponentInChildren<ParticleSystem>();
-            if (ps != null) Destroy(muzzleVFX, ps.main.duration);
+
+            var ps = muzzleVFX.GetComponent<ParticleSystem>();
+            if (ps != null)
+                Destroy(muzzleVFX, ps.main.duration);
+            else if (muzzleVFX.transform.childCount > 0)
+            {
+                var psChild = muzzleVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+                if (psChild != null) Destroy(muzzleVFX, psChild.main.duration);
+            }
         }
     }
 
