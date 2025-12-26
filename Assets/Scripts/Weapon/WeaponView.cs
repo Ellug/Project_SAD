@@ -1,62 +1,50 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WeaponView : MonoBehaviour
 {
-    [SerializeField] private PlayerModel _playerModel;
-    [SerializeField] private Transform _muzzlePos;
-    [SerializeField] private GameObject _weaponList;
     [SerializeField] private GameObject _weaponSelectMainUI;
-    // [SerializeField] private GameObject _perkSelectPanel;
     [SerializeField] private PerkSelectPanelUI _perkPanelUI;
     [SerializeField] private WeaponBase[] _allWeaponData;
 
+    [Header("UI Selection (visual only)")]
+    [SerializeField] private WeaponSelectUI _weaponSelectUI;
+
     private WeaponPresenter _presenter;
-    // private Button[] _perkSelectList;
     private PerksTree _perksTree;
     private TextMeshProUGUI _titleText;
-    private int _selectedWeapon;
-    private WeaponSelectButtonUI[] _weaponBtns;
 
     void Start()
     {
         Init();
+        
+        if (_weaponSelectUI != null)
+            _weaponSelectUI.OnWeaponClicked += OnClickWeapon;
 
-        // 기본 무기 표시(EquipManager 기준)
+        // 기본 무기 표시(EquipManager 기준) - WeaponSelectUI가 표시 담당
+        int defaultId = 0;
         if (EquipManager.Instance != null && EquipManager.Instance.Weapon != null)
-            ApplyWeaponSelectedVisual(EquipManager.Instance.Weapon.GetWeaponId());
-        else
-            ApplyWeaponSelectedVisual(0); // fallback
+            defaultId = EquipManager.Instance.Weapon.GetWeaponId();
+
+        if (_weaponSelectUI != null)
+            _weaponSelectUI.SetSelectedVisualOnly(defaultId);
 
         WeaponModel model = new();
         model.Init(_allWeaponData);
         _presenter = new WeaponPresenter(model, this);
         _presenter.Init();
-
-        UIManager.Instance.AllUIClosed += InitSelectedWeapon;
-        _selectedWeapon = -1;
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
-        UIManager.Instance.AllUIClosed -= InitSelectedWeapon;
+        if (_weaponSelectUI != null)
+            _weaponSelectUI.OnWeaponClicked -= OnClickWeapon;
     }
 
     // 무기 버튼과 특전 버튼을 모두 가져옴
     private void Init()
     {
         _titleText = _weaponSelectMainUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        // _perkSelectList = _perkSelectPanel.GetComponentsInChildren<Button>();
-
-        // UI 담당자 : 아래 버튼 텍스트 초기화는 텍스트가 사라지면서 사용하지 않게됨.
-
-        //TextMeshProUGUI buttonText;
-        //foreach (Button button in _perkSelectList)
-        //{
-        //    buttonText = button.transform.GetComponentInChildren<TextMeshProUGUI>();
-        //    buttonText.text = "";
-        //}
     }
 
     // 무기를 선택하면 일어날 일.
@@ -83,15 +71,11 @@ public class WeaponView : MonoBehaviour
         if (_perkPanelUI != null)
             _perkPanelUI.ApplyPerksTree(tree);
 
-        _selectedWeapon = weaponId;
-
         if (!UIManager.Instance.IsUIPopUp())
             UIManager.Instance.OpenUI(_weaponSelectMainUI);
 
         if (_titleText != null && weaponId >= 0 && weaponId < _allWeaponData.Length)
             _titleText.text = $"{_allWeaponData[weaponId].name.ToUpper()}";
-
-        ApplyWeaponSelectedVisual(weaponId);
     }
 
     private void BindPerksTree(PerksTree tree)
@@ -113,46 +97,5 @@ public class WeaponView : MonoBehaviour
     {
         // 선택 상태를 GameManager에 저장
         EquipManager.Instance.SavePerksFrom(_perksTree);
-
-        // 여기서 버튼 텍스트/하이라이트 갱신해도 됨. 현재는 
-    }
-
-    public void InitSelectedWeapon()
-    {
-        _selectedWeapon = -1;
-    }
-
-    // 무기 선택
-    private void CacheWeaponButtons()
-    {
-        _weaponBtns = _weaponList.GetComponentsInChildren<WeaponSelectButtonUI>(true);
-
-        foreach (var wb in _weaponBtns)
-        {
-            if (wb == null || wb.button == null) continue;
-
-            // 일반/선택 스프라이트 캐싱
-            Image img = wb.button.targetGraphic as Image;
-            wb.normalSprite = img != null ? img.sprite : null;
-            wb.selectedSprite = wb.button.spriteState.selectedSprite; // 인스펙터에 넣어둔 Selected Sprite 재사용
-        }
-    }
-
-    private void ApplyWeaponSelectedVisual(int selectedWeaponId)
-    {
-        if (_weaponBtns == null) return;
-
-        foreach (var wb in _weaponBtns)
-        {
-            if (wb == null || wb.button == null) continue;
-
-            Image img = wb.button.targetGraphic as Image;
-            if (img == null) continue;
-
-            bool isSelected = (wb.weaponId == selectedWeaponId);
-
-            // 선택된 것만 selectedSprite, 나머지는 normalSprite
-            img.sprite = isSelected && wb.selectedSprite != null ? wb.selectedSprite : wb.normalSprite;
-        }
     }
 }
