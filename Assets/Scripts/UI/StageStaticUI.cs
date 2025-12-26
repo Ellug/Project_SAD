@@ -16,7 +16,7 @@ public class StageStaticUI : MonoBehaviour
         GameManager.Instance.OnGameStateChanged += GameResultProcess;
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         if (UIManager.Instance != null)
             UIManager.Instance.PauseUItrigger -= OnOpenPausePanel;

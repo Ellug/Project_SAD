@@ -1602,7 +1602,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PerkSelectPanelUI
   _stagePrefab: {fileID: -6615798339690751584, guid: 91dc3bdb95e01f44eb5cddaca7ee7948, type: 3}
   _root: {fileID: 249944682}
-  _status: {fileID: 0}
   _desc: {fileID: 1880260542}
 --- !u!114 &249944684
 MonoBehaviour:
@@ -1718,7 +1717,6 @@ GameObject:
   - component: {fileID: 305157676}
   - component: {fileID: 305157675}
   - component: {fileID: 305157674}
-  - component: {fileID: 305157677}
   m_Layer: 5
   m_Name: FirstWeapon
   m_TagString: Untagged
@@ -1778,7 +1776,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 21300000, guid: 396b50eb6dfe246cba1ce8c87d0a6b64, type: 3}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -1841,22 +1839,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305157672}
   m_CullTransparentMesh: 1
---- !u!114 &305157677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305157672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da3e9b003bf8caf4e8bd6e6cade00942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponSelectButtonUI
-  weaponId: 0
-  button: {fileID: 305157674}
-  normalSprite: {fileID: 0}
-  selectedSprite: {fileID: 0}
 --- !u!1 &311799075
 GameObject:
   m_ObjectHideFlags: 0
@@ -3044,7 +3026,6 @@ GameObject:
   - component: {fileID: 753163628}
   - component: {fileID: 753163627}
   - component: {fileID: 753163626}
-  - component: {fileID: 753163629}
   m_Layer: 5
   m_Name: SecondWeapon
   m_TagString: Untagged
@@ -3104,7 +3085,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 21300000, guid: 396b50eb6dfe246cba1ce8c87d0a6b64, type: 3}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -3167,22 +3148,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 753163624}
   m_CullTransparentMesh: 1
---- !u!114 &753163629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 753163624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da3e9b003bf8caf4e8bd6e6cade00942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponSelectButtonUI
-  weaponId: 1
-  button: {fileID: 753163626}
-  normalSprite: {fileID: 0}
-  selectedSprite: {fileID: 0}
 --- !u!1 &759210346
 GameObject:
   m_ObjectHideFlags: 0
@@ -4591,6 +4556,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 967578168}
+  - component: {fileID: 967578169}
   m_Layer: 5
   m_Name: WeaponSelect
   m_TagString: Untagged
@@ -4620,6 +4586,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &967578169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967578167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da3e9b003bf8caf4e8bd6e6cade00942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponSelectUI
+  _entries:
+  - weaponId: 0
+    button: {fileID: 305157674}
+    targetImage: {fileID: 305157675}
+  - weaponId: 1
+    button: {fileID: 753163626}
+    targetImage: {fileID: 753163627}
+  - weaponId: 2
+    button: {fileID: 1009566881}
+    targetImage: {fileID: 1009566882}
+  _normalSprite: {fileID: 21300000, guid: c907b7e795fee4f4b9dfae0581a656b5, type: 3}
+  _selectedSprite: {fileID: 21300000, guid: 396b50eb6dfe246cba1ce8c87d0a6b64, type: 3}
 --- !u!1 &1009566879
 GameObject:
   m_ObjectHideFlags: 0
@@ -4632,7 +4622,6 @@ GameObject:
   - component: {fileID: 1009566883}
   - component: {fileID: 1009566882}
   - component: {fileID: 1009566881}
-  - component: {fileID: 1009566884}
   m_Layer: 5
   m_Name: ThirdWeapon
   m_TagString: Untagged
@@ -4692,7 +4681,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 21300000, guid: 396b50eb6dfe246cba1ce8c87d0a6b64, type: 3}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -4755,22 +4744,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1009566879}
   m_CullTransparentMesh: 1
---- !u!114 &1009566884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009566879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da3e9b003bf8caf4e8bd6e6cade00942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponSelectButtonUI
-  weaponId: 2
-  button: {fileID: 1009566881}
-  normalSprite: {fileID: 0}
-  selectedSprite: {fileID: 0}
 --- !u!1 &1020918823
 GameObject:
   m_ObjectHideFlags: 0
@@ -6816,6 +6789,7 @@ MonoBehaviour:
   - {fileID: 1683954902342705239, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
   - {fileID: 2037118111499405556, guid: 1fc66bc9096e59440bdbf73ea626377c, type: 3}
   - {fileID: 2196959210431760054, guid: 84565852de6988e43b1f083de2fdd742, type: 3}
+  _weaponSelectUI: {fileID: 0}
 --- !u!1 &1546146871
 GameObject:
   m_ObjectHideFlags: 0

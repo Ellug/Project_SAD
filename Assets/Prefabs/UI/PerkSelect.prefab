@@ -108,7 +108,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 21300000, guid: 8011de6f0723e4185a425e39e1676ac6, type: 3}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -387,8 +387,8 @@ MonoBehaviour:
   _stageText: {fileID: 8660582992958316918}
   _leftButton: {fileID: 8604844589587437344}
   _rightButton: {fileID: 7014648461916632240}
-  _leftButtonText: {fileID: 0}
-  _rightButtonText: {fileID: 0}
+  _normalSprite: {fileID: 21300000, guid: a6beb346342b54f0db835309d59d0a4c, type: 3}
+  _selectedSprite: {fileID: 21300000, guid: 8011de6f0723e4185a425e39e1676ac6, type: 3}
 --- !u!1 &7447256191452835739
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,7 +572,7 @@ MonoBehaviour:
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 21300000, guid: 8011de6f0723e4185a425e39e1676ac6, type: 3}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal

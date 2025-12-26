@@ -10,7 +10,7 @@ public class StageMapUI : MonoBehaviour
     private TextMeshProUGUI[] _infoText;
     private StageNodeData _selectedStage;
 
-    private void Start()
+    void Start()
     {
         _infoText = _nodeDataPanel.GetComponentsInChildren<TextMeshProUGUI>();
     }

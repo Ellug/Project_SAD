@@ -156,16 +156,7 @@ MonoBehaviour:
           op: 1
           value: 1
     right:
-      mods:
-      - stat: 10
-        op: 1
-        value: 0.2
-      - stat: 11
-        op: 1
-        value: 2
-      - stat: 9
-        op: 1
-        value: -0.5
+      mods: []
       buffs:
       - trigger: 1
         duration: 3
