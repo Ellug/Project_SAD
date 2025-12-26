@@ -12,17 +12,14 @@ public class WeaponSound : MonoBehaviour
         {
             _weapon.OnFire -= PlayFire;
             _weapon.OnReload -= PlayReload;
+            _weapon.OnSPFire -= PlaySPFire;
         }
 
         _weapon = weapon;
 
         _weapon.OnFire += PlayFire;
         _weapon.OnReload += PlayReload;
-    }
-    public void UnBind(WeaponBase weapon)
-    {
-        weapon.OnFire -= PlayFire;
-        weapon.OnReload -= PlayReload;
+        _weapon.OnSPFire += PlaySPFire;
     }
 
     void PlayFire(WeaponRuntimeStats stats)
@@ -33,5 +30,9 @@ public class WeaponSound : MonoBehaviour
     void PlayReload(WeaponRuntimeStats stats)
     {
         audioSource.PlayOneShot(stats.ReloadClip);
+    }
+    void PlaySPFire(WeaponRuntimeStats stats)
+    {
+        audioSource.PlayOneShot(stats.SPFireClip);
     }
 }

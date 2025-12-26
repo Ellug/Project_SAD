@@ -23,6 +23,7 @@ public struct WeaponRuntimeStats
 
     //Audio
     public AudioClip FireClip;
+    public AudioClip SPFireClip;
     public AudioClip ReloadClip;
 
     // Dynamic Mode
@@ -52,6 +53,7 @@ public struct WeaponRuntimeStats
             SpecialProjectilePrefab = d.SpecialProjectilePrefab,
 
             FireClip = d.FireClip,
+            SPFireClip = d.SPFireClip,
             ReloadClip = d.ReloadClip,
 
             RifleMode = 0,

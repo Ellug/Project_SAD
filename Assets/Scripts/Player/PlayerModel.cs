@@ -45,6 +45,8 @@ public class PlayerModel : MonoBehaviour
     private float _curDebuffSlowTime = 0f;
     private float _debuffSlowRate = 0f;
 
+    private bool _isSPFireSoundReady = false;
+
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
     public PlayerFinalStats FinalStats => _statsContext.Current;
@@ -218,6 +220,14 @@ public class PlayerModel : MonoBehaviour
 
         if (_statsContext != null)
             _statsContext.TickBuffs(deltaTime);
+
+        bool canSpecial = _curSpecialCoolTime <= 0f;
+        
+        if (!_isSPFireSoundReady && canSpecial)
+        {
+            CurrentWeapon?.NotifySpecialReady();
+        }
+        _isSPFireSoundReady = canSpecial;
     }
 
     public void SetWeapon(WeaponBase weapon)

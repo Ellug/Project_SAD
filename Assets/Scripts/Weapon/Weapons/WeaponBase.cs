@@ -17,6 +17,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     public event Action<WeaponRuntimeStats> OnFire;
     public event Action<WeaponRuntimeStats> OnReload;
+    public event Action<WeaponRuntimeStats> OnSPFire;
 
     protected virtual void Awake()
     {
@@ -44,7 +45,6 @@ public abstract class WeaponBase : MonoBehaviour
     {
         if (_specialAttackRoutine != null)
             StopCoroutine(_specialAttackRoutine);
-
         _specialAttackRoutine = StartCoroutine(CoSpecialAttack());
     }
 
@@ -69,6 +69,7 @@ public abstract class WeaponBase : MonoBehaviour
 
         yield return StartCoroutine(CoBeforeSpecialAttack(stats));
         FireProjectile(true);
+        FireSound(stats, true);
         yield return StartCoroutine(CoAfterSpecialAttack(stats));
 
         _specialAttackRoutine = null;
@@ -92,7 +93,7 @@ public abstract class WeaponBase : MonoBehaviour
         if (_statsContext == null) return;
 
         WeaponRuntimeStats stats = _statsContext.Current.Weapon;
-        
+
         int count = Mathf.Max(1, isSpecial ? stats.SpecialProjectileCount : stats.ProjectileCount);
         float totalAngle = isSpecial ? stats.SpecialProjectileAngle : stats.ProjectileAngle;
 
@@ -124,14 +125,27 @@ public abstract class WeaponBase : MonoBehaviour
     protected void SpawnBullet(Vector3 pos, Vector3 dir, WeaponRuntimeStats stats, bool isSpecial)
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
-        
+
         PlayerBullet prefab = isSpecial ? stats.SpecialProjectilePrefab : stats.ProjectilePrefab;
         PlayerBullet bullet = PoolManager.Instance.Spawn(prefab, pos, rot);
         bullet.Init(stats, isSpecial);
     }
 
-    protected void FireSound(WeaponRuntimeStats stats)
+    protected void FireSound(WeaponRuntimeStats stats, bool isSPFire)
     {
-        OnFire?.Invoke(stats);
+        if (isSPFire)
+            OnSPFire?.Invoke(stats);
+        else
+            OnFire?.Invoke(stats);
+    }
+    protected void ReloadSound(WeaponRuntimeStats stats)
+    {
+        OnReload?.Invoke(stats);
+    }
+
+    public void NotifySpecialReady()
+    {
+        if (_statsContext == null) return;
+        ReloadSound(_statsContext.Current.Weapon);
     }
 }
