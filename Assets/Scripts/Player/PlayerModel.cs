@@ -48,6 +48,7 @@ public class PlayerModel : MonoBehaviour
 
     //화상 디버프 코루틴
     private Coroutine _burnCoroutine;
+    private Coroutine _coldCoroutine;
 
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
@@ -255,6 +256,14 @@ public class PlayerModel : MonoBehaviour
         _burnCoroutine = StartCoroutine(ProcessBurn(BurnDmg, Burnduration, TickInterval));
     }
 
+    public void ColdDebuff(float ColdDmg, float Coldduration, float TickInterval)
+    {
+        if (_coldCoroutine != null)
+            StopCoroutine(_coldCoroutine);
+
+        _coldCoroutine = StartCoroutine(Processcold(ColdDmg, Coldduration, TickInterval));
+    }
+
     private IEnumerator ProcessBurn(float BurnDmg, float Burnduration, float TickInterval)
     {
         float BurnTime = 0;
@@ -267,6 +276,20 @@ public class PlayerModel : MonoBehaviour
         }
 
         _burnCoroutine = null; 
+    }
+
+    private IEnumerator Processcold(float ColdDmg, float Coldduration, float TickInterval)
+    {
+        float ColdTime = 0;
+        while (ColdTime < Coldduration)
+        {
+            TakeDamage(ColdDmg * TickInterval);
+
+            yield return new WaitForSeconds(TickInterval);
+            ColdTime += TickInterval;
+        }
+
+        _coldCoroutine = null;
     }
 
     private void Die()

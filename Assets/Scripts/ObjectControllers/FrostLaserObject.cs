@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserObject : MonoBehaviour
+public class FrostLaserObject : MonoBehaviour
 {
     private bool _moving = false;
     private bool _rotate = false;
@@ -15,11 +15,11 @@ public class LaserObject : MonoBehaviour
     private Coroutine _actionCoroutine;
     private GameObject Player;
 
-    private SetLaser[] _lasers;
+    private SetFrostLaser[] _lasers;
 
     private void Awake()
     {
-        _lasers = GetComponentsInChildren<SetLaser>(true);
+        _lasers = GetComponentsInChildren<SetFrostLaser>(true);
     }
 
     private void Start()

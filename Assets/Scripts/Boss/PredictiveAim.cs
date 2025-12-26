@@ -18,6 +18,8 @@ public class PredictiveAim : MonoBehaviour
     [SerializeField] public LayerMask targetLayer;
     private void Awake()
     {
+        Player = GameObject.FindGameObjectWithTag("Player");
+        PlayerRB = Player.GetComponent<Rigidbody>();
         LastTransform = Player.transform.position;
         coroutine = StartCoroutine(PlayerLastTransform());
     }

@@ -54,7 +54,7 @@ MonoBehaviour:
   _WarnningDTime: 0.5
   _FireBallPrefab: {fileID: 3146484714131750423, guid: c85a7a8f39ebfa74b9364a7dbe16cff3, type: 3}
   _SpawnPoint: {fileID: 2617888972641789572, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
-  _SpawnYOffset: 3
+  _SpawnYOffset: 5
 --- !u!1 &7741844210700611161
 GameObject:
   m_ObjectHideFlags: 0
