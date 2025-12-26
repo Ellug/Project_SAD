@@ -5,6 +5,7 @@ public class StageMapUI : MonoBehaviour
 {
     [SerializeField] private GameObject _nodeDataPanel;
     [SerializeField] private StageNodeData[] _stageNodeData;
+    [SerializeField] private Sprite _unknownImage;
 
     private TextMeshProUGUI[] _infoText;
     private StageNodeData _selectedStage;
