@@ -13,6 +13,7 @@ public class StageDynamicUI : MonoBehaviour
 
     [Header("Boss UI")]
     [SerializeField] private Transform _bossHpBar;
+    [SerializeField] private Transform _bossHpFollowingBar;
     [SerializeField] private TextMeshProUGUI _bossHpText;
     [SerializeField] private Transform _outOfScreenBoss;
 
@@ -80,7 +81,10 @@ public class StageDynamicUI : MonoBehaviour
 
         float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp;
 
-        _bossHpBar.transform.DOLocalMove(HpBarCalculator(1000f, ratio), 0.5f).SetUpdate(true);
+        Vector3 pos = HpBarCalculator(1000f, ratio);
+
+        _bossHpFollowingBar.transform.DOLocalMove(pos, 0.8f).SetUpdate(true);
+        _bossHpBar.transform.localPosition = pos;
 
         _bossHpText.text = $"{Math.Ceiling(ratio * 100f)}%";
     }
