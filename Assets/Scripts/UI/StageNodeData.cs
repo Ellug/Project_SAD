@@ -4,10 +4,10 @@
 public class StageNodeData : ScriptableObject
 {
     [SerializeField] private string _stageNumber;
-    [SerializeField] private string _areaInfo;
+    [SerializeField] private Sprite _bossImage;
     [SerializeField] private string _bossInfo;
 
     public string StageNumber => _stageNumber;
-    public string AreaInfo => _areaInfo;
+    public Sprite BossImage => _bossImage;
     public string BossInfo => _bossInfo;
 }

@@ -44,8 +44,11 @@ public class BossController : MonoBehaviour
             _isChangedPhase = true;
         }
 
-        if (BossCurrentHp <= 0)
+        if (BossCurrentHp <= 0f)
+        {
+            BossCurrentHp = 0f;
             Die();
+        }
     }
 
     private void Die()
