@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +11,11 @@ public class PerksItemUI : MonoBehaviour
     [SerializeField] private Button _leftButton;
     [SerializeField] private Button _rightButton;
 
-    [SerializeField] private TMP_Text _leftButtonText;
-    [SerializeField] private TMP_Text _rightButtonText;
-
     private PerksTree _tree;
     private int _stageIndex;
+
+    // Panel이 구독해서 어느 스테이지/어느 쪽이 클릭됐는지 알 수 있게 함
+    public event Action<int, int> OnOptionClicked; // (stageIndex, side)
 
     public void ApplyStageNodes(PerksTree tree, int stageIndex)
     {
@@ -24,25 +25,28 @@ public class PerksItemUI : MonoBehaviour
         if (_stageText != null)
             _stageText.text = $"Stage {stageIndex + 1}";
 
-        var leftNode = _tree.GetNode(stageIndex, PerksTree.SideLeft);
-        var rightNode = _tree.GetNode(stageIndex, PerksTree.SideRight);
-
-        if (_leftButtonText != null)
-            _leftButtonText.text = leftNode == null ? "-" : leftNode.Description;
-
-        if (_rightButtonText != null)
-            _rightButtonText.text = rightNode == null ? "-" : rightNode.Description;
-
         if (_leftButton != null)
         {
             _leftButton.onClick.RemoveAllListeners();
-            _leftButton.onClick.AddListener(() => _tree.Select(_stageIndex, PerksTree.SideLeft));
+            _leftButton.onClick.AddListener(() =>
+            {
+                if (_tree != null)
+                    _tree.Select(_stageIndex, PerksTree.SideLeft);
+
+                OnOptionClicked?.Invoke(_stageIndex, PerksTree.SideLeft);
+            });
         }
 
         if (_rightButton != null)
         {
             _rightButton.onClick.RemoveAllListeners();
-            _rightButton.onClick.AddListener(() => _tree.Select(_stageIndex, PerksTree.SideRight));
+            _rightButton.onClick.AddListener(() =>
+            {
+                if (_tree != null)
+                    _tree.Select(_stageIndex, PerksTree.SideRight);
+
+                OnOptionClicked?.Invoke(_stageIndex, PerksTree.SideRight);
+            });
         }
 
         Refresh();
@@ -54,18 +58,16 @@ public class PerksItemUI : MonoBehaviour
 
         int selected = _tree.GetSelectedSide(_stageIndex);
 
-        ApplyButtonStyle(_leftButton, _leftButtonText, isSelected: selected == PerksTree.SideLeft);
-        ApplyButtonStyle(_rightButton, _rightButtonText, isSelected: selected == PerksTree.SideRight);
+        ApplyButtonStyle(_leftButton, isSelected: selected == PerksTree.SideLeft);
+        ApplyButtonStyle(_rightButton, isSelected: selected == PerksTree.SideRight);
     }
 
-    private void ApplyButtonStyle(Button button, TMP_Text text, bool isSelected)
+    private void ApplyButtonStyle(Button button, bool isSelected)
     {
-        if (button != null)
-        {
-            Image img = button.GetComponent<Image>();
-            if (img != null) img.color = isSelected ? Color.red : Color.white;
-        }
+        if (button == null) return;
 
-        if (text != null) text.color = isSelected ? Color.white : Color.black;
+        Image img = button.GetComponent<Image>();
+        if (img != null)
+            img.color = isSelected ? Color.red : Color.white;
     }
 }
