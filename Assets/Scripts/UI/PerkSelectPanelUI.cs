@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PerkSelectPanelUI : MonoBehaviour
 {
@@ -58,6 +59,24 @@ public class PerkSelectPanelUI : MonoBehaviour
             item.OnOptionClicked += HandleOptionClicked;
 
             _items.Add(item);
+
+            // 스테이지 클리어 현황에 따라 버튼 해금 or 잠금 설정 로직
+            Button[] buttons = item.GetComponentsInChildren<Button>();
+            if (i < GameManager.Instance.UnlockStage) // 해금 로직
+            {
+                foreach (Button button in buttons) 
+                {
+                    button.transform.Find("LockedImage").gameObject.SetActive(false);
+                }
+            }
+            else // 잠금 로직
+            {
+                foreach (Button button in buttons)
+                {
+                    button.interactable = false;
+                    button.transform.Find("UnlockImage").gameObject.SetActive(false);
+                }
+            }
         }
 
         _tree.OnChanged += Refresh;
