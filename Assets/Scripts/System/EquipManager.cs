@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class EquipManager : SingletonePattern<EquipManager>
 {
+    [Header("Default")]
+    [SerializeField] private WeaponBase _defaultWeapon;
+
     public WeaponBase Weapon { get; private set; }                 // 선택된 무기 프리팹
     public WeaponBase CurrentWeaponInstance { get; private set; }  // 실제 장착된 무기 인스턴스
 
@@ -15,15 +18,30 @@ public class EquipManager : SingletonePattern<EquipManager>
     private PlayerModel _boundPlayer;
     private PerksTree _boundTree;
 
-    private void Start()
+    void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoad;
+        EnsureDefaultWeapon();
+        TryEquipOnCurrentScene();
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoad;
         UnbindPerksBridge();
+    }
+
+    private void EnsureDefaultWeapon()
+    {
+        if (Weapon == null && _defaultWeapon != null)
+            Weapon = _defaultWeapon;
+    }
+
+    private void TryEquipOnCurrentScene()
+    {
+        var scene = SceneManager.GetActiveScene();
+        if (scene.name == "Lobby")
+            EquipPlayerWeapon();
     }
 
     private void OnSceneLoad(Scene scene, LoadSceneMode mode)
@@ -53,6 +71,17 @@ public class EquipManager : SingletonePattern<EquipManager>
 
         var firePoint = GameObject.Find("FirePoint");
         if (firePoint == null) return;
+
+        // 같은 무기면 "재생성" 하지 말고, 현재 인스턴스 기준으로 UI/브릿지 재동기화만
+        if (CurrentWeaponInstance != null && CurrentWeaponInstance.GetWeaponId() == Weapon.GetWeaponId())
+        {
+            // 트리/브릿지/플레이어 적용만 보정
+            BindPerksBridge(player, CurrentWeaponInstance.PerksTree);
+            ApplyPerksTo(player, CurrentWeaponInstance);
+
+            OnWeaponEquipped?.Invoke(CurrentWeaponInstance);
+            return;
+        }
 
         // 로비/스테이지에서 FirePoint 밑에 무기 중복 생성 방지
         for (int i = firePoint.transform.childCount - 1; i >= 0; i--)

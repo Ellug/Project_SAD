@@ -140,9 +140,14 @@ public class StageDynamicUI : MonoBehaviour
         if (_dodgeCooldownBar != null)
             _dodgeCooldownBar.transform.localPosition = HpBarCalculator(100f, _playerModel.DodgeCooldownRatio);
 
+        float cooldownRatio = _playerModel.SpecialCooldownRatio;
+
         // Special Attack
         if (_specialCooldownBar != null)
-            _specialCooldownBar.fillAmount = _playerModel.SpecialCooldownRatio;
+            _specialCooldownBar.fillAmount = cooldownRatio;
+
+        if (_specialCooldownText != null)
+            _specialCooldownText.text = $"{(cooldownRatio * 100):F0}%";
     }
 
     // Player Indicator Position Update

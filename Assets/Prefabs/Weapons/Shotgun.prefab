@@ -137,3 +137,21 @@ MonoBehaviour:
         op: 0
         value: 2
       buffs: []
+  - left:
+      mods: []
+      buffs:
+      - trigger: 0
+        duration: 5
+        mods:
+        - stat: 0
+          op: 0
+          value: 50
+    right:
+      mods: []
+      buffs:
+      - trigger: 1
+        duration: 1
+        mods:
+        - stat: 6
+          op: 2
+          value: 0

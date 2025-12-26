@@ -199,4 +199,31 @@ public static class PerkText
 
         return v.ToString("0.##");
     }
+
+    public static string BuildOneLine(TriggeredBuff buff)
+    {
+        if (buff == null) return string.Empty;
+
+        StringBuilder sb = new(192);
+
+        sb.Append('[').Append(GetTriggerName(buff.trigger)).Append(']')
+        .Append(" (지속 ").Append(FormatSeconds(buff.duration)).Append(')');
+
+        if (buff.mods != null && buff.mods.Length > 0)
+        {
+            sb.Append(" : ");
+
+            for (int i = 0; i < buff.mods.Length; i++)
+            {
+                var mod = buff.mods[i];
+                string statName = GetStatName(mod.stat);
+                string opText = FormatOp(mod.stat, mod.op, mod.value);
+
+                if (i > 0) sb.Append(", ");
+                sb.Append(statName).Append(' ').Append(opText);
+            }
+        }
+
+        return sb.ToString();
+    }
 }

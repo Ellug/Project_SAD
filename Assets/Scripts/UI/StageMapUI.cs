@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class StageMapUI : MonoBehaviour
 {
@@ -48,15 +47,16 @@ public class StageMapUI : MonoBehaviour
             Debug.Log("스테이지 선택 안했다 이 양반아");
             return;
         }
-        if (int.Parse(_selectedStage.StageNumber) > GameManager.Instance.UnlockStage)
+
+        int enterStage = int.Parse(_selectedStage.StageNumber);
+
+        if (enterStage > GameManager.Instance.UnlockStage)
         {
             Debug.Log("잠금된 스테이지다 이 필멸자야");
             return;
         }
 
-        string sceneName = "Stage"+_selectedStage.StageNumber;
-
-        SceneManager.LoadScene(sceneName);
+        GameManager.Instance.EnterTheStage(enterStage);
     }
 
     public void OnClickStage(int index)
