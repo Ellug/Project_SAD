@@ -16,7 +16,6 @@ public class WeaponView : MonoBehaviour
     // private Button[] _perkSelectList;
     private PerksTree _perksTree;
     private TextMeshProUGUI _titleText;
-    private int _selectedWeapon;
     private WeaponSelectButtonUI[] _weaponBtns;
 
     void Start()
@@ -33,14 +32,6 @@ public class WeaponView : MonoBehaviour
         model.Init(_allWeaponData);
         _presenter = new WeaponPresenter(model, this);
         _presenter.Init();
-
-        UIManager.Instance.AllUIClosed += InitSelectedWeapon;
-        _selectedWeapon = -1;
-    }
-
-    private void OnDestroy()
-    {
-        UIManager.Instance.AllUIClosed -= InitSelectedWeapon;
     }
 
     // 무기 버튼과 특전 버튼을 모두 가져옴
@@ -83,8 +74,6 @@ public class WeaponView : MonoBehaviour
         if (_perkPanelUI != null)
             _perkPanelUI.ApplyPerksTree(tree);
 
-        _selectedWeapon = weaponId;
-
         if (!UIManager.Instance.IsUIPopUp())
             UIManager.Instance.OpenUI(_weaponSelectMainUI);
 
@@ -115,11 +104,6 @@ public class WeaponView : MonoBehaviour
         EquipManager.Instance.SavePerksFrom(_perksTree);
 
         // 여기서 버튼 텍스트/하이라이트 갱신해도 됨. 현재는 
-    }
-
-    public void InitSelectedWeapon()
-    {
-        _selectedWeapon = -1;
     }
 
     // 무기 선택

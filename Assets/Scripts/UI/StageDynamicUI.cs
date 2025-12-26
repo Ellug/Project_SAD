@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class StageDynamicUI : MonoBehaviour
 {
@@ -79,7 +80,7 @@ public class StageDynamicUI : MonoBehaviour
 
         float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp;
 
-        _bossHpBar.transform.localPosition = HpBarCalculator(1000f, ratio);
+        _bossHpBar.transform.DOLocalMove(HpBarCalculator(1000f, ratio), 0.5f).SetUpdate(true);
 
         _bossHpText.text = $"{Math.Ceiling(ratio * 100f)}%";
     }
