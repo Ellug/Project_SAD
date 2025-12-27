@@ -14,12 +14,11 @@ public class GameManager : SingletonePattern<GameManager>
     public GameState CurrentState { get; private set; } = GameState.Playing;
     public bool IsPlayerWin { get; private set; }
     public int UnlockStage { get; private set; }
+    public int CurEnterStage { get; private set; }
 
     public bool IsPlaying => CurrentState == GameState.Playing;
     public bool IsPaused  => CurrentState == GameState.Paused;
     public bool IsResult  => CurrentState == GameState.Result;
-
-    private int _curEnterStage;
 
     public event Action<GameState> OnGameStateChanged;
 
@@ -27,12 +26,13 @@ public class GameManager : SingletonePattern<GameManager>
     {
         base.Awake();
         UnlockStage = 1;
+        CurEnterStage = 0;
     }
 
     public void PlayerWin()
     {
         IsPlayerWin = true;
-        if (_curEnterStage == UnlockStage)
+        if (CurEnterStage == UnlockStage)
             UnlockStage++;
         SetState(GameState.Result);
     }
@@ -75,7 +75,7 @@ public class GameManager : SingletonePattern<GameManager>
 
     public void EnterTheStage(int stage)
     {
-        _curEnterStage = stage;
+        CurEnterStage = stage;
         string sceneName = "Stage" + stage.ToString();
 
         SceneManager.LoadScene(sceneName);
