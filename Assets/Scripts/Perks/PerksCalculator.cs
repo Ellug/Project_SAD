@@ -20,7 +20,7 @@ public static class PerkCalculator
                 case StatId.Player_DodgeCoolTime: ClacFloat(ref s.DodgeCoolTime, m); break;
                 case StatId.Player_SpecialCoolTime: ClacFloat(ref s.SpecialCoolTime, m); break;
                 case StatId.Player_AttackSlowRate: ClacFloat(ref s.AttackSlowRate, m); break;
-                case StatId.Player_AttackMinSpeed: ClacFloat(ref s.AttackMinSpeed, m); break;                
+                case StatId.Player_AttackMinSpeed: ClacFloat(ref s.AttackMinSpeed, m); break;
             }
         }
     }
