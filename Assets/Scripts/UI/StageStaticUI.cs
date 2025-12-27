@@ -14,6 +14,7 @@ public class StageStaticUI : MonoBehaviour
     {
         UIManager.Instance.PauseUItrigger += OnOpenPausePanel;
         GameManager.Instance.OnGameStateChanged += GameResultProcess;
+        _curStage.text = $"STAGE {GameManager.Instance.CurEnterStage}";
     }
 
     void OnDestroy()
