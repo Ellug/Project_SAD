@@ -1327,7 +1327,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Designer\n\n\uAE40\uC778\uC131\n\uC720\uC601\uC900\n\uC815\uC608\uC6D0\n\uC815\uC900\uC6D0\n\uD669\uC601\uC7AC\n\nProgrammer\n\n\uC774\uB355\uAE30\n\uBB38\uCC3D\uBBFC\n\uC724\uD601\n\uC8FC\uAC15\uBBFC"
+  m_text: "Designer\n\n\uAE40\uBBFC\uC131\n\uC720\uC601\uC900\n\uC815\uC608\uC6D0\n\uC815\uC900\uC6D0\n\uD669\uC601\uC7AC\n\nProgrammer\n\n\uC774\uB355\uAE30\n\uBB38\uCC3D\uBBFC\n\uC724\uD601\n\uC8FC\uAC15\uBBFC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c4af6dbc7465fb41832e4c45a34b7af, type: 2}
   m_sharedMaterial: {fileID: 4390443915789521762, guid: 5c4af6dbc7465fb41832e4c45a34b7af, type: 2}
