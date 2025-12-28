@@ -21,11 +21,11 @@ MonoBehaviour:
   projectileRange: 80
   projectileSpeed: 60
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
-  SpecialAttack: 40
-  SpecialAttackBeforeDelay: 2
-  SpecialAttackAfterDelay: 1
+  SpecialAttack: 1
+  SpecialAttackBeforeDelay: 0.5
+  SpecialAttackAfterDelay: 0.6
   SpecialProjectileCount: 1
   SpecialProjectileAngle: 0
-  SpecialProjectileRange: 80
-  SpecialProjectileSpeed: 60
+  SpecialProjectileRange: 90
+  SpecialProjectileSpeed: 70
   SpecialProjectilePrefab: {fileID: 8378940865896947848, guid: bd4a612256ec45a46beb3d67d910c36d, type: 3}

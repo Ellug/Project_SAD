@@ -20,6 +20,9 @@ public struct BulletEffectPayload
 
     // 단순 배율
     public float damageMul; // 기본1, for 땅땅땅빵 경우 4배 적용
+
+    // 최대 체력 비례 추가 피해 (0.01 = 1%)
+    public float dmgPerMaxHp;
 }
 
 public class PlayerBullet : BulletBase
@@ -40,9 +43,9 @@ public class PlayerBullet : BulletBase
         _selfCol = GetComponent<Collider>();
     }
 
-    public void Init(WeaponRuntimeStats stats, bool counterAttack = false, BulletEffectPayload payload = default)
+    public void Init(WeaponRuntimeStats stats, bool isSpecial = false, BulletEffectPayload payload = default)
     {
-        _counterAttack = counterAttack;
+        _counterAttack = isSpecial;
         _payload = payload;
 
         // payload 기본값 보정
@@ -55,11 +58,12 @@ public class PlayerBullet : BulletBase
         _bounceRemain = _payload.enableBounce ? Mathf.Max(0, _payload.maxBounces) : 0;
         _hasBounced = false;
 
-        base.Init(
-            dmg: stats.Attack,
-            speed: stats.ProjectileSpeed,
-            maxDistance: stats.ProjectileRange
-        );
+        // 특수탄이면 Special 스탯 사용
+        float dmg = isSpecial ? 0f : stats.Attack;
+        float speed = isSpecial ? stats.SpecialProjectileSpeed : stats.ProjectileSpeed;
+        float range = isSpecial ? stats.SpecialProjectileRange : stats.ProjectileRange;
+
+        base.Init(dmg: dmg, speed: speed, maxDistance: range);
 
         _prevPos = transform.position;
     }
@@ -106,6 +110,13 @@ public class PlayerBullet : BulletBase
 
                 if (_hasBounced)
                     dmg *= _payload.bouncedDamageMul;
+
+                // 최대체력 비례 추가 피해 (payload로 전달된 pct 사용)
+                if (_payload.dmgPerMaxHp > 0f)
+                {
+                    float pct = Mathf.Clamp01(_payload.dmgPerMaxHp);
+                    dmg += boss.BossMaxHp * pct;
+                }
 
                 boss.TakeDamage(dmg, _counterAttack);
 
