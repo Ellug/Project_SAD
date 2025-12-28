@@ -5,6 +5,7 @@ public class WeaponData : ScriptableObject
 {
     [SerializeField] private GameObject _weaponPrefab;
     [SerializeField] private int _weaponId;
+    [SerializeField] private WeaponEnum _weaponType;
     [SerializeField] private AudioClip _fireClip;
     [SerializeField] private AudioClip _SPfireClip;
     [SerializeField] private AudioClip _reloadClip;
@@ -13,6 +14,7 @@ public class WeaponData : ScriptableObject
     public AudioClip SPFireClip => _SPfireClip;
     public AudioClip ReloadClip => _reloadClip;
     public int WeaponId => _weaponId;
+    public WeaponEnum WeaponType => _weaponType;
 
     [Header("Normal Attack")]
     public float attack;

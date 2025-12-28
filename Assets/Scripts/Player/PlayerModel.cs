@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
 {
-    [SerializeField] private WeaponSound _weaponSound;
+    //WeaponSound
+    [SerializeField] private AudioSource _weaponAudioSource;
 
     // Base Status
     [Header("HP")]
@@ -237,7 +238,7 @@ public class PlayerModel : MonoBehaviour
         // Weapon 교체 -> Final 재계산
         _statsContext.SetWeapon(weapon);
 
-        _weaponSound.Bind(weapon);
+        SoundManager.Instance.BindWeapon(weapon, GetComponentInChildren<AudioSource>());
 
         _curAttackCoolTime = 0f;
         _curSpecialCoolTime = 0f;
