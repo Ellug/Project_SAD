@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class StageDynamicUI : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class StageDynamicUI : MonoBehaviour
 
     [Header("Boss UI")]
     [SerializeField] private Transform _bossHpBar;
+    [SerializeField] private Transform _bossHpFollowingBar;
     [SerializeField] private TextMeshProUGUI _bossHpText;
     [SerializeField] private Transform _outOfScreenBoss;
 
@@ -32,11 +34,15 @@ public class StageDynamicUI : MonoBehaviour
     private int _secondTimer;
     private Coroutine _timerCoroutine;
     private Vector3 _hpBarVector;
+    private float _prevPlayerHp;
+    private float _prevBossHp;
 
     void Start()
     {
         _hpBarVector = Vector3.zero;
         _mainCam = Camera.main;
+        _prevPlayerHp = _playerModel.CurHp;
+        _prevBossHp = _bossController.BossCurrentHp;
         GameManager.Instance.OnGameStateChanged += GameResultProcess;
         UIManager.Instance.PauseUItrigger += PauseProcess;
         UIManager.Instance.AllUIClosed += ResumeProcess;
@@ -72,23 +78,32 @@ public class StageDynamicUI : MonoBehaviour
     private void UpdatePlayerHP()
     {
         if (_playerModel == null) return;
+        if (_prevPlayerHp == _playerModel.CurHp) return;
 
         _playerHpBar.transform.localPosition = HpBarCalculator(
             100f,
             _playerModel.CurHp / _playerModel.MaxHp
             );
+
+        _prevPlayerHp = _playerModel.CurHp;
     }
 
     // Boss HP Update
     private void UpdateBossHP()
     {
         if (_bossController == null) return;
+        if (_prevBossHp == _bossController.BossCurrentHp) return;
 
         float ratio = _bossController.BossCurrentHp / _bossController.BossMaxHp;
 
-        _bossHpBar.transform.localPosition = HpBarCalculator(1000f, ratio);
+        Vector3 pos = HpBarCalculator(1000f, ratio);
+
+        _bossHpFollowingBar.transform.DOLocalMove(pos, 0.8f).SetUpdate(true);
+        _bossHpBar.transform.localPosition = pos;
 
         _bossHpText.text = $"{Math.Ceiling(ratio * 100f)}%";
+
+        _prevBossHp = _bossController.BossCurrentHp;
     }
 
     private Vector3 HpBarCalculator(float maxVal, float ratio)
