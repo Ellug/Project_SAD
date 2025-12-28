@@ -22,11 +22,23 @@ public class GameManager : SingletonePattern<GameManager>
 
     public event Action<GameState> OnGameStateChanged;
 
+    private GameObject _fadeInOutEffect;
+
     protected override void Awake()
     {
         base.Awake();
         UnlockStage = 1;
         CurEnterStage = 0;
+    }
+
+    private void Start()
+    {
+        _fadeInOutEffect = GameObject.Find("SceneChangeEffect");
+        if (_fadeInOutEffect != null)
+        {
+            _fadeInOutEffect.SetActive(false);
+            DontDestroyOnLoad(_fadeInOutEffect);
+        }
     }
 
     public void PlayerWin()
@@ -78,25 +90,30 @@ public class GameManager : SingletonePattern<GameManager>
         CurEnterStage = stage;
         string sceneName = "Stage" + stage.ToString();
 
-        SceneManager.LoadScene(sceneName);
+        ChangeSceneWithFadeEffect(sceneName);
     }
 
     public void GoToLobby()
     {
         SetState(GameState.Playing);
-        SceneManager.LoadScene("Lobby");
+        ChangeSceneWithFadeEffect("Lobby");
     }
 
     public void GoToTitle()
     {
         SetState(GameState.Playing);
-        SceneManager.LoadScene("Title");
+        ChangeSceneWithFadeEffect("Title");
     }
 
     public void ReloadCurrentScene()
     {
         SetState(GameState.Playing);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        ChangeSceneWithFadeEffect(SceneManager.GetActiveScene().name);
+    }
+
+    private void ChangeSceneWithFadeEffect(string scene, bool animation = true)
+    {
+        SceneManager.LoadScene(scene);
     }
 
     public void GameExit()
