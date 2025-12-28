@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
@@ -16,6 +17,9 @@ public abstract class WeaponBase : MonoBehaviour
 
     public WeaponData WeaponData => _weaponData;
     public PerksTree PerksTree => _perksTree;
+
+    public event Action<WeaponRuntimeStats> OnFire;
+    public event Action<WeaponRuntimeStats> OnReload;
 
     protected virtual void Awake()
     {
@@ -94,7 +98,7 @@ public abstract class WeaponBase : MonoBehaviour
         if (_statsContext == null) return;
 
         WeaponRuntimeStats stats = _statsContext.Current.Weapon;
-
+        
         int count = Mathf.Max(1, isSpecial ? stats.SpecialProjectileCount : stats.ProjectileCount);
         float totalAngle = isSpecial ? stats.SpecialProjectileAngle : stats.ProjectileAngle;
 
@@ -136,5 +140,10 @@ public abstract class WeaponBase : MonoBehaviour
             payload.dmgPerMaxHp = stats.SpecialAttack;
 
         bullet.Init(stats, isSpecial, payload);
+    }
+
+    protected void FireSound(WeaponRuntimeStats stats)
+    {
+        OnFire?.Invoke(stats);
     }
 }

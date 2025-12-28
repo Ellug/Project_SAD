@@ -908,7 +908,7 @@ MonoBehaviour:
   _playerIndicator: {fileID: 1610056051}
   _playerHpBar: {fileID: 1735298875}
   _dodgeCooldownBar: {fileID: 1268262325}
-  _specialCooldownBar: {fileID: 23044218}
+  _specialCooldownBar: {fileID: 23044219}
   _specialCooldownText: {fileID: 599680782}
   _elapsedTime: {fileID: 1852281958}
   _bossRemainHp: {fileID: 1344549648}

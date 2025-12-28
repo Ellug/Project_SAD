@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PredictiveAim : MonoBehaviour
 {
     private Coroutine coroutine;
     private Vector3 LastTransform;
-    private GameObject Player;
-    private Rigidbody PlayerRB;
-    [Tooltip("마지막 플레이어 위치 갱신 간격")]public float _CheckSecond = 0.5f;
+    [Tooltip("플레이어")][SerializeField] private GameObject Player;
+    [Tooltip("플레이어 리짓 바디")][SerializeField] private Rigidbody PlayerRB;
+    [Tooltip("마지막 플레이어 위치 갱신 간격")] public float _CheckSecond = 0.5f;
     [Tooltip("플레이어 제자리 체크 간격")] public float _StayCheck = 0.3f;
     [Tooltip("플레이어 제자리 체크 거리")] public float _MinRange = 0.1f;
     [Tooltip("플레이어 예고 장판 여부")] public bool _PredictiveAimOn = true;
@@ -15,9 +16,9 @@ public class PredictiveAim : MonoBehaviour
     private bool isHit = false;
     
     [SerializeField] public LayerMask targetLayer;
-    private void Start()
+    private void Awake()
     {
-        Player = GameObject.FindWithTag("Player");
+        Player = GameObject.FindGameObjectWithTag("Player");
         PlayerRB = Player.GetComponent<Rigidbody>();
         LastTransform = Player.transform.position;
         coroutine = StartCoroutine(PlayerLastTransform());
@@ -56,19 +57,5 @@ public class PredictiveAim : MonoBehaviour
         }
         else
             return Player.transform.position;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (LastTransform == null) return;
-
-        // 실제 로직과 동일한 체크 수행 (디버그용)
-        bool isHit = Physics.CheckSphere(LastTransform, _MinRange, targetLayer);
-
-        // 감지되면 초록색, 아니면 빨간색
-        Gizmos.color = isHit ? Color.green : Color.red;
-
-        // 원 그리기
-        Gizmos.DrawWireSphere(LastTransform, _MinRange);
     }
 }

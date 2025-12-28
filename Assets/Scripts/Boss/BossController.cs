@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class BossController : MonoBehaviour
@@ -44,8 +45,17 @@ public class BossController : MonoBehaviour
             _isChangedPhase = true;
         }
 
-        if (BossCurrentHp <= 0)
-            Die();
+        if (BossCurrentHp <= 0f)
+        {
+            BossCurrentHp = 0f;
+            StartCoroutine(DieProcess());
+        }
+    }
+
+    private IEnumerator DieProcess()
+    {
+        yield return null;
+        Die();
     }
 
     private void Die()

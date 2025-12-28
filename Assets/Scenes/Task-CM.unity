@@ -6666,9 +6666,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09224cb5fdb3f0e4ca87019bf4510667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  _lobbyManager: {fileID: 0}
   _loadOutUI: {fileID: 1198862766}
   _stageSelectUI: {fileID: 911059839}
+  _settingsUI: {fileID: 0}
   _keyGuideUI: {fileID: 561618769}
   _pausePanel: {fileID: 0}
 --- !u!4 &346188029
@@ -26954,7 +26954,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PrecisionStrikePattern, Assembly-CSharp
-        m_MethodName: WarnningEffect
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
