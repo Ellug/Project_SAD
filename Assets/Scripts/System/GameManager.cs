@@ -13,6 +13,8 @@ public enum GameState
 
 public class GameManager : SingletonePattern<GameManager>
 {
+    [SerializeField] private GameObject _fadeInOutEffectPrefab;
+
     public GameState CurrentState { get; private set; } = GameState.Playing;
     public bool IsPlayerWin { get; private set; }
     public int UnlockStage { get; private set; }
@@ -35,11 +37,12 @@ public class GameManager : SingletonePattern<GameManager>
 
     private void Start()
     {
-        _fadeInOutEffect = GameObject.Find("SceneChangeEffect").GetComponent<CanvasGroup>();
-        if (_fadeInOutEffect != null)
+        if (_fadeInOutEffectPrefab != null)
         {
-            _fadeInOutEffect.gameObject.SetActive(false);
-            DontDestroyOnLoad(_fadeInOutEffect.gameObject);
+            GameObject instance = Instantiate(_fadeInOutEffectPrefab);
+            _fadeInOutEffect = instance.GetComponent<CanvasGroup>();
+            instance.SetActive(false);
+            DontDestroyOnLoad(instance);
         }
     }
 
