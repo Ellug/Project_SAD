@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
+using System.Collections;
 
 public enum GameState
 {
@@ -22,7 +24,7 @@ public class GameManager : SingletonePattern<GameManager>
 
     public event Action<GameState> OnGameStateChanged;
 
-    private GameObject _fadeInOutEffect;
+    private CanvasGroup _fadeInOutEffect;
 
     protected override void Awake()
     {
@@ -33,11 +35,11 @@ public class GameManager : SingletonePattern<GameManager>
 
     private void Start()
     {
-        _fadeInOutEffect = GameObject.Find("SceneChangeEffect");
+        _fadeInOutEffect = GameObject.Find("SceneChangeEffect").GetComponent<CanvasGroup>();
         if (_fadeInOutEffect != null)
         {
-            _fadeInOutEffect.SetActive(false);
-            DontDestroyOnLoad(_fadeInOutEffect);
+            _fadeInOutEffect.gameObject.SetActive(false);
+            DontDestroyOnLoad(_fadeInOutEffect.gameObject);
         }
     }
 
@@ -95,25 +97,57 @@ public class GameManager : SingletonePattern<GameManager>
 
     public void GoToLobby()
     {
-        SetState(GameState.Playing);
         ChangeSceneWithFadeEffect("Lobby");
     }
 
     public void GoToTitle()
     {
-        SetState(GameState.Playing);
-        ChangeSceneWithFadeEffect("Title");
+        ChangeSceneWithFadeEffect("Title", false);
     }
 
     public void ReloadCurrentScene()
     {
-        SetState(GameState.Playing);
         ChangeSceneWithFadeEffect(SceneManager.GetActiveScene().name);
     }
 
     private void ChangeSceneWithFadeEffect(string scene, bool animation = true)
     {
-        SceneManager.LoadScene(scene);
+        if (animation && _fadeInOutEffect != null) 
+        {
+            StartCoroutine(FadeOutInLoading(scene));
+        }
+        else
+        {
+            SetState(GameState.Playing);
+            SceneManager.LoadScene(scene);
+        } 
+    }
+
+    private IEnumerator FadeOutInLoading(string scene)
+    {
+        SetState(GameState.Paused);
+
+        // 비동기 로딩 시작
+        AsyncOperation temp = SceneManager.LoadSceneAsync(scene);
+        temp.allowSceneActivation = false;
+        _fadeInOutEffect.gameObject.SetActive(true);
+
+        // 애니메이션 재생이 완료될 때까지 대기함.
+        yield return _fadeInOutEffect.DOFade(1f, 0.5f).SetUpdate(true).WaitForCompletion();
+
+        // 진행도에 따라 대기함 (규모가 작아서 대기할 일이 거의 없음)
+        while (temp.progress < 0.9f) 
+            yield return null;
+        temp.allowSceneActivation = true;
+
+        // 한 프레임 대기 : 이게 없으면 페이드 인 효과가 제대로 나타나지 않고 씬 시작 시 끊기는 느낌이 있음
+        // 찾아보니 새로운 씬의 오브젝트들이 Awake, Start 등을 실행하도록 하기 위함이라고 함.
+        yield return null;
+
+        // 애니메이션 대기 후 나머지 처리
+        yield return _fadeInOutEffect.DOFade(0f, 0.5f).SetUpdate(true).WaitForCompletion();
+        _fadeInOutEffect.gameObject.SetActive(false);
+        SetState(GameState.Playing);
     }
 
     public void GameExit()
