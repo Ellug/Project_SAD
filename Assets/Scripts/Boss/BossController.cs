@@ -1,9 +1,11 @@
-﻿using System;
+﻿using DamageNumbersPro;
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
+    [SerializeField] private DamageNumber _dmgFont;
     [SerializeField] private float _bossMaxHp = 100;
     [SerializeField] private float _changePhaseHpRate = 0.5f;
     private bool _isChangedPhase;
@@ -32,6 +34,7 @@ public class BossController : MonoBehaviour
 
     public void TakeDamage(float dmg, bool isCounterable)
     {
+        _dmgFont.Spawn(transform.position, dmg);
         BossCurrentHp -= dmg;
 
         if (isCounterable)
