@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
@@ -44,6 +45,10 @@ public class PlayerModel : MonoBehaviour
 
     private float _curDebuffSlowTime = 0f;
     private float _debuffSlowRate = 0f;
+
+    //화상 디버프 코루틴
+    private Coroutine _burnCoroutine;
+    private Coroutine _coldCoroutine;
 
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
@@ -241,6 +246,50 @@ public class PlayerModel : MonoBehaviour
 
         if (_curHp <= 0)
             Die();
+    }
+
+    public void BurnDebuff(float BurnDmg, float Burnduration, float TickInterval)
+    {
+        if (_burnCoroutine != null)
+            StopCoroutine(_burnCoroutine);
+
+        _burnCoroutine = StartCoroutine(ProcessBurn(BurnDmg, Burnduration, TickInterval));
+    }
+
+    public void ColdDebuff(float ColdDmg, float Coldduration, float TickInterval)
+    {
+        if (_coldCoroutine != null)
+            StopCoroutine(_coldCoroutine);
+
+        _coldCoroutine = StartCoroutine(Processcold(ColdDmg, Coldduration, TickInterval));
+    }
+
+    private IEnumerator ProcessBurn(float BurnDmg, float Burnduration, float TickInterval)
+    {
+        float BurnTime = 0;
+        while (BurnTime < Burnduration)
+        {
+            TakeDamage(BurnDmg * TickInterval); 
+
+            yield return new WaitForSeconds(TickInterval);
+            BurnTime += TickInterval;
+        }
+
+        _burnCoroutine = null; 
+    }
+
+    private IEnumerator Processcold(float ColdDmg, float Coldduration, float TickInterval)
+    {
+        float ColdTime = 0;
+        while (ColdTime < Coldduration)
+        {
+            TakeDamage(ColdDmg * TickInterval);
+
+            yield return new WaitForSeconds(TickInterval);
+            ColdTime += TickInterval;
+        }
+
+        _coldCoroutine = null;
     }
 
     private void Die()

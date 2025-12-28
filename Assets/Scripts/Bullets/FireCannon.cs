@@ -1,76 +1,91 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class FireCannon : MonoBehaviour, IPoolable
+public class FireCannon : BulletBase
 {
-    private PoolMember _poolMember;
-    [Tooltip("폭발 파티클")][SerializeField] ParticleSystem _ExplosionParticle;
-    [Tooltip("그을음  프리팹")] public BurnDecal BurnDecalPrefab;
-    [Tooltip("화염포 판정 범위")][SerializeField] float _FireCannonRange;
-    [Tooltip("화염포 지속 시간")][SerializeField] float _FireCannonLifeTime;
-    [Tooltip("화염포 이동 속도")][SerializeField] float _FireCannonSpeed = 15f;
-    [Tooltip("데미지")][SerializeField] float _Dmg;
-    [Tooltip("플레이어")][SerializeField] private GameObject Player;
-    [Tooltip("충돌 레이어")][SerializeField] private LayerMask Layer;
-    private ParticleSystem _Explosion;
+    [Header("VFX Prefabs")]
+    [Tooltip("총구 화염 효과")] public GameObject _MuzzlePrefab;
+    [Tooltip("폭발 파티클 프리팹")] public GameObject _ExplosionParticle;
+    [Tooltip("총알에 붙어있는 잔상(Trail) 리스트")] public List<GameObject> _Trails;
 
-    void Awake()
+    [Header("데칼 설정")]
+    [Tooltip("그을음 데칼 프리팹")] public BurnDecal _BurnDecalPrefab;
+
+    [Header("화상 설정")]
+    [Tooltip("화상 데미지")] public float BurnDebuffDmg = 5f;
+    [Tooltip("화상 지속 시간")] public float BurnDebuffTime = 2f;
+    [Tooltip("화상 틱 인터벌")] public float BurnDebuffInterval = 0.1f;
+
+
+    void Start()
     {
-        _poolMember = GetComponent<PoolMember>();
-        if (_FireCannonLifeTime != 0)
+        if (_MuzzlePrefab != null)
         {
-            Invoke("DespawnFireBall", _FireCannonLifeTime);
+            GameObject muzzleVFX = Instantiate(_MuzzlePrefab, transform.position, transform.rotation);
+
+            var ps = muzzleVFX.GetComponent<ParticleSystem>();
+            if (ps != null)
+                Destroy(muzzleVFX, ps.main.duration);
+            else if (muzzleVFX.transform.childCount > 0)
+            {
+                var psChild = muzzleVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
+                if (psChild != null) Destroy(muzzleVFX, psChild.main.duration);
+            }
         }
     }
 
-    void Update()
+    void OnTriggerEnter(Collider other)
     {
-        if (Player == null) return;
-
-        transform.Translate(Vector3.forward * (_FireCannonSpeed * Time.deltaTime), Space.Self);
-
-        bool isHit = Physics.CheckSphere(transform.position, _FireCannonRange, Player.layer);
-        if (isHit)
+        if (other.CompareTag("Obstacle") || other.CompareTag("Player"))
         {
-            Player.TryGetComponent<PlayerModel>(out var player);
-            player.TakeDamage(_Dmg);
-            DespawnFireBall();
-        }
+            if (other.CompareTag("Player") && other.TryGetComponent<PlayerModel>(out var player))
+            {
+                player.TakeDamage(_dmg);
+                player.BurnDebuff(BurnDebuffDmg, BurnDebuffTime, BurnDebuffInterval);
+            }
 
-        bool objectHit = Physics.CheckSphere(transform.position, _FireCannonRange, Layer);
-        if (objectHit)
+            if (other.CompareTag("Obstacle") && _BurnDecalPrefab != null)
+            {
+                PoolManager.Instance.Spawn(_BurnDecalPrefab, transform.position, transform.rotation);
+            }
+
+            HandleTrails();
+            SpawnExplosion();
+            Despawn();
+        }
+    }
+
+    private void HandleTrails()
+    {
+        if (_Trails != null && _Trails.Count > 0)
         {
-            BurnDecal dec = PoolManager.Instance.Spawn(BurnDecalPrefab, transform.position, transform.rotation);
-            DespawnFireBall();
+            for (int i = 0; i < _Trails.Count; i++)
+            {
+                if (_Trails[i] == null) continue;
+
+                _Trails[i].transform.parent = null;
+                var ps = _Trails[i].GetComponent<ParticleSystem>();
+                if (ps != null)
+                {
+                    ps.Stop();
+                    Destroy(_Trails[i], ps.main.duration + ps.main.startLifetime.constantMax);
+                }
+            }
         }
     }
 
-    private void DespawnFireBall()
+    private void SpawnExplosion()
     {
-        _Explosion = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
-        var main = _Explosion.main;
-        main.stopAction = ParticleSystemStopAction.Destroy;
-        _Explosion.Play();
-        PoolManager.Instance.Despawn(gameObject);
-    }
+        if (_ExplosionParticle == null) return;
 
-    private void OnDrawGizmos()
-    {
-        if (transform.position == null) return;
+        GameObject instance = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
+        var ps = instance.GetComponent<ParticleSystem>() ?? instance.GetComponentInChildren<ParticleSystem>();
 
-        // 실제 로직과 동일한 체크 수행 (디버그용)
-        bool isHit = Physics.CheckSphere(transform.position, _FireCannonRange, Layer);
-
-        // 감지되면 초록색, 아니면 빨간색
-        Gizmos.color = isHit ? Color.green : Color.red;
-
-        // 원 그리기
-        Gizmos.DrawWireSphere(transform.position, _FireCannonRange);
-    }
-    public void OnSpawned()
-    {
-    }
-
-    public void OnDespawned()
-    {
+        if (ps != null)
+        {
+            var main = ps.main;
+            main.stopAction = ParticleSystemStopAction.Destroy;
+            ps.Play();
+        }
     }
 }

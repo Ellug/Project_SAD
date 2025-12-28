@@ -40,6 +40,8 @@ public class StageDynamicUI : MonoBehaviour
         _hpBarVector = Vector3.zero;
         _mainCam = Camera.main;
         GameManager.Instance.OnGameStateChanged += GameResultProcess;
+        UIManager.Instance.PauseUItrigger += PauseProcess;
+        UIManager.Instance.AllUIClosed += ResumeProcess;
         _timerCoroutine = StartCoroutine(UpdateTimer());
     }
 
@@ -47,6 +49,11 @@ public class StageDynamicUI : MonoBehaviour
     {
         if (GameManager.Instance != null)
             GameManager.Instance.OnGameStateChanged -= GameResultProcess;
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.PauseUItrigger -= PauseProcess;
+            UIManager.Instance.AllUIClosed -= ResumeProcess;
+        }
         StopCoroutine(_timerCoroutine);
     }
 
@@ -176,6 +183,16 @@ public class StageDynamicUI : MonoBehaviour
             _secondTimer++;
             yield return secondDelay;
         }
+    }
+
+    private void PauseProcess()
+    {
+        _playerIndicator.gameObject.SetActive(false);
+    }
+
+    private void ResumeProcess()
+    {
+        _playerIndicator.gameObject.SetActive(true);
     }
 
     // 다이나믹 UI가 게임 결과에서 처리할 일.
