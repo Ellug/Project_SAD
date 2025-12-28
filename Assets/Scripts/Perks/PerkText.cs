@@ -47,8 +47,20 @@ public static class PerkText
 
             int startLen = sb.Length;
 
-            sb.Append($"[{GetTriggerName(b.trigger)}] (지속 {FormatSeconds(b.duration)})");
+            // duration=0이면 굳이 (지속 0초) 안 붙이기
+            if (b.duration > 0f)
+                sb.Append($"[{GetTriggerName(b.trigger)}] (지속 {FormatSeconds(b.duration)})");
+            else
+                sb.Append($"[{GetTriggerName(b.trigger)}]");
 
+            // 1회 회복 표시
+            if (b.healPerTrigger > 0f)
+            {
+                sb.AppendLine();
+                sb.Append("- ").Append("체력 회복 ").Append($"{b.healPerTrigger * 100f:0.##}%");
+            }
+
+            // 기존 mods 표시
             if (b.mods != null && b.mods.Length > 0)
             {
                 for (int m = 0; m < b.mods.Length; m++)
@@ -62,7 +74,12 @@ public static class PerkText
                 }
             }
 
-            if (sb.Length == startLen) continue;
+            // 아무 내용도 없으면 롤백
+            if (sb.Length == startLen)
+            {
+                sb.Length = startLen;
+                continue;
+            }
 
             if (i < buffs.Length - 1)
                 sb.AppendLine().AppendLine();
@@ -70,6 +87,7 @@ public static class PerkText
 
         return sb.Length > 0 ? sb.ToString() : string.Empty;
     }
+
 
     private static string GetTriggerName(PerkTrigger trigger)
     {
@@ -206,13 +224,22 @@ public static class PerkText
 
         StringBuilder sb = new(192);
 
-        sb.Append('[').Append(GetTriggerName(buff.trigger)).Append(']')
-        .Append(" (지속 ").Append(FormatSeconds(buff.duration)).Append(')');
+        sb.Append('[').Append(GetTriggerName(buff.trigger)).Append(']');
+
+        if (buff.duration > 0f)
+            sb.Append(" (지속 ").Append(FormatSeconds(buff.duration)).Append(')');
+
+        bool hasAny = false;
+
+        if (buff.healPerTrigger > 0f)
+        {
+            sb.Append(" : ").Append("체력 회복 ").Append($"{buff.healPerTrigger * 100f:0.##}%");
+            hasAny = true;
+        }
 
         if (buff.mods != null && buff.mods.Length > 0)
         {
-            sb.Append(" : ");
-
+            sb.Append(hasAny ? ", " : " : ");
             for (int i = 0; i < buff.mods.Length; i++)
             {
                 var mod = buff.mods[i];
@@ -222,8 +249,10 @@ public static class PerkText
                 if (i > 0) sb.Append(", ");
                 sb.Append(statName).Append(' ').Append(opText);
             }
+            hasAny = true;
         }
 
+        // 아무것도 없으면 트리거명만 출력되는데, 그게 싫으면 여기서 string.Empty 반환 처리 가능
         return sb.ToString();
     }
 }
