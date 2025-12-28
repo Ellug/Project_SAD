@@ -244,4 +244,14 @@ public class PlayerModel : MonoBehaviour
         // Game Over
         GameManager.Instance.PlayerLose();
     }
+
+    public void TakeHeal(float heal)
+    {
+        if (CurHp <= 0) return;
+
+        _curHp += MaxHp * heal;
+
+        if (CurHp > MaxHp)
+            _curHp = MaxHp;
+    }
 }
