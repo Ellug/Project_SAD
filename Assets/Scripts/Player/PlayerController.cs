@@ -20,6 +20,13 @@ public class PlayerController : MonoBehaviour
     private float _dodgeRemainDist;
     private bool _isAttackHold;
 
+    // 넉백
+    private float _kbSkin = 0.02f; // 벽에 딱 붙는 걸 방지하는 여유값
+    private bool _isKnockback;
+    private Vector3 _kbDir;
+    private float _kbRemainDist;
+    private float _kbSpeed;
+
     public event Action interactionObject;
 
     void Start()
@@ -42,6 +49,8 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleDodgeState();
+
+        HandleKnockbackState();
     }
 
     // Input Actions - New Input System
@@ -205,5 +214,59 @@ public class PlayerController : MonoBehaviour
 
         if (_model.CurrentWeapon != null && _model.CurrentWeapon.TryAttack())
             _model.StartAttack();
+    }
+
+    // 넉백
+    private void HandleKnockbackState()
+    {
+        // 이미 넉백 진행 중이면 "짧고 빠르게" 이동 처리
+        if (_isKnockback)
+        {
+            float moveDist = _kbSpeed * Time.fixedDeltaTime;
+            moveDist = Mathf.Min(moveDist, _kbRemainDist);
+
+            if (moveDist > 0f)
+            {
+                // 이동 전 충돌 스윕으로 안전 거리만큼만 이동
+                if (_view.Rb.SweepTest(_kbDir, out RaycastHit hit, moveDist + _kbSkin, QueryTriggerInteraction.Ignore))
+                {
+                    float safeDist = Mathf.Max(0f, hit.distance - _kbSkin);
+
+                    if (safeDist > 0f)
+                        _view.Rb.MovePosition(_view.Rb.position + _kbDir * safeDist);
+
+                    // 벽에 막히면 즉시 종료(타격감)
+                    _kbRemainDist = 0f;
+                }
+                else
+                {
+                    _view.Rb.MovePosition(_view.Rb.position + _kbDir * moveDist);
+                    _kbRemainDist -= moveDist;
+                }
+            }
+
+            if (_kbRemainDist <= 0f)
+                _isKnockback = false;
+
+            return;
+        }
+
+        // 넉백 요청이 있으면 시작
+        if (_model.TryConsumeKnockbackRequest(out Vector3 dir, out float dist, out float duration))
+        {
+            // 닷지 중이면 넉백 무시(원하면 우선순위 조정 가능)
+            if (_model.IsDodging) return;
+
+            dir.y = 0f;
+            if (dir.sqrMagnitude < 1e-6f) return;
+
+            _kbDir = dir.normalized;
+            _kbRemainDist = dist;
+            _kbSpeed = dist / Mathf.Max(0.01f, duration);
+            _isKnockback = true;
+
+            // 넉백 시작 순간, 기존 관성 제거(원치 않으면 삭제)
+            _view.Rb.linearVelocity = Vector3.zero;
+        }
     }
 }

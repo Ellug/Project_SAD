@@ -99,5 +99,4 @@ public class PlayerView : MonoBehaviour
             if (!resolvedAny) break;
         }
     }
-
 }
