@@ -8,6 +8,9 @@ public abstract class WeaponBase : MonoBehaviour
 
     [Header("Perks")]
     [SerializeField] private PerksTree _perksTree;
+    
+    private float _specialKnockbackDistance = 3f;
+    private float _specialKnockbackDuration = 0.04f;
 
     protected PlayerStatsContext _statsContext;
     private Coroutine _specialAttackRoutine;
@@ -69,6 +72,9 @@ public abstract class WeaponBase : MonoBehaviour
 
         yield return StartCoroutine(CoBeforeSpecialAttack(stats));
         FireProjectile(true);
+
+        // 넉백 요청
+        _statsContext.Model.RequestKnockback(-transform.forward, _specialKnockbackDistance, _specialKnockbackDuration);
         yield return StartCoroutine(CoAfterSpecialAttack(stats));
 
         _specialAttackRoutine = null;

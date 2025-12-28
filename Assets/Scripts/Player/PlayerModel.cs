@@ -46,6 +46,11 @@ public class PlayerModel : MonoBehaviour
     private float _curDebuffSlowTime = 0f;
     private float _debuffSlowRate = 0f;
 
+    // Knockback request (1-shot)
+    private bool _hasKbRequest;
+    private Vector3 _kbDir;
+    private float _kbDistance;
+    private float _kbDuration;
     //화상 디버프 코루틴
     private Coroutine _burnCoroutine;
     private Coroutine _coldCoroutine;
@@ -306,5 +311,38 @@ public class PlayerModel : MonoBehaviour
 
         if (CurHp > MaxHp)
             _curHp = MaxHp;
+    }
+
+    // 넉백 예약
+    public void RequestKnockback(Vector3 dir, float distance, float duration)
+    {
+        dir.y = 0f;
+        if (distance <= 0f) return;
+
+        if (dir.sqrMagnitude < 1e-6f) return;
+        duration = Mathf.Max(0.01f, duration);
+
+        _hasKbRequest = true;
+        _kbDir = dir.normalized;
+        _kbDistance = distance;
+        _kbDuration = duration;
+    }
+
+    // 넉백 소비
+    public bool TryConsumeKnockbackRequest(out Vector3 dir, out float distance, out float duration)
+    {
+        if (!_hasKbRequest)
+        {
+            dir = default;
+            distance = 0f;
+            duration = 0f;
+            return false;
+        }
+
+        _hasKbRequest = false;
+        dir = _kbDir;
+        distance = _kbDistance;
+        duration = _kbDuration;
+        return true;
     }
 }

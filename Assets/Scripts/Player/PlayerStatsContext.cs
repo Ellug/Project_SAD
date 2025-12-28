@@ -24,6 +24,9 @@ public class PlayerStatsContext : MonoBehaviour
     private readonly Dictionary<int, StatMod[]> _dynamicModsByOwner = new();
 
 
+    public PlayerModel Model => _playerModel;
+
+
     // Result
     public PlayerFinalStats Current { get; private set; } = new PlayerFinalStats();
 
