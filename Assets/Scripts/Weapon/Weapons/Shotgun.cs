@@ -100,7 +100,7 @@ public class Shotgun : WeaponBase
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
         PlayerBullet bullet = PoolManager.Instance.Spawn(stats.ProjectilePrefab, pos, rot);
-        bullet.Init(stats, counterAttack: false, payload: burn);
+        bullet.Init(stats, false, payload: burn);
     }
 
     private void Clear()

@@ -123,6 +123,12 @@ public abstract class WeaponBase : MonoBehaviour
         
         PlayerBullet prefab = isSpecial ? stats.SpecialProjectilePrefab : stats.ProjectilePrefab;
         PlayerBullet bullet = PoolManager.Instance.Spawn(prefab, pos, rot);
-        bullet.Init(stats, isSpecial);
+
+        BulletEffectPayload payload = default;
+
+        if (isSpecial)
+            payload.dmgPerMaxHp = stats.SpecialAttack;
+
+        bullet.Init(stats, isSpecial, payload);
     }
 }
