@@ -37,6 +37,13 @@ public class PlayerBullet : BulletBase
     private float _bounceSkin = 0.02f;
     private Collider _selfCol;
 
+    [SerializeField] protected ParticleSystem flash;
+    [SerializeField] protected ParticleSystem hit;
+    [SerializeField] protected Light lightSourse;
+    [SerializeField] protected GameObject[] Detached;
+    [SerializeField] protected ParticleSystem projectilePS;
+    [SerializeField] protected float hitOffset = 0f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -71,6 +78,21 @@ public class PlayerBullet : BulletBase
     public override void OnSpawned()
     {
         base.OnSpawned();
+
+        if (flash != null)
+        {
+            ParticleSystem muzzleVFX =
+                PoolManager.Instance.Spawn(flash, transform.position, transform.rotation);
+
+            if (muzzleVFX != null)
+                muzzleVFX.Play();
+        }
+
+        if (lightSourse != null)
+            lightSourse.enabled = true;
+
+        if (projectilePS != null)
+            projectilePS.Play();
     }
 
     public override void OnDespawned()
@@ -82,6 +104,9 @@ public class PlayerBullet : BulletBase
         _bounceRemain = 0;
         _hasBounced = false;
         _prevPos = Vector3.zero;
+
+        if (lightSourse != null)
+            lightSourse.enabled = false;
     }
 
     protected override void MoveForward()
@@ -90,7 +115,7 @@ public class PlayerBullet : BulletBase
         base.MoveForward();
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         Vector3 hitPoint = other.ClosestPoint(transform.position);
         Vector3 normal = transform.position - hitPoint;
@@ -100,12 +125,13 @@ public class PlayerBullet : BulletBase
         // Obstacle -> Bounce or Despawn
         if (other.CompareTag("Obstacle"))
         {
-            if (_payload.enableBounce && _bounceRemain >0)
+            if (_payload.enableBounce && _bounceRemain > 0)
             {
                 Bounce(other);
                 return;
             }
 
+            PlayHitFX(hitPoint, normal);
             Despawn();
             return;
         }
@@ -130,11 +156,40 @@ public class PlayerBullet : BulletBase
                 boss.TakeDamage(dmg, _counterAttack);
 
                 if (_payload.effect == BulletEffect.Burn)
-                    boss.ApplyBurn(_payload.burnDps, _payload.burnDuration);                
+                    boss.ApplyBurn(_payload.burnDps, _payload.burnDuration);
             }
+
+            PlayHitFX(hitPoint, normal);
             Despawn();
             return;
-        }        
+        }
+    }
+
+    private void PlayHitFX(Vector3 point, Vector3 normal)
+    {
+        if (lightSourse != null)
+            lightSourse.enabled = false;
+
+        if (projectilePS != null)
+            projectilePS.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+        foreach (var d in Detached)
+        {
+            if (d != null && d.TryGetComponent<ParticleSystem>(out var ps))
+                ps.Stop();
+        }
+
+        if (hit != null)
+        {
+            ParticleSystem hitVFX = PoolManager.Instance.Spawn(
+                hit,
+                point + normal * hitOffset,
+                Quaternion.LookRotation(normal)
+            );
+
+            if (hitVFX != null)
+                hitVFX.Play();
+        }
     }
 
     // 도탄
