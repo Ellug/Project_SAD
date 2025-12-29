@@ -69,7 +69,7 @@ public class StageDynamicUI : MonoBehaviour
         UpdateCooldowns();
     }
 
-    private void LateUpdate()
+    private void FixedUpdate()
     {
         PlayerIndicatorPos();
     }
