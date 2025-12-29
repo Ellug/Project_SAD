@@ -3,18 +3,17 @@ using System.Collections;
 
 public class FrostLaserObject : MonoBehaviour
 {
-    private bool _moving = false;
-    private bool _rotate = false;
     [Tooltip("오브젝트 이동 속도")][SerializeField] float _moveSpeed = 5f;
     [Tooltip("오브젝트 활성화 시간")][SerializeField] float _lifeTime = 5f;
     [Tooltip("오브젝트 회전 속도")][SerializeField] float _rotationSpeed = 5f;
 
+    private bool _moving = false;
+    private bool _rotate = false;
     private Vector3 _targetPosition;
     private const float _upPosition = -0.2f;
     private const float _underPosition = -1.45f;
     private Coroutine _actionCoroutine;
-    private GameObject Player;
-
+    private GameObject _player;
     private SetFrostLaser[] _lasers;
 
     private void Awake()
@@ -38,14 +37,13 @@ public class FrostLaserObject : MonoBehaviour
             if (Mathf.Approximately(transform.position.y, _upPosition))
             {
                 ActivateLaser();
-                _actionCoroutine = StartCoroutine(DeActivateObject());
+                _actionCoroutine = StartCoroutine(DeActivateRoutine());
                 _moving = false;
             }
 
             if (Mathf.Approximately(transform.position.y, _underPosition))
             {
                 DeActivateLaser();
-                if (_actionCoroutine != null) StopCoroutine(_actionCoroutine);
                 _moving = false;
             }
         }
@@ -58,16 +56,26 @@ public class FrostLaserObject : MonoBehaviour
 
     public void ActivateObject()
     {
+        if (_actionCoroutine != null) StopCoroutine(_actionCoroutine);
+
         transform.rotation = Quaternion.identity;
-        _moving = true;
         _targetPosition = new Vector3(transform.position.x, _upPosition, transform.position.z);
+        _moving = true;
     }
 
-    IEnumerator DeActivateObject()
+    public void DeactivateObject()
+    {
+        if (_actionCoroutine != null) StopCoroutine(_actionCoroutine);
+
+        _rotate = false;
+        _targetPosition = new Vector3(transform.position.x, _underPosition, transform.position.z);
+        _moving = true;
+    }
+
+    private IEnumerator DeActivateRoutine()
     {
         yield return new WaitForSeconds(_lifeTime);
-        _moving = true;
-        _targetPosition = new Vector3(transform.position.x, _underPosition, transform.position.z);
+        DeactivateObject();
     }
 
     private void ActivateLaser()
@@ -79,7 +87,7 @@ public class FrostLaserObject : MonoBehaviour
                 if (laser != null)
                 {
                     laser.gameObject.SetActive(true);
-                    laser.Init(Player);
+                    laser.Init(_player);
                 }
             }
         }
@@ -103,6 +111,6 @@ public class FrostLaserObject : MonoBehaviour
 
     public void Init(GameObject target)
     {
-        Player = target;
+        _player = target;
     }
 }

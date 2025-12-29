@@ -4,24 +4,23 @@ using UnityEngine;
 public class FireCannonPattern : PatternBase
 {
     [Header("화염포 설정")]
-    [Tooltip("화염포 프리팹")][SerializeField] private FireCannon _FireCannonPrefab;
-    [Tooltip("화염포 생성 위치")][SerializeField] private Transform _SpawnPoint;
+    [SerializeField, Tooltip("화염포 프리팹")] private FireCannon _FireCannonPrefab;
+    [SerializeField, Tooltip("화염포 생성 위치")] private Transform _SpawnPoint;
 
     [Header("경고 장판")]
-    [Tooltip("경고 장판 프리팹")][SerializeField] private ParticleSystem _WarnningAreaPrefab;
-    [Tooltip("경고 장판 추적 시간")][SerializeField] private float _WarnningTime = 2.0f;
-    [Tooltip("정지 후 발사까지 대기 시간")][SerializeField] private float _WarnningFNTime = 0.5f;
-    [Tooltip("장판 최대 사거리")][SerializeField] private float _WarnningMaxLength = 20f;
-    [Tooltip("장판 너비")][SerializeField] private float _WarnningWidth = 5f;
-    [Tooltip("장판 충돌 레이어")][SerializeField] private LayerMask _ObstacleLayer;
-    [Tooltip("장판 길이 보정 배율")][SerializeField] private float _lengthScaleModifier = 1f;
-    [Tooltip("플레이어 위치 예측 강도")][SerializeField] private float _predictiveOffset = 1.2f;
+    [SerializeField, Tooltip("경고 장판 프리팹")] private ParticleSystem _WarnningAreaPrefab;
+    [SerializeField, Tooltip("경고 장판 추적 시간")] private float _WarnningTime = 2.0f;
+    [SerializeField, Tooltip("정지 후 발사까지 대기 시간")] private float _WarnningFNTime = 0.5f;
+    [SerializeField, Tooltip("장판 최대 사거리")] private float _WarnningMaxLength = 20f;
+    [SerializeField, Tooltip("장판 너비")] private float _WarnningWidth = 5f;
+    [SerializeField, Tooltip("장판 충돌 레이어")] private LayerMask _ObstacleLayer;
+    [SerializeField, Tooltip("장판 길이 보정 배율")] private float _lengthScaleModifier = 1f;
+    [SerializeField, Tooltip("플레이어 위치 예측 강도")] private float _predictiveOffset = 1.2f;
 
     private GameObject _player;
-    private ParticleSystem _currentWarnning;
-    private Transform _warnningTransform;
+    private ParticleSystem _currentWarning;
+    private Transform _warningTransform;
     private PredictiveAim _predictiveAim;
-    private bool Chase = false;
 
     public override void Init(GameObject target)
     {
@@ -29,14 +28,9 @@ public class FireCannonPattern : PatternBase
         _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
     }
 
-    protected override void PatternLogic()
+    protected override void Update()
     {
-        StartCoroutine(PatternSequence());
-    }
-
-    void Update()
-    {
-        if (Chase && _warnningTransform != null && _player != null)
+        if (_isPatternActive && _warningTransform != null && _player != null)
         {
             UpdateWarningLogic();
         }
@@ -53,62 +47,58 @@ public class FireCannonPattern : PatternBase
         Vector3 direction = (targetPos - origin).normalized;
         if (direction == Vector3.zero) return;
 
-        float currentDistance = _WarnningMaxLength;
-        Ray ray = new Ray(origin, direction);
+        float distance = _WarnningMaxLength;
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, _WarnningMaxLength, _ObstacleLayer))
+            distance = hit.distance;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, _WarnningMaxLength, _ObstacleLayer))
-        {
-            currentDistance = hit.distance;
-        }
-
-        _warnningTransform.rotation = Quaternion.LookRotation(direction);
-        float finalScaleZ = currentDistance * _lengthScaleModifier;
-        _warnningTransform.localScale = new Vector3(_WarnningWidth, 1f, finalScaleZ);
-        _warnningTransform.position = origin + (direction * (currentDistance * 0.5f));
+        _warningTransform.rotation = Quaternion.LookRotation(direction);
+        _warningTransform.localScale = new Vector3(_WarnningWidth, 1f, distance * _lengthScaleModifier);
+        _warningTransform.position = origin + direction * (distance * 0.5f);
     }
 
-    private IEnumerator PatternSequence()
+    protected override IEnumerator PatternRoutine()
     {
         if (_WarnningAreaPrefab == null) yield break;
 
-        _currentWarnning = PoolManager.Instance.Spawn(_WarnningAreaPrefab, _SpawnPoint.position, Quaternion.identity);
-        _warnningTransform = _currentWarnning.transform;
-        Chase = true;
-        _currentWarnning.Clear();
-        _currentWarnning.Play();
+        _currentWarning = PoolManager.Instance.Spawn(_WarnningAreaPrefab, _SpawnPoint.position, Quaternion.identity);
+        _warningTransform = _currentWarning.transform;
+        _isPatternActive = true;
+
+        _currentWarning.Clear();
+        _currentWarning.Play();
 
         yield return new WaitForSeconds(_WarnningTime);
-
-        Chase = false;
+        _isPatternActive = false;
 
         yield return new WaitForSeconds(_WarnningFNTime);
 
         Fire();
 
-        if (_currentWarnning != null)
+        if (_currentWarning != null)
         {
-            _currentWarnning.Stop();
-            PoolManager.Instance.Despawn(_currentWarnning.gameObject);
-            _currentWarnning = null;
-            _warnningTransform = null;
+            _currentWarning.Stop();
+            PoolManager.Instance.Despawn(_currentWarning.gameObject);
+            _currentWarning = null;
+            _warningTransform = null;
         }
     }
 
     private void Fire()
     {
-        if (_FireCannonPrefab == null || _warnningTransform == null) return;
-        
-        PlayPatternSound(PatternEnum.FireCannon);
+        if (_FireCannonPrefab == null || _warningTransform == null) return;
 
-        Quaternion fireRotation = _warnningTransform.rotation;
-        PoolManager.Instance.Spawn(_FireCannonPrefab, _SpawnPoint.position, fireRotation);
+        PlayPatternSound(PatternEnum.FireCannon);
+        PoolManager.Instance.Spawn(_FireCannonPrefab, _SpawnPoint.position, _warningTransform.rotation);
     }
 
-    private void OnDestroy()
+    protected override void CleanupPattern()
     {
-        if (_currentWarnning != null && PoolManager.Instance != null)
+        if (_currentWarning != null && PoolManager.Instance != null)
         {
-            PoolManager.Instance.Despawn(_currentWarnning.gameObject);
+            _currentWarning.Stop();
+            PoolManager.Instance.Despawn(_currentWarning.gameObject);
+            _currentWarning = null;
+            _warningTransform = null;
         }
     }
 }
