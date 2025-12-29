@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1466631236046915430}
   - component: {fileID: 5759403442949527920}
   - component: {fileID: 8042102881895897556}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4920,7 +4920,7 @@ GameObject:
   - component: {fileID: 6176338128076984503}
   - component: {fileID: 8286872685743973830}
   - component: {fileID: 7040387853195888685}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: SpBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

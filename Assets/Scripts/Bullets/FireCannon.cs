@@ -4,9 +4,9 @@ using UnityEngine;
 public class FireCannon : BulletBase
 {
     [Header("VFX Prefabs")]
-    [Tooltip("총구 화염 효과")] public GameObject _MuzzlePrefab;
-    [Tooltip("폭발 파티클 프리팹")] public GameObject _ExplosionParticle;
-    [Tooltip("총알에 붙어있는 잔상(Trail) 리스트")] public List<GameObject> _Trails;
+    [Tooltip("총구 화염 효과")] public ParticleSystem _MuzzlePrefab;
+    [Tooltip("폭발 파티클 프리팹")] public ParticleSystem _ExplosionParticle;
+    [Tooltip("총알에 붙어있는 잔상(Trail) 리스트")] public List<ParticleSystem> _Trails;
 
     [Header("데칼 설정")]
     [Tooltip("그을음 데칼 프리팹")] public BurnDecal _BurnDecalPrefab;
@@ -16,20 +16,16 @@ public class FireCannon : BulletBase
     [Tooltip("화상 지속 시간")] public float BurnDebuffTime = 2f;
     [Tooltip("화상 틱 인터벌")] public float BurnDebuffInterval = 0.1f;
 
-
     void Start()
     {
         if (_MuzzlePrefab != null)
         {
-            GameObject muzzleVFX = Instantiate(_MuzzlePrefab, transform.position, transform.rotation);
+            ParticleSystem muzzle =
+                PoolManager.Instance.Spawn(_MuzzlePrefab, transform.position, transform.rotation);
 
-            var ps = muzzleVFX.GetComponent<ParticleSystem>();
-            if (ps != null)
-                Destroy(muzzleVFX, ps.main.duration);
-            else if (muzzleVFX.transform.childCount > 0)
+            if (muzzle != null)
             {
-                var psChild = muzzleVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
-                if (psChild != null) Destroy(muzzleVFX, psChild.main.duration);
+                muzzle.Play();
             }
         }
     }
@@ -38,7 +34,8 @@ public class FireCannon : BulletBase
     {
         if (other.CompareTag("Obstacle") || other.CompareTag("Player"))
         {
-            if (other.CompareTag("Player") && other.TryGetComponent<PlayerModel>(out var player))
+            if (other.CompareTag("Player") &&
+                other.TryGetComponent<PlayerModel>(out var player))
             {
                 player.TakeDamage(_dmg);
                 player.BurnDebuff(BurnDebuffDmg, BurnDebuffTime, BurnDebuffInterval);
@@ -46,7 +43,11 @@ public class FireCannon : BulletBase
 
             if (other.CompareTag("Obstacle") && _BurnDecalPrefab != null)
             {
-                PoolManager.Instance.Spawn(_BurnDecalPrefab, transform.position, transform.rotation);
+                PoolManager.Instance.Spawn(
+                    _BurnDecalPrefab,
+                    transform.position,
+                    transform.rotation
+                );
             }
 
             HandleTrails();
@@ -57,20 +58,14 @@ public class FireCannon : BulletBase
 
     private void HandleTrails()
     {
-        if (_Trails != null && _Trails.Count > 0)
-        {
-            for (int i = 0; i < _Trails.Count; i++)
-            {
-                if (_Trails[i] == null) continue;
+        if (_Trails == null || _Trails.Count == 0) return;
 
-                _Trails[i].transform.parent = null;
-                var ps = _Trails[i].GetComponent<ParticleSystem>();
-                if (ps != null)
-                {
-                    ps.Stop();
-                    Destroy(_Trails[i], ps.main.duration + ps.main.startLifetime.constantMax);
-                }
-            }
+        for (int i = 0; i < _Trails.Count; i++)
+        {
+            if (_Trails[i] == null) continue;
+
+            _Trails[i].transform.parent = null;
+            _Trails[i].Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 
@@ -78,14 +73,16 @@ public class FireCannon : BulletBase
     {
         if (_ExplosionParticle == null) return;
 
-        GameObject instance = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
-        var ps = instance.GetComponent<ParticleSystem>() ?? instance.GetComponentInChildren<ParticleSystem>();
+        ParticleSystem explosion =
+            PoolManager.Instance.Spawn(
+                _ExplosionParticle,
+                transform.position,
+                transform.rotation
+            );
 
-        if (ps != null)
+        if (explosion != null)
         {
-            var main = ps.main;
-            main.stopAction = ParticleSystemStopAction.Destroy;
-            ps.Play();
+            explosion.Play();
         }
     }
 }

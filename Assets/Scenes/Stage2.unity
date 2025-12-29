@@ -596,7 +596,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossController
   _dmgFont: {fileID: 3889284073795406282, guid: b6ff9f396955d35488d8ca4df292e2f5, type: 3}
   _bossMaxHp: 1000
-  _changePhaseHpRate: 0.5
+  _changePhaseHpRate:
+  - 0.5
 --- !u!136 &223490256
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4203,7 +4204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 969360576}
   m_Layer: 0
-  m_Name: Armor
+  m_Name: Armor01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

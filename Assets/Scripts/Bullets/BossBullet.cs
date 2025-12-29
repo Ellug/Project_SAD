@@ -10,8 +10,8 @@ public class BossBullet : BulletBase
     [Tooltip("플레이어 레이어")][SerializeField] LayerMask _PlayerLayer;
 
     [Header("VFX Prefabs")]
-    [Tooltip("총구 화염 효과")] public GameObject _MuzzlePrefab;
-    [Tooltip("폭발 파티클 프리팹")] public GameObject _ExplosionParticle;
+    [Tooltip("총구 화염 효과")] public ParticleSystem _MuzzlePrefab;
+    [Tooltip("폭발 파티클 프리팹")] public ParticleSystem _ExplosionParticle;
     [Tooltip("총알에 붙어있는 잔상(Trail) 리스트")] public List<GameObject> _Trails;
     private bool _hit;
 
@@ -19,16 +19,13 @@ public class BossBullet : BulletBase
     {
         if (_MuzzlePrefab != null)
         {
-            GameObject muzzleVFX = Instantiate(_MuzzlePrefab, transform.position, transform.rotation);
+            ParticleSystem muzzleVFX =
+                PoolManager.Instance.Spawn(_MuzzlePrefab, transform.position, transform.rotation);
 
-            var ps = muzzleVFX.GetComponent<ParticleSystem>();
-            if (ps != null)
-                Destroy(muzzleVFX, ps.main.duration);
-            else if (muzzleVFX.transform.childCount > 0)
+            if (muzzleVFX != null &&
+                muzzleVFX.TryGetComponent<ParticleSystem>(out var ps))
             {
-                var psChild = muzzleVFX.transform.GetChild(0).GetComponent<ParticleSystem>();
-                if (psChild != null)
-                    Destroy(muzzleVFX, psChild.main.duration);
+                ps.Play();
             }
         }
     }
@@ -62,14 +59,8 @@ public class BossBullet : BulletBase
 
             HandleTrails();
             SpawnExplosion();
-            StartCoroutine(DelayedDespawn());
+            Despawn();
         }
-    }
-
-    IEnumerator DelayedDespawn()
-    {
-        yield return new WaitForFixedUpdate();
-        Despawn();
     }
 
     void HandleTrails()
@@ -82,11 +73,9 @@ public class BossBullet : BulletBase
 
             _Trails[i].transform.parent = null;
 
-            var ps = _Trails[i].GetComponent<ParticleSystem>();
-            if (ps != null)
+            if (_Trails[i].TryGetComponent<ParticleSystem>(out var ps))
             {
-                ps.Stop();
-                Destroy(_Trails[i], ps.main.duration + ps.main.startLifetime.constantMax);
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         }
     }
@@ -95,20 +84,13 @@ public class BossBullet : BulletBase
     {
         if (_ExplosionParticle == null) return;
 
-        GameObject instance = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
-        var ps = instance.GetComponent<ParticleSystem>();
+        ParticleSystem instance =
+            PoolManager.Instance.Spawn(_ExplosionParticle, transform.position, transform.rotation);
 
-        if (ps != null)
+        if (instance != null &&
+            instance.TryGetComponent<ParticleSystem>(out var ps))
         {
-            var main = ps.main;
-            main.stopAction = ParticleSystemStopAction.Destroy;
             ps.Play();
-        }
-        else if (instance.transform.childCount > 0)
-        {
-            var childPS = instance.transform.GetChild(0).GetComponent<ParticleSystem>();
-            if (childPS != null)
-                Destroy(instance, childPS.main.duration + childPS.main.startLifetime.constantMax);
         }
     }
 
