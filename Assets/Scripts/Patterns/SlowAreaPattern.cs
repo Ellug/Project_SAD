@@ -65,6 +65,7 @@ public class SlowAreaPattern : PatternBase
 
         ActivateSlow = true;
         Slow = PoolManager.Instance.Spawn(_SlowParticle, spawnPos, Quaternion.identity);
+        PlayPatternSound(PatternEnum.SlowArea);
         Slow.Clear();
         Slow.Play();
 

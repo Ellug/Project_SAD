@@ -68,10 +68,9 @@ public class PlayerBullet : BulletBase
         _prevPos = transform.position;
     }
 
-    protected override void MoveForward()
+    public override void OnSpawned()
     {
-        _prevPos = transform.position;
-        base.MoveForward();
+        base.OnSpawned();
     }
 
     public override void OnDespawned()
@@ -80,14 +79,24 @@ public class PlayerBullet : BulletBase
 
         _counterAttack = false;
         _payload = default;
-
         _bounceRemain = 0;
         _hasBounced = false;
         _prevPos = Vector3.zero;
     }
 
+    protected override void MoveForward()
+    {
+        _prevPos = transform.position;
+        base.MoveForward();
+    }
+
     void OnTriggerEnter(Collider other)
     {
+        Vector3 hitPoint = other.ClosestPoint(transform.position);
+        Vector3 normal = transform.position - hitPoint;
+        normal.y = 0f;
+        if (normal.sqrMagnitude < 0.0001f) normal = -transform.forward;
+
         // Obstacle -> Bounce or Despawn
         if (other.CompareTag("Obstacle"))
         {
@@ -123,7 +132,6 @@ public class PlayerBullet : BulletBase
                 if (_payload.effect == BulletEffect.Burn)
                     boss.ApplyBurn(_payload.burnDps, _payload.burnDuration);                
             }
-
             Despawn();
             return;
         }        

@@ -42,6 +42,15 @@ public class PhaseManager : MonoBehaviour
             _activeObjects[i] = Instantiate(_curPhase.Pattern[i].gameObject).GetComponent<PatternBase>();
             _activeObjects[i].Init(_player);
             _activeObjects[i].StartPatternTimer();
+
+            var audioSource = _activeObjects[i].GetComponent<AudioSource>();
+            
+            if (audioSource == null)
+            {
+                audioSource = _activeObjects[i].gameObject.AddComponent<AudioSource>();
+                audioSource.playOnAwake = false;
+            }
+            SoundManager.Instance.BindPattern(_activeObjects[i], audioSource);
         }
     }
 

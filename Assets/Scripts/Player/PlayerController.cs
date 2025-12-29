@@ -40,8 +40,6 @@ public class PlayerController : MonoBehaviour
         _model.UpdateTimer(Time.deltaTime);
         _model.UpdateDodge(Time.deltaTime);
 
-        HandleAim();
-
         Fire();
     }
 
@@ -49,6 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleDodgeState();
+        HandleAim();
 
         HandleKnockbackState();
     }
@@ -116,6 +115,7 @@ public class PlayerController : MonoBehaviour
     // Movement
     private void HandleMovement()
     {
+        if (_isKnockback) return;
         if (_model.IsDodging) return;
         if (_model.IsOnSpecialAttack) return;
 
