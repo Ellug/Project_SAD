@@ -9,52 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: 323d846370b666d499d550b00554fe55, type: 3}
   m_Name: SoundData
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
-  WeaponSounds:
-  - weapon: 0
-    soundType: 0
-    clip: {fileID: 8300000, guid: 13a19d51bbc14a24db723db8b5b11911, type: 3}
-  - weapon: 0
-    soundType: 1
-    clip: {fileID: 8300000, guid: 37afe11da0516d94c8c763d5bea410ee, type: 3}
-  - weapon: 0
-    soundType: 2
-    clip: {fileID: 8300000, guid: 78277dcc4a0fb3c4298524d1b4e7df02, type: 3}
-  - weapon: 1
-    soundType: 0
-    clip: {fileID: 8300000, guid: 6a3dec9289e1a6f46897e34d27fa2634, type: 3}
-  - weapon: 1
-    soundType: 1
-    clip: {fileID: 8300000, guid: e5c13b9e660c35a4d8470851f6fd25a3, type: 3}
-  - weapon: 1
-    soundType: 2
-    clip: {fileID: 8300000, guid: 2c06ba181ef918c429e7e7451cecf6ac, type: 3}
-  - weapon: 2
-    soundType: 0
-    clip: {fileID: 8300000, guid: 19f03aae92ef7dc4c9f0e7b892d706bd, type: 3}
-  - weapon: 2
-    soundType: 1
-    clip: {fileID: 8300000, guid: 4a89c14f1711dd048b7d2b9affe00da6, type: 3}
-  - weapon: 2
-    soundType: 2
-    clip: {fileID: 8300000, guid: 270c21cf95ead9547b50cb99a03d9b44, type: 3}
-  BGMSounds:
-  - key: 0
-    clip: {fileID: 8300000, guid: db05e4b4c0a364a4ab52e56017ef20c9, type: 3}
-  - key: 1
-    clip: {fileID: 8300000, guid: 2d94d2294f4874748aad00e725e67100, type: 3}
-  - key: 2
-    clip: {fileID: 8300000, guid: 2fce677310205d041803553308345fe9, type: 3}
-  - key: 3
-    clip: {fileID: 8300000, guid: 109460609696f8c4b98632611b34c9f8, type: 3}
-  - key: 4
-    clip: {fileID: 8300000, guid: 6ecf31512a628124484ad14fa3b10a68, type: 3}
-  - key: 5
-    clip: {fileID: 8300000, guid: 13a8dcde8fe4f334aaa14f7acb3712f5, type: 3}
-  - key: 6
-    clip: {fileID: 8300000, guid: b46e32e04e816ea4487c711159eb8f7a, type: 3}
+  WeaponSounds: []
+  BGMSounds: []
   UISounds: []
   PatternSounds: []
   BossSounds: []
