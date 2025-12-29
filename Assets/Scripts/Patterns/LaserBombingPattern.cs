@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class MultiLaserBombingPattern : PatternBase
 {
@@ -37,8 +38,10 @@ public class MultiLaserBombingPattern : PatternBase
     {
         if (_warningAreaPrefab == null || _predictiveAim == null) yield break;
 
-        _currentWarning = Instantiate(_warningAreaPrefab);
+        _currentWarning = PoolManager.Instance.Spawn(_warningAreaPrefab, _predictiveAim.PredictiveAimCalc(_chaseOffset), Quaternion.identity);
         Chase = true;
+
+        _currentWarning.Clear();
         _currentWarning.Play();
 
         float elapsed = 0;
@@ -56,7 +59,13 @@ public class MultiLaserBombingPattern : PatternBase
 
         yield return new WaitForSeconds(_readyTime);
 
-        if (_currentWarning != null) Destroy(_currentWarning.gameObject);
+        if (_currentWarning != null)
+            if (_currentWarning != null)
+            {
+                _currentWarning.Stop();
+                PoolManager.Instance.Despawn(_currentWarning.gameObject);
+                _currentWarning = null;
+            }
 
         StartCoroutine(FireMultiLasers(finalCenterPos));
     }

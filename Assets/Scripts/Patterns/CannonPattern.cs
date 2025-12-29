@@ -74,10 +74,11 @@ public class CannonPattern : PatternBase
         Vector3 spawnPos = _spawnPosition.position;
         spawnPos.y = 0f;
 
-        _Warnning = Instantiate(_WarnningArea, spawnPos, Quaternion.identity);
+        _Warnning = PoolManager.Instance.Spawn(_WarnningArea, spawnPos, Quaternion.identity);
         _WarnningTransform = _Warnning.transform;
 
         _isChasing = true;
+        _Warnning.Clear();
         _Warnning.Play();
 
         StartCoroutine(PatternSequence());
@@ -89,7 +90,12 @@ public class CannonPattern : PatternBase
         _isChasing = false;
         yield return new WaitForSeconds(_WarnningFNTime);
 
-        if (_Warnning != null) Destroy(_Warnning.gameObject);
+        if (_Warnning != null)
+        {
+            _Warnning.Stop();
+            PoolManager.Instance.Despawn(_Warnning.gameObject);
+            _Warnning = null;
+        }
 
         LaunchBullets();
     }

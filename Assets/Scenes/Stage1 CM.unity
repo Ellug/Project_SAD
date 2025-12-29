@@ -1560,6 +1560,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449870099}
   m_CullTransparentMesh: 1
+--- !u!1001 &499102855
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2409605399095233396, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_Name
+      value: Laser (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.00663
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 11.886
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490365828248576388, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054401813730815616, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
+      propertyPath: m_Positions.Array.data[1].z
+      value: 50
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8bd656da36c763644887c830c49a7c2a, type: 3}
 --- !u!1 &505041083
 GameObject:
   m_ObjectHideFlags: 0
@@ -4583,6 +4644,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FrostLaser (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6132611216282729635, guid: a2e42c6f12b1e384394b084f9faacd1f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7599397546666515023, guid: a2e42c6f12b1e384394b084f9faacd1f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.91
@@ -7490,6 +7555,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FrostLaser
       objectReference: {fileID: 0}
+    - target: {fileID: 6132611216282729635, guid: a2e42c6f12b1e384394b084f9faacd1f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7599397546666515023, guid: a2e42c6f12b1e384394b084f9faacd1f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.91
@@ -7619,3 +7688,4 @@ SceneRoots:
   - {fileID: 8315718617811073880}
   - {fileID: 6401417820529678264}
   - {fileID: 1111545527}
+  - {fileID: 499102855}
