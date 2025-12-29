@@ -61,7 +61,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3776984478367260332}
@@ -106,10 +106,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
-  m_Height: 2.5
+  m_Radius: 0.5
+  m_Height: 6
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 2}
 --- !u!1001 &2411538634045849732
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -216,6 +216,66 @@ PrefabInstance:
     - target: {fileID: 1742742129504638, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
       propertyPath: m_Name
       value: vfx_Projectile_Trail02_Purple
+      objectReference: {fileID: 0}
+    - target: {fileID: 4004723142659230, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4004723142659230, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4004723142659230, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148202516541858, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148202516541858, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4148202516541858, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4182911037084790, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4182911037084790, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4182911037084790, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374859043620084, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374859043620084, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374859043620084, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404335732944688, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404335732944688, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404335732944688, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4509397511954154, guid: 82248e336e5cd0542bb11538981ac81e, type: 3}
       propertyPath: m_LocalScale.x

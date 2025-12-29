@@ -57,10 +57,11 @@ public class FlamethrowerPattern : PatternBase
     {
         if (_WarningArea == null) return;
 
-        _currentWarning = Instantiate(_WarningArea, _spawnPosition.position, Quaternion.identity);
+        _currentWarning = PoolManager.Instance.Spawn(_WarningArea, _spawnPosition.position, Quaternion.identity);
         _warningTransform = _currentWarning.transform;
 
         _isChasing = true;
+        _currentWarning.Clear();
         _currentWarning.Play();
 
         StartCoroutine(PatternSequence());
@@ -76,9 +77,11 @@ public class FlamethrowerPattern : PatternBase
         if (_currentWarning != null)
         {
             _fireRotation = _warningTransform.rotation;
-            Destroy(_currentWarning.gameObject);
+            _currentWarning.Stop();
+            PoolManager.Instance.Despawn(_currentWarning.gameObject);
+            _currentWarning = null;
+            _warningTransform = null;
         }
-
         FireFlamethrower();
     }
 
