@@ -20,7 +20,7 @@ public class PlayerLaser : MonoBehaviour
         _layerMask += 1 << LayerMask.NameToLayer("Enemy");
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Vector3 targetPoint = firePoint.position + (firePoint.forward * maxLaserDistance);
         Vector3 hitNormal = Vector3.up;
