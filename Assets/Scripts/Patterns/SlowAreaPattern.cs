@@ -22,12 +22,17 @@ public class SlowAreaPattern : PatternBase
     private bool ActivateWarinning = false;
     private bool ActivateSlow = false;
 
-    private void Start()
+    public override void Init(GameObject target)
     {
-        model = Player.GetComponent<PlayerModel>();
+        Player = target;
+        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
+        if (Player != null)
+        {
+            model = Player.GetComponent<PlayerModel>();
+        }
     }
 
-    private void Update()
+    protected override void Update()
     {
         if (ActivateWarinning && Warinning != null)
         {
@@ -40,18 +45,20 @@ public class SlowAreaPattern : PatternBase
 
         if (ActivateSlow && Slow != null)
         {
+            // 슬로우 장판 범위
             bool isHit = Physics.CheckSphere(Slow.transform.position, _SlowRange, _predictiveAim.targetLayer);
-            if (isHit)
+            if (isHit && model != null)
             {
                 model.SlowDebuff(_SlowPower, _SlowTime);
             }
         }
     }
 
-    private IEnumerator SlowSequence()
+    protected override IEnumerator PatternRoutine()
     {
         float targetScale = _SlowRange * 1.2f;
 
+        _isPatternActive = true;
         ActivateWarinning = true;
         Warinning = PoolManager.Instance.Spawn(_WarinningParticle, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
         Warinning.transform.localScale = new Vector3(targetScale, targetScale, targetScale);
@@ -83,6 +90,8 @@ public class SlowAreaPattern : PatternBase
             PoolManager.Instance.Despawn(Slow.gameObject);
             Slow = null;
         }
+
+        _isPatternActive = false;
     }
 
     private IEnumerator DelayedWarinningDespawn(ParticleSystem target, float scale)
@@ -95,15 +104,25 @@ public class SlowAreaPattern : PatternBase
         }
     }
 
-    protected override void PatternLogic()
+    protected override void CleanupPattern()
     {
-        StartCoroutine(SlowSequence());
-    }
+        _isPatternActive = false;
+        ActivateWarinning = false;
+        ActivateSlow = false;
 
-    public override void Init(GameObject target)
-    {
-        Player = target;
-        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
+        if (Warinning != null)
+        {
+            Warinning.Stop();
+            if (PoolManager.Instance != null) PoolManager.Instance.Despawn(Warinning.gameObject);
+            Warinning = null;
+        }
+
+        if (Slow != null)
+        {
+            Slow.Stop();
+            if (PoolManager.Instance != null) PoolManager.Instance.Despawn(Slow.gameObject);
+            Slow = null;
+        }
     }
 
     private void OnDrawGizmos()

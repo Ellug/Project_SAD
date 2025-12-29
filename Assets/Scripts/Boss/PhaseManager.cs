@@ -29,8 +29,11 @@ public class PhaseManager : MonoBehaviour
 
     void OnDestroy()
     {
-        _boss._phaseChange -= ChangePhase;
-        _boss._takeCounterableAttack -= TriggerCounter;
+        if (_boss != null)
+        {
+            _boss._phaseChange -= ChangePhase;
+            _boss._takeCounterableAttack -= TriggerCounter;
+        }
     }
 
     private void StartCurrentPhase()
@@ -41,10 +44,12 @@ public class PhaseManager : MonoBehaviour
         {
             _activeObjects[i] = Instantiate(_curPhase.Pattern[i].gameObject).GetComponent<PatternBase>();
             _activeObjects[i].Init(_player);
-            _activeObjects[i].StartPatternTimer();
+
+            // PatternBase의 실제 메서드 이름인 StartPatternCycle로 수정
+            _activeObjects[i].StartPatternCycle();
 
             var audioSource = _activeObjects[i].GetComponent<AudioSource>();
-            
+
             if (audioSource == null)
             {
                 audioSource = _activeObjects[i].gameObject.AddComponent<AudioSource>();
@@ -56,18 +61,23 @@ public class PhaseManager : MonoBehaviour
 
     private void StopCurrentPhase()
     {
+        if (_activeObjects == null) return;
+
         for (int i = 0; i < _activeObjects.Length; i++)
         {
-            _activeObjects[i].StopPatternTimer();
-            _activeObjects[i].gameObject.SetActive(false);
+            if (_activeObjects[i] != null)
+            {
+                _activeObjects[i].StopPatternCycle();
+                Destroy(_activeObjects[i].gameObject);
+            }
         }
+        _activeObjects = null;
     }
 
     public void ChangePhase()
     {
         if (_phaseIndex < _phase.Count - 1)
         {
-            // 지금 페이즈 멈추고, 다음 페이즈로 전환 후 시작해라.
             StopCurrentPhase();
             _curPhase = _phase[++_phaseIndex];
             StartCurrentPhase();
@@ -76,9 +86,12 @@ public class PhaseManager : MonoBehaviour
 
     public void TriggerCounter()
     {
-        foreach (PatternBase pattern in _activeObjects) 
+        if (_activeObjects == null) return;
+
+        foreach (PatternBase pattern in _activeObjects)
         {
-            pattern.CounterAttackTrigger();
+            if (pattern != null)
+                pattern.TriggerCounter();
         }
     }
 }
