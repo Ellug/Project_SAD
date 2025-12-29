@@ -54,6 +54,7 @@ public class Shotgun : WeaponBase
                 FireProjectile(false);
                 break;
         }
+        FireSound(_statsContext.Current.Weapon, false);
 
         _statsContext?.NotifyAttackSlow();
         return true;

@@ -21,9 +21,7 @@ public struct WeaponRuntimeStats
     public float SpecialProjectileSpeed;
     public PlayerBullet SpecialProjectilePrefab;
 
-    //Audio
-    public AudioClip FireClip;
-    public AudioClip ReloadClip;
+    public WeaponEnum WeaponEnum; 
 
     // Dynamic Mode
     public int RifleMode; // 0 none 1 Nobrain 2 Minigun
@@ -51,8 +49,7 @@ public struct WeaponRuntimeStats
             SpecialProjectileSpeed = d.SpecialProjectileSpeed,
             SpecialProjectilePrefab = d.SpecialProjectilePrefab,
 
-            FireClip = d.FireClip,
-            ReloadClip = d.ReloadClip,
+            WeaponEnum = d.WeaponType,
 
             RifleMode = 0,
             ShotgunMode = 0,
