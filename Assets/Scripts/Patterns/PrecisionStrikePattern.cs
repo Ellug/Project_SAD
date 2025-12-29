@@ -90,6 +90,8 @@ public class PrecisionStrikePattern : PatternBase
         SpawnExplosion(_FirstExplosionParticle, explosionPos);
         CheckDamage(explosionPos);
 
+        PlayPatternSound(PatternEnum.PrecisionStrike);
+
         yield return new WaitForSeconds(_ExpolsionTime);
 
         SpawnExplosion(_SecondExplosionParticle, explosionPos);

@@ -78,6 +78,8 @@ public class IceAreaPattern : PatternBase
     {
         if (_IceAreaPrefab == null) return;
 
+        PlayPatternSound(PatternEnum.IceArea);
+
         IceArea ice = PoolManager.Instance.Spawn(_IceAreaPrefab, position, Quaternion.identity);
 
         if (ice != null)

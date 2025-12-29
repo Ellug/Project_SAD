@@ -51,6 +51,7 @@ public class GuidedMissilePattern : PatternBase
     {
         StopCoroutine(ChaseCoroutine);
         GuidedMissile missile = PoolManager.Instance.Spawn(_MissilePrefab, _SpawnPoint.transform.position, _SpawnPoint.transform.rotation);
+        PlayPatternSound(PatternEnum.GuidedMissile);
     }
 
     public override void Init(GameObject target)
