@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class IceAreaPattern : PatternBase
@@ -40,10 +41,11 @@ public class IceAreaPattern : PatternBase
     {
         if (_WarnningArea == null) return;
 
-        _Warnning = Instantiate(_WarnningArea);
+        _Warnning = PoolManager.Instance.Spawn(_WarnningArea, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
         _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
         chase = true;
 
+        _Warnning.Clear();
         _Warnning.Play();
         StartCoroutine(ChaseRoutine());
     }
@@ -62,7 +64,12 @@ public class IceAreaPattern : PatternBase
 
         yield return new WaitForSeconds(_WarnningDTime);
 
-        if (_Warnning != null) Destroy(_Warnning.gameObject);
+        if (_Warnning != null)
+        {
+            _Warnning.Stop();
+            PoolManager.Instance.Despawn(_Warnning.gameObject);
+            _Warnning = null;
+        }
 
         SpawnIceArea(stopPos);
     }

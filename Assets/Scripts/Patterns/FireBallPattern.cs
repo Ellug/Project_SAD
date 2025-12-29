@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class FireBallPattern : PatternBase
 {
@@ -42,10 +43,11 @@ public class FireBallPattern : PatternBase
     {
         if (_WarnningArea == null) return;
 
-        _currentWarnning = Instantiate(_WarnningArea);
+        _currentWarnning = PoolManager.Instance.Spawn(_WarnningArea, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
         _currentWarnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
 
         _isChasing = true;
+        _currentWarnning.Clear();
         _currentWarnning.Play();
 
         StartCoroutine(ChaseRoutine());
@@ -57,18 +59,21 @@ public class FireBallPattern : PatternBase
 
         _isChasing = false;
 
-        GameObject targetMarker = new GameObject("FireBallTargetMarker");
-        targetMarker.transform.position = _currentWarnning.transform.position;
+        Vector3 targetPosition = _currentWarnning.transform.position;
 
         yield return new WaitForSeconds(_WarnningDTime);
 
-        Fire(targetMarker.transform);
+        Fire(targetPosition);
 
-        if (_currentWarnning != null) Destroy(_currentWarnning.gameObject);
-        Destroy(targetMarker, 5f);
+        if (_currentWarnning != null)
+        {
+            _currentWarnning.Stop();
+            PoolManager.Instance.Despawn(_currentWarnning.gameObject);
+            _currentWarnning = null;
+        }
     }
 
-    private void Fire(Transform target)
+    private void Fire(Vector3 targetPosition)
     {
         if (_FireBallPrefab == null || _SpawnPoint == null) return;
 
@@ -79,7 +84,7 @@ public class FireBallPattern : PatternBase
         if (fireball != null)
         {
             fireball.Init(_player);
-            fireball.setTarget(target);
+            fireball.setTarget(targetPosition);
         }
     }
 }
