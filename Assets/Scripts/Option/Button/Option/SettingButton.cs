@@ -1,26 +1,26 @@
 ﻿using UnityEngine;
 
-public class SettingButton : MonoBehaviour
+public class SettingButton : DOTweenUI
 {
-    [SerializeField] private GameObject _settingMenuPanel;
+    [Header("Sub Panel")]
     [SerializeField] private GameObject _soundSettingPanel;
     [SerializeField] private GameObject _graphicSettingPanel;
 
-    private void OnEnable()
+    private void Awake()
     {
-        OnClickReturn();
+        _subPanel = new GameObject[] { _soundSettingPanel, _graphicSettingPanel };
     }
 
     //SettingMenuPanel
     public void OnClickSoundSetting()
     {
-        _settingMenuPanel.SetActive(false);
+        _mainPanel.SetActive(false);
         _soundSettingPanel.SetActive(true);
     }
 
     public void OnClickGraphicSetting()
     {
-        _settingMenuPanel.SetActive(false);
+        _mainPanel.SetActive(false);
         _graphicSettingPanel.SetActive(true);
     }
 
@@ -28,18 +28,6 @@ public class SettingButton : MonoBehaviour
     {
         _soundSettingPanel.SetActive(false);
         _graphicSettingPanel.SetActive(false);
-        _settingMenuPanel.SetActive(true);
+        _mainPanel.SetActive(true);
     }
-
-    public void OnClickExit()
-    {
-        UIManager.Instance.CloseTopUI();
-    }
-
-    //private void CloseAll()
-    //{
-    //    _settingMenuPanel.SetActive(false);
-    //    _soundSettingPanel.SetActive(false);
-    //    _graphicSettingPanel.SetActive(false);
-    //}
 }
