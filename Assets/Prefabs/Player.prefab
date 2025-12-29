@@ -119,14 +119,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerModel
   _weaponSound: {fileID: 4997598035248107493}
   _maxHp: 100
-  _maxSpeed: 10
-  _accelForce: 20
+  _maxSpeed: 12
+  _accelForce: 25
   _rotSpeed: 10
   _dodgeDuration: 0.3
   _dodgeSpeed: 30
-  _dodgeCoolTime: 5
+  _dodgeCoolTime: 3
   _specialCoolTime: 4
-  _attackMinSpeed: 4
+  _attackMinSpeed: 8
   _attackSlowRate: 2
   _statsContext: {fileID: -3007301638430071401}
   attackImpulse: 0
