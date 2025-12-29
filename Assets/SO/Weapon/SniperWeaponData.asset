@@ -15,9 +15,6 @@ MonoBehaviour:
   _weaponPrefab: {fileID: 1777389893361340517, guid: 1fc66bc9096e59440bdbf73ea626377c, type: 3}
   _weaponId: 1
   _weaponType: 1
-  _fireClip: {fileID: 8300000, guid: 6a3dec9289e1a6f46897e34d27fa2634, type: 3}
-  _SPfireClip: {fileID: 8300000, guid: 78ab53b2c8eaf6e4e9395d0a0390e5e4, type: 3}
-  _reloadClip: {fileID: 8300000, guid: 78277dcc4a0fb3c4298524d1b4e7df02, type: 3}
   attack: 20
   attackSpeed: 0.5
   projectileCount: 1
@@ -32,4 +29,4 @@ MonoBehaviour:
   SpecialProjectileAngle: 0
   SpecialProjectileRange: 90
   SpecialProjectileSpeed: 70
-  SpecialProjectilePrefab: {fileID: 8378940865896947848, guid: bd4a612256ec45a46beb3d67d910c36d, type: 3}
+  SpecialProjectilePrefab: {fileID: 2756237478549187170, guid: 51a7c4f183e01ce40b2870fbbf6b3474, type: 3}
