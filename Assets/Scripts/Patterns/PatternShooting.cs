@@ -8,6 +8,9 @@ public class PatternShooting : PatternBase
     [SerializeField] private float _shootInterval = 0.1f;
     [SerializeField] private int _shootBulletNumber;
     [SerializeField] private Transform _spawnPosition;
+    [SerializeField] private float _bulletDamage;
+    [SerializeField] private float _bulletSpeed;
+    [SerializeField] private float _bulletDistance;
 
     private GameObject _target;
     private WaitForSeconds _delay;
@@ -45,7 +48,8 @@ public class PatternShooting : PatternBase
             Quaternion rot = Quaternion.LookRotation(dir.normalized, Vector3.up);
 
             PlayPatternSound(PatternEnum.NormalShot);
-            PoolManager.Instance.Spawn(_bulletPrefab, transform.position, rot);
+            BulletBase bullet = PoolManager.Instance.Spawn(_bulletPrefab, transform.position, rot);
+            bullet.Init(_bulletDamage, _bulletSpeed, _bulletDistance);
 
             yield return _delay;
         }
