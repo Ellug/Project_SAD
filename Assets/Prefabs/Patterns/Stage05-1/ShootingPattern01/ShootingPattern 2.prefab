@@ -52,6 +52,9 @@ MonoBehaviour:
   _shootInterval: 0.2
   _shootBulletNumber: 1
   _spawnPosition: {fileID: 2972957131812476677, guid: d1bad2f923e657f4da4a12464629e906, type: 3}
+  _bulletDamage: 10
+  _bulletSpeed: 30
+  _bulletDistance: 100
 --- !u!82 &-4043651985943119045
 AudioSource:
   m_ObjectHideFlags: 0

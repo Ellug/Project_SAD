@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc51b4512194dfa449cd0d34d84bfd99, type: 3}
+  m_Name: 5-2
+  m_EditorClassIdentifier: Assembly-CSharp::PhaseData
+  _patterns:
+  - {fileID: 8020916841353739512, guid: aab9a35ac5ae3184ba53a17995c9f4b1, type: 3}
+  - {fileID: 8020916841353739512, guid: a1740760ec9f4ad48a892425a0a14925, type: 3}
+  - {fileID: 8020916841353739512, guid: da207bba059b61d418bacfabd231dfad, type: 3}
+  - {fileID: 8020916841353739512, guid: c61003ebd66795446b601a799fdb3f5b, type: 3}
+  - {fileID: 8020916841353739512, guid: efe000d4a6f555e4496b74e93c2c6e54, type: 3}
+  - {fileID: 8020916841353739512, guid: d8918f0dd1ece7e458ffb99845b7c3aa, type: 3}
+  - {fileID: 8020916841353739512, guid: 02aeb37dd762cc74d817a41d06782d49, type: 3}
+  - {fileID: 8020916841353739512, guid: 61f0641c2e7cd4040a2dce5d8dc6e2c2, type: 3}
+  - {fileID: 8020916841353739512, guid: c09b4fa6c1e7dea418add9c8ecabf293, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
