@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
 {
-    [SerializeField] private WeaponSound _weaponSound;
+    //WeaponSound
+    [SerializeField] private AudioSource _weaponAudioSource;
 
     // Base Status
     [Header("HP")]
@@ -46,6 +47,7 @@ public class PlayerModel : MonoBehaviour
     private float _curDebuffSlowTime = 0f;
     private float _debuffSlowRate = 0f;
 
+    private bool _isSPFireSoundReady = false;
     // Knockback request (1-shot)
     private bool _hasKbRequest;
     private Vector3 _kbDir;
@@ -228,6 +230,14 @@ public class PlayerModel : MonoBehaviour
 
         if (_statsContext != null)
             _statsContext.TickBuffs(deltaTime);
+
+        bool canSpecial = _curSpecialCoolTime <= 0f;
+        
+        if (!_isSPFireSoundReady && canSpecial)
+        {
+            CurrentWeapon?.NotifySpecialReady();
+        }
+        _isSPFireSoundReady = canSpecial;
     }
 
     public void SetWeapon(WeaponBase weapon)
@@ -237,7 +247,7 @@ public class PlayerModel : MonoBehaviour
         // Weapon 교체 -> Final 재계산
         _statsContext.SetWeapon(weapon);
 
-        _weaponSound.Bind(weapon);
+        SoundManager.Instance.BindWeapon(weapon, GetComponentInChildren<AudioSource>());
 
         _curAttackCoolTime = 0f;
         _curSpecialCoolTime = 0f;

@@ -195,7 +195,7 @@ public class Rifle : WeaponBase
         if (mode == RiflePerkMode.Minigun && !_spunUp)
             return false;
 
-        FireSound(_statsContext.Current.Weapon);
+        FireSound(_statsContext.Current.Weapon, false);
 
         FireRifleSpread(false); // 랜덤 오차각
 

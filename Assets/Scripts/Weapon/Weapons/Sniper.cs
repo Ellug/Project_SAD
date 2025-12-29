@@ -59,6 +59,7 @@ public class Sniper : WeaponBase
                 FireDefault();
                 break;
         }
+        FireSound(_statsContext.Current.Weapon, false);
 
         _statsContext?.NotifyAttackSlow();
         return true;

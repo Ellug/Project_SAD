@@ -119,6 +119,56 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &24475325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 24475327}
+  - component: {fileID: 24475326}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &24475326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24475325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e287842993437ef438591c9c31b05bb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  _soundData: {fileID: 11400000, guid: c7fa219dc6d9d914aa022c3113bd89d2, type: 2}
+  _bgmSource: {fileID: 1960226115}
+  _weaponSource: {fileID: 0}
+  _UISource: {fileID: 0}
+  _bossSource: {fileID: 0}
+  _patternSource: {fileID: 0}
+--- !u!4 &24475327
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24475325}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.01122, y: 0, z: -2.99922}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &25390094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,6 +1224,10 @@ PrefabInstance:
       propertyPath: _dodgeDuration
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 4997598035248107493, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6704405688854526168, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
       propertyPath: _cameraOffset
       value: 6
@@ -1192,6 +1246,7 @@ PrefabInstance:
       objectReference: {fileID: 184178913}
     m_RemovedComponents:
     - {fileID: 6961779584357220181, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
+    - {fileID: 4997598035248107493, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7904699208717546543, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
     m_AddedGameObjects: []
@@ -7586,7 +7641,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: db05e4b4c0a364a4ab52e56017ef20c9, type: 3}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.2
   m_Pitch: 1
@@ -8458,3 +8513,4 @@ SceneRoots:
   - {fileID: 101292163}
   - {fileID: 1960226116}
   - {fileID: 1281115923}
+  - {fileID: 24475327}
