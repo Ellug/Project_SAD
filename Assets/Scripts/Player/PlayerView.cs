@@ -32,15 +32,17 @@ public class PlayerView : MonoBehaviour
     // 본체 회전
     public void RotateBody(Vector3 dir)
     {
+        dir.y = 0f;
         if (dir.sqrMagnitude > 0.01f)
-            _body.rotation = Quaternion.LookRotation(dir);
+            _body.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 
     // 포신 회전
     public void RotateTurret(Vector3 dir)
     {
+        dir.y = 0f;
         if (dir.sqrMagnitude > 0.01f)
-            _turret.rotation = Quaternion.LookRotation(dir);
+            _turret.rotation = Quaternion.LookRotation(dir, Vector3.up);
     }
 
     public void ResolveOverlap()

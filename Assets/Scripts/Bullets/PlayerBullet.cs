@@ -27,6 +27,9 @@ public struct BulletEffectPayload
 
 public class PlayerBullet : BulletBase
 {
+    [SerializeField] private ParticleSystem _projectileFx;
+    [SerializeField] private GameObject _impactFxPrefab;
+
     private bool _counterAttack;
     private BulletEffectPayload _payload;
 
@@ -68,26 +71,44 @@ public class PlayerBullet : BulletBase
         _prevPos = transform.position;
     }
 
-    protected override void MoveForward()
+    public override void OnSpawned()
     {
-        _prevPos = transform.position;
-        base.MoveForward();
+        base.OnSpawned();
+
+        if (_projectileFx != null)
+        {
+            _projectileFx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            _projectileFx.Play(true);
+        }
     }
 
     public override void OnDespawned()
     {
         base.OnDespawned();
 
+        if (_projectileFx != null)
+        _projectileFx.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
         _counterAttack = false;
         _payload = default;
-
         _bounceRemain = 0;
         _hasBounced = false;
         _prevPos = Vector3.zero;
     }
 
+    protected override void MoveForward()
+    {
+        _prevPos = transform.position;
+        base.MoveForward();
+    }
+
     void OnTriggerEnter(Collider other)
     {
+        Vector3 hitPoint = other.ClosestPoint(transform.position);
+        Vector3 normal = transform.position - hitPoint;
+        normal.y = 0f;
+        if (normal.sqrMagnitude < 0.0001f) normal = -transform.forward;
+
         // Obstacle -> Bounce or Despawn
         if (other.CompareTag("Obstacle"))
         {
@@ -97,6 +118,7 @@ public class PlayerBullet : BulletBase
                 return;
             }
 
+            SpawnImpactFx(hitPoint, normal);
             Despawn();
             return;
         }
@@ -124,6 +146,7 @@ public class PlayerBullet : BulletBase
                     boss.ApplyBurn(_payload.burnDps, _payload.burnDuration);                
             }
 
+            SpawnImpactFx(hitPoint, normal);
             Despawn();
             return;
         }        
@@ -193,10 +216,36 @@ public class PlayerBullet : BulletBase
         if (reflected.sqrMagnitude < 0.000001f)
             reflected = incident;
 
+        SpawnImpactFx(hitPoint, normal);
         reflected.Normalize();
 
         // 즉시 재충돌 방지용으로 살짝 밀어냄
         transform.position = hitPoint + normal * _bounceSkin;
         transform.rotation = Quaternion.LookRotation(reflected, Vector3.up);
+    }
+
+    // 탄환 충돌 이펙트
+    private void SpawnImpactFx(Vector3 pos, Vector3 normal)
+    {
+        if (_impactFxPrefab == null) return;
+
+        Quaternion rot = (normal.sqrMagnitude > 0.0001f)
+            ? Quaternion.LookRotation(normal, Vector3.up)
+            : Quaternion.identity;
+
+        GameObject fx = Instantiate(_impactFxPrefab, pos, rot);
+
+        // 파티클 자동 재생
+        var ps = fx.GetComponentInChildren<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            ps.Play(true);
+            Destroy(fx, ps.main.duration + ps.main.startLifetime.constantMax + 0.5f);
+        }
+        else
+        {
+            Destroy(fx, 2f);
+        }
     }
 }
