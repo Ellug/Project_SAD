@@ -102,6 +102,8 @@ public class CannonPattern : PatternBase
 
     private void LaunchBullets()
     {
+        PlayPatternSound(PatternEnum.Cannon);
+
         Vector3 dir = (_target.transform.position - _spawnPosition.position);
         dir.y = 0;
         if (dir != Vector3.zero)

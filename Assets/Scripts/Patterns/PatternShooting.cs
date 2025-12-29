@@ -44,6 +44,7 @@ public class PatternShooting : PatternBase
             dir.y = 0f;
             Quaternion rot = Quaternion.LookRotation(dir.normalized, Vector3.up);
 
+            PlayPatternSound(PatternEnum.NormalShot);
             PoolManager.Instance.Spawn(_bulletPrefab, transform.position, rot);
 
             yield return _delay;

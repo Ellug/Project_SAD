@@ -79,6 +79,8 @@ public class MultiLaserBombingPattern : PatternBase
 
             SpawnLaser(firePos);
 
+            PlayPatternSound(PatternEnum.LaserBombing);
+
             CheckDamage(firePos);
 
             yield return new WaitForSeconds(_intervalBetweenLasers);

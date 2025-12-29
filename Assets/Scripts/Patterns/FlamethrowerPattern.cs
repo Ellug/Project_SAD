@@ -88,6 +88,8 @@ public class FlamethrowerPattern : PatternBase
     private void FireFlamethrower()
     {
         _activeFlame = PoolManager.Instance.Spawn(_flamePrefab, _spawnPosition.position, _fireRotation);
+     
+        PlayPatternSound(PatternEnum.Flamethrower);
 
         if (_activeFlame != null)
         {

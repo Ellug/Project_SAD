@@ -1639,7 +1639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingManager
   _defaultData: {fileID: 11400000, guid: 8f10c6c86bb5cbc488206fbcb0717c07, type: 2}
-  audioMixer: {fileID: 24100000, guid: 2ba3f7b2568671e429436358dfa661fc, type: 2}
+  _audioMixer: {fileID: 24100000, guid: 2ba3f7b2568671e429436358dfa661fc, type: 2}
 --- !u!4 &1219523133
 Transform:
   m_ObjectHideFlags: 0

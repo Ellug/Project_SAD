@@ -26,8 +26,8 @@ public class SoundManager : SingletonePattern<SoundManager>
     }
     public void BindPattern(PatternBase pattern, AudioSource patternAudio)
     {
-        //pattern.OnPatternSound += (patternType) =>
-        //    PlayPatternSound(patternType, patternAudio);
+        pattern.OnPatternSound += (patternType) =>
+            PlayPatternSound(patternType, patternAudio);
     }
 
     private void PlayPatternSound(PatternEnum patternType, AudioSource audioSource)
