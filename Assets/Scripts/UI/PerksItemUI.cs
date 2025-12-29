@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +25,7 @@ public class PerksItemUI : MonoBehaviour
         _stageIndex = stageIndex;
 
         if (_stageText != null)
-            _stageText.text = $"Stage {stageIndex + 1}";
+            _stageText.text = $"Level {stageIndex + 1}";
 
         if (_leftButton != null)
         {
