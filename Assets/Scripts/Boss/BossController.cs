@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
+    [Header("건드리지 말 것")]
     [SerializeField] private DamageNumber _dmgFont;
+    [Header("보스 체력&페이즈 정의")]
     [SerializeField] private float _bossMaxHp = 100;
-    [SerializeField] private float _changePhaseHpRate = 0.5f;
-    private bool _isChangedPhase;
+    [SerializeField] private float[] _changePhaseHpRate;
+    private int _currentPhase;
 
     public float BossMaxHp { get { return _bossMaxHp; }}
     public float BossCurrentHp { get; private set; }
@@ -24,7 +26,7 @@ public class BossController : MonoBehaviour
 
     void Awake()
     {
-        _isChangedPhase = false;
+        _currentPhase = 1;
         BossCurrentHp = _bossMaxHp;
     }
     void Update()
@@ -41,13 +43,16 @@ public class BossController : MonoBehaviour
             _takeCounterableAttack?.Invoke();
 
         // 페이즈 전환 조건 검사
-        if (_isChangedPhase == false && 
-            BossCurrentHp / _bossMaxHp < _changePhaseHpRate)
+        if (_currentPhase <= _changePhaseHpRate.Length)
         {
-            _phaseChange?.Invoke();
-            _isChangedPhase = true;
+            if (BossCurrentHp / BossMaxHp <= _changePhaseHpRate[_currentPhase - 1])
+            {
+                StartCoroutine(PhaseChangeAnimation());
+                _phaseChange?.Invoke();
+                _currentPhase++;
+            }
         }
-
+        
         if (BossCurrentHp <= 0f)
         {
             BossCurrentHp = 0f;
@@ -59,6 +64,23 @@ public class BossController : MonoBehaviour
     {
         yield return null;
         Die();
+    }
+
+    private IEnumerator PhaseChangeAnimation()
+    {
+        GameObject armor = transform.Find($"Armor0{_currentPhase}").gameObject;
+        MeshRenderer[] temp = armor.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer renderer in temp)
+        {
+            renderer.gameObject.AddComponent<BoxCollider>();
+            Rigidbody temp2 = renderer.gameObject.AddComponent<Rigidbody>();
+            temp2.mass = 3f;
+            temp2.AddForce(temp2.transform.forward * 60f, ForceMode.Impulse);
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        armor.SetActive(false);
     }
 
     private void Die()
