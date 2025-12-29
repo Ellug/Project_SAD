@@ -4,8 +4,8 @@ using UnityEngine;
 public class FireBall : BulletBase, IPoolable
 {
     [Header("VFX Prefabs")]
-    [Tooltip("총구 화염 효과")] public GameObject _MuzzlePrefab;
-    [Tooltip("폭발 파티클 프리팹")] public GameObject _ExplosionParticle;
+    [Tooltip("총구 화염 효과")] public ParticleSystem _MuzzlePrefab;
+    [Tooltip("폭발 파티클 프리팹")] public ParticleSystem _ExplosionParticle;
     [Tooltip("총알에 붙어있는 잔상(Trail) 리스트")] public List<GameObject> _Trails;
 
     [Header("데칼 & 장판")]
@@ -32,9 +32,14 @@ public class FireBall : BulletBase, IPoolable
     {
         if (_MuzzlePrefab != null)
         {
-            GameObject muzzle = Instantiate(_MuzzlePrefab, transform.position, transform.rotation);
-            var ps = muzzle.GetComponent<ParticleSystem>() ?? muzzle.GetComponentInChildren<ParticleSystem>();
-            if (ps != null) Destroy(muzzle, ps.main.duration);
+            ParticleSystem muzzle =
+                PoolManager.Instance.Spawn(_MuzzlePrefab, transform.position, transform.rotation);
+
+            if (muzzle != null &&
+                muzzle.TryGetComponent<ParticleSystem>(out var ps))
+            {
+                ps.Play();
+            }
         }
     }
 
@@ -60,10 +65,10 @@ public class FireBall : BulletBase, IPoolable
 
         if (_FireAreaPrefab != null)
         {
-            FireArea area = PoolManager.Instance.Spawn(_FireAreaPrefab, _targetPos, Quaternion.identity);
+            FireArea area =
+                PoolManager.Instance.Spawn(_FireAreaPrefab, _targetPos, Quaternion.identity);
             if (area != null)
             {
-                // 장판의 Init 호출하여 플레이어 정보 전달
                 area.Init(_player);
             }
         }
@@ -85,15 +90,16 @@ public class FireBall : BulletBase, IPoolable
     private void HandleTrails()
     {
         if (_Trails == null) return;
-        foreach (var trail in _Trails)
+
+        for (int i = 0; i < _Trails.Count; i++)
         {
-            if (trail == null) continue;
-            trail.transform.parent = null;
-            var ps = trail.GetComponent<ParticleSystem>();
-            if (ps != null)
+            if (_Trails[i] == null) continue;
+
+            _Trails[i].transform.parent = null;
+
+            if (_Trails[i].TryGetComponent<ParticleSystem>(out var ps))
             {
-                ps.Stop();
-                Destroy(trail, ps.main.duration + ps.main.startLifetime.constantMax);
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         }
     }
@@ -101,12 +107,12 @@ public class FireBall : BulletBase, IPoolable
     private void SpawnExplosion()
     {
         if (_ExplosionParticle == null) return;
-        GameObject instance = Instantiate(_ExplosionParticle, transform.position, transform.rotation);
-        var ps = instance.GetComponent<ParticleSystem>() ?? instance.GetComponentInChildren<ParticleSystem>();
-        if (ps != null)
+
+        ParticleSystem instance = PoolManager.Instance.Spawn(_ExplosionParticle, transform.position, transform.rotation);
+
+        if (instance != null &&
+            instance.TryGetComponent<ParticleSystem>(out var ps))
         {
-            var main = ps.main;
-            main.stopAction = ParticleSystemStopAction.Destroy;
             ps.Play();
         }
     }
