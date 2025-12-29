@@ -219,6 +219,13 @@ MonoBehaviour:
   _specialCoolTime: 4
   _attackMinSpeed: 8
   _attackSlowRate: 2
+  _childRenderers:
+  - {fileID: 4968826433639077705}
+  - {fileID: 6326096562047529735}
+  - {fileID: 5507953855219750844}
+  _burnMaterial: {fileID: 2100000, guid: c4b7b6b71a3ebb5429b5fa9a22ced77a, type: 2}
+  _coldMaterial: {fileID: 2100000, guid: fe1767ce2dd63f84cb099b9a86ca4ca3, type: 2}
+  _slowMaterial: {fileID: 2100000, guid: 82548f5a11585464ba2509920634eb45, type: 2}
   _statsContext: {fileID: -3007301638430071401}
   attackImpulse: 0
 --- !u!114 &5050391430065633288

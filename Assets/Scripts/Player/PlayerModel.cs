@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerModel : MonoBehaviour
 {
@@ -27,6 +28,15 @@ public class PlayerModel : MonoBehaviour
     [Header("AttackSlow")]
     [SerializeField] private float _attackMinSpeed = 5f;
     [SerializeField] private float _attackSlowRate = 5f;
+
+    [Header("Visual Effects")]
+    [SerializeField] private MeshRenderer[] _childRenderers; 
+    [SerializeField] private Material _burnMaterial; 
+    [SerializeField] private Material _coldMaterial;
+    [SerializeField] private Material _slowMaterial;
+
+    private HashSet<Material> _activeDebuffs = new HashSet<Material>();
+    private Material _baseMaterial;
 
     // Final Stats Context
     [SerializeField] private PlayerStatsContext _statsContext;
@@ -136,6 +146,7 @@ public class PlayerModel : MonoBehaviour
     void Start()
     {
         Init();
+        if (_childRenderers.Length > 0) _baseMaterial = _childRenderers[0].sharedMaterial;
     }
 
     public void Init()
@@ -211,6 +222,7 @@ public class PlayerModel : MonoBehaviour
     
     public void SlowDebuff(float rate, float duration)
     {
+        UpdateDebuffVisual(_slowMaterial, true);
         _debuffSlowRate = Mathf.Clamp01(rate); 
         _curDebuffSlowTime = duration;         
     }
@@ -227,7 +239,14 @@ public class PlayerModel : MonoBehaviour
             _curAttackCoolTime = Mathf.Max(0f, _curAttackCoolTime - deltaTime);
 
         if (_curDebuffSlowTime > 0f)
-            _curDebuffSlowTime = Mathf.Max(0f, _curDebuffSlowTime - deltaTime);
+        {
+            _curDebuffSlowTime -= deltaTime;
+            if (_curDebuffSlowTime <= 0f)
+            {
+                _curDebuffSlowTime = 0f;
+                UpdateDebuffVisual(_slowMaterial, false);
+            }
+        }
 
         if (_statsContext != null)
             _statsContext.TickBuffs(deltaTime);
@@ -264,6 +283,27 @@ public class PlayerModel : MonoBehaviour
             Die();
     }
 
+    // 디버프 비주얼 업데이트 (마테리얼 추가 / 삭제로 적용)
+    private void UpdateDebuffVisual(Material debuffMat, bool shouldAdd)
+    {
+        if (debuffMat == null) return;
+
+        // 1. 상태 변화 체크 (이미 추가됐거나 이미 없는 경우 실행 안 함)
+        bool isChanged = shouldAdd ? _activeDebuffs.Add(debuffMat) : _activeDebuffs.Remove(debuffMat);
+        if (!isChanged) return;
+
+        // 2. 새 머티리얼 배열 생성 (기본 + 활성 디버프들)
+        Material[] newMats = new Material[_activeDebuffs.Count + 1];
+        newMats[0] = _baseMaterial;
+        _activeDebuffs.CopyTo(newMats, 1);
+
+        // 3. 모든 렌더러에 한 번에 적용
+        foreach (var renderer in _childRenderers)
+        {
+            if (renderer != null) renderer.materials = newMats;
+        }
+    }
+
     public void BurnDebuff(float BurnDmg, float Burnduration, float TickInterval)
     {
         if (_burnCoroutine != null)
@@ -282,6 +322,8 @@ public class PlayerModel : MonoBehaviour
 
     private IEnumerator ProcessBurn(float BurnDmg, float Burnduration, float TickInterval)
     {
+        UpdateDebuffVisual(_burnMaterial, true);
+
         float BurnTime = 0;
         while (BurnTime < Burnduration)
         {
@@ -291,11 +333,14 @@ public class PlayerModel : MonoBehaviour
             BurnTime += TickInterval;
         }
 
+        UpdateDebuffVisual(_burnMaterial, false);
         _burnCoroutine = null; 
     }
 
     private IEnumerator Processcold(float ColdDmg, float Coldduration, float TickInterval)
     {
+        UpdateDebuffVisual(_coldMaterial, true);
+
         float ColdTime = 0;
         while (ColdTime < Coldduration)
         {
@@ -305,6 +350,7 @@ public class PlayerModel : MonoBehaviour
             ColdTime += TickInterval;
         }
 
+        UpdateDebuffVisual(_coldMaterial, false);
         _coldCoroutine = null;
     }
 

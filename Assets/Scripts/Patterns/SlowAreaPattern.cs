@@ -50,8 +50,11 @@ public class SlowAreaPattern : PatternBase
 
     private IEnumerator SlowSequence()
     {
+        float targetScale = _SlowRange * 1.2f;
+
         ActivateWarinning = true;
         Warinning = PoolManager.Instance.Spawn(_WarinningParticle, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
+        Warinning.transform.localScale = new Vector3(targetScale, targetScale, targetScale);
         Warinning.Clear();
         Warinning.Play();
 
@@ -60,11 +63,13 @@ public class SlowAreaPattern : PatternBase
         ActivateWarinning = false;
         Vector3 spawnPos = Warinning.transform.position;
 
-        StartCoroutine(DelayedWarinningDespawn(Warinning));
+        StartCoroutine(DelayedWarinningDespawn(Warinning, targetScale));
         Warinning = null;
 
         ActivateSlow = true;
         Slow = PoolManager.Instance.Spawn(_SlowParticle, spawnPos, Quaternion.identity);
+        Slow.transform.localScale = new Vector3(targetScale, targetScale, targetScale);
+
         PlayPatternSound(PatternEnum.SlowArea);
         Slow.Clear();
         Slow.Play();
@@ -80,7 +85,7 @@ public class SlowAreaPattern : PatternBase
         }
     }
 
-    private IEnumerator DelayedWarinningDespawn(ParticleSystem target)
+    private IEnumerator DelayedWarinningDespawn(ParticleSystem target, float scale)
     {
         yield return new WaitForSeconds(_WarinningAreaDTime);
         if (target != null)
@@ -103,8 +108,12 @@ public class SlowAreaPattern : PatternBase
 
     private void OnDrawGizmos()
     {
-        if (Slow == null) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(Slow.transform.position, _SlowRange);
+        if (Slow != null)
+            Gizmos.DrawWireSphere(Slow.transform.position, _SlowRange);
+        else if (Warinning != null)
+            Gizmos.DrawWireSphere(Warinning.transform.position, _SlowRange);
+        else
+            Gizmos.DrawWireSphere(transform.position, _SlowRange);
     }
 }
