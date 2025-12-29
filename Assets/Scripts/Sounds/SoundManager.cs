@@ -24,6 +24,19 @@ public class SoundManager : SingletonePattern<SoundManager>
         weapon.OnReload += (stats) =>
             PlayWeaponSound(stats, WeaponSoundEnum.Reload, weaponAudio);
     }
+    public void BindPattern(PatternBase pattern, AudioSource patternAudio)
+    {
+        //pattern.OnPatternSound += (patternType) =>
+        //    PlayPatternSound(patternType, patternAudio);
+    }
+
+    private void PlayPatternSound(PatternEnum patternType, AudioSource audioSource)
+    {
+        var clip = _soundData.GetPattern(patternType);
+        if (clip == null) return;
+
+        audioSource.PlayOneShot(clip, 0.5f);
+    }
 
     private void PlayWeaponSound(WeaponRuntimeStats stats, WeaponSoundEnum type, AudioSource audioSource)
     {

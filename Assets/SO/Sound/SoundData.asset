@@ -56,5 +56,9 @@ MonoBehaviour:
   - key: 6
     clip: {fileID: 8300000, guid: 84bfa7272acbf2845a7f73e7c2517510, type: 3}
   UISounds: []
-  PatternSounds: []
+  PatternSounds:
+  - key: 0
+    clip: {fileID: 0}
+  - key: 0
+    clip: {fileID: 0}
   BossSounds: []
