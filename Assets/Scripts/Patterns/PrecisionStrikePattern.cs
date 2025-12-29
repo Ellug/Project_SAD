@@ -1,76 +1,123 @@
 ﻿using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PrecisionStrikePattern : PatternBase
 {
-    [Tooltip("PredictiveAim")][SerializeField] PredictiveAim _predictiveAim;
-    [Tooltip("경고 파티클")][SerializeField] ParticleSystem _WarnningArea;
-    [Tooltip("폭발 파티클")][SerializeField] ParticleSystem _ExplosionParticle;
-    [Tooltip("생성 위치 거리")][SerializeField] float _ChaseOffset;
-    [Tooltip("경고 파티클 추적 시간")][SerializeField] float _WarnningTime;
-    [Tooltip("폭발 지연 시간")][SerializeField] float _ExpolsionTime;
-    [Tooltip("폭발 판정 범위")][SerializeField] float _ExplosionRange;
-    [Tooltip("장판 추적 속도")][SerializeField] float _ChaseSpeed;
-    [Tooltip("경고 장판 지연시간")][SerializeField] float _WarnningDTime;
-    [Tooltip("데미지")][SerializeField] float _Dmg;
-    [Tooltip("플레이어")][SerializeField] private GameObject Player;
+    [Header("경고 장판")]
+    [Tooltip("추적용 경고 파티클")][SerializeField] private ParticleSystem _WarnningArea;
+    [Tooltip("정지용 경고 파티클")][SerializeField] private ParticleSystem _StaticWarnningArea;
+    [Tooltip("경고 파티클 추적 시간")][SerializeField] private float _WarnningTime;
+    [Tooltip("경고 장판 정지 후 대기 시간")][SerializeField] private float _WarnningDTime;
+
+    [Header("폭발 설정")]
+    [Tooltip("첫 번째 폭발 파티클")][SerializeField] private ParticleSystem _FirstExplosionParticle;
+    [Tooltip("두 번째 폭발 파티클")][SerializeField] private ParticleSystem _SecondExplosionParticle;
+    [Tooltip("생성 위치 예측 오프셋")][SerializeField] private float _ChaseOffset;
+    [Tooltip("폭발 사이의 간격 시간")][SerializeField] private float _ExpolsionTime;
+    [Tooltip("폭발 판정 범위")][SerializeField] private float _ExplosionRange;
+
+    [Header("데미지")]
+    [Tooltip("데미지")][SerializeField] private float _Dmg;
+
+    private PredictiveAim _predictiveAim;
+    private GameObject Player;
     private ParticleSystem _Warnning;
-    private ParticleSystem _Explosion;    
+    private ParticleSystem _StaticWarnning;
     private bool chase = false;
-    private Coroutine WarnningDelayCoroutine;
+
+    private Vector3 _debugFirstPos;
+    private Vector3 _debugSecondPos;
+    private bool _showDebug = false;
 
     void Update()
     {
-        if (chase && _Warnning != null)
+        if (chase && _Warnning != null && _predictiveAim != null)
         {
-            _Warnning.transform.position = Vector3.MoveTowards(
-                _Warnning.transform.position,
-                 Player.transform.position,
-                _ChaseSpeed * Time.deltaTime
-            );
+            _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
         }
     }
 
-    public void WarnningEffect() 
-    {        
+    public void WarnningEffect()
+    {
+        if (_WarnningArea == null) return;
+
+        _showDebug = false;
         _Warnning = Instantiate(_WarnningArea);
         _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
         chase = true;
-        WarnningDelayCoroutine = StartCoroutine(Chase());
+
         _Warnning.Play();
+        StartCoroutine(ChaseRoutine());
     }
 
-    private void PrecisionStrike() 
-    {
-        StopCoroutine(WarnningDelayCoroutine);
-        chase = false;
-        StartCoroutine(Explosion());
-        Destroy(_Warnning.gameObject, _WarnningDTime);
-    }
-
-    private IEnumerator Chase() 
+    private IEnumerator ChaseRoutine()
     {
         yield return new WaitForSeconds(_WarnningTime);
-        PrecisionStrike();
+
+        chase = false;
+
+        if (_Warnning != null)
+        {
+            Vector3 stopPos = _Warnning.transform.position;
+            Destroy(_Warnning.gameObject);
+
+            if (_StaticWarnningArea != null)
+            {
+                _StaticWarnning = Instantiate(_StaticWarnningArea, stopPos, Quaternion.identity);
+                _StaticWarnning.Play();
+            }
+        }
+
+        yield return new WaitForSeconds(_WarnningDTime);
+
+        if (_StaticWarnning != null) Destroy(_StaticWarnning.gameObject);
+
+        StartCoroutine(ExplosionSequence());
     }
 
-    private IEnumerator Explosion()
+    private IEnumerator ExplosionSequence()
     {
+        Vector3 explosionPos = (_StaticWarnning != null) ? _StaticWarnning.transform.position : transform.position;
+        _debugFirstPos = explosionPos;
+        _showDebug = true;
+
+        SpawnExplosion(_FirstExplosionParticle, explosionPos);
+        CheckDamage(explosionPos);
+
         yield return new WaitForSeconds(_ExpolsionTime);
-        _Explosion = Instantiate(_ExplosionParticle, _Warnning.transform.position, _Warnning.transform.rotation);
-        var main = _Explosion.main;
+
+        _debugSecondPos = explosionPos;
+        SpawnExplosion(_SecondExplosionParticle, explosionPos);
+        CheckDamage(explosionPos);
+    }
+
+    private void SpawnExplosion(ParticleSystem particlePrefab, Vector3 position)
+    {
+        if (particlePrefab == null) return;
+
+        ParticleSystem exp = Instantiate(particlePrefab, position, Quaternion.identity);
+        var main = exp.main;
         main.stopAction = ParticleSystemStopAction.Destroy;
-        _Explosion.Play();
-        bool isHit = Physics.CheckSphere(_Explosion.transform.position, _ExplosionRange, _predictiveAim.targetLayer);
-        if (isHit)
+        exp.Play();
+    }
+
+    private void CheckDamage(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, _ExplosionRange);
+        foreach (var hit in colliders)
         {
-            Player.TryGetComponent<PlayerModel>(out var player);
-            player.TakeDamage(_Dmg);
+            if (hit.gameObject == Player)
+            {
+                if (Player.TryGetComponent<PlayerModel>(out var player))
+                {
+                    player.TakeDamage(_Dmg);
+                }
+                break;
+            }
         }
     }
 
-    protected override void PatternLogic()
+    protected override void PatternLogic() 
     {
         WarnningEffect();
     }
@@ -78,5 +125,6 @@ public class PrecisionStrikePattern : PatternBase
     public override void Init(GameObject target)
     {
         Player = target;
+        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
     }
 }

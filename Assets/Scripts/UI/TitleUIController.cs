@@ -25,26 +25,11 @@ public class TitleUIController : MonoBehaviour
 
     public void OnClickCredit()
     {
-        CloseAll();
-        _creditPanel.SetActive(true);
-    }
-
-    public void OnClickBackToTitle()
-    {
-        CloseAll();
-        _titlePanel.SetActive(true);
+        UIManager.Instance.OpenUI(_creditPanel);
     }
 
     public void OnClickExit()
     {
         GameManager.Instance.GameExit();
-    }
-
-    private void CloseAll()
-    {
-        _titlePanel.SetActive(false);
-        _settingPanel.SetActive(false);
-        _keyGuidePanel.SetActive(false);
-        _creditPanel.SetActive(false);
     }
 }

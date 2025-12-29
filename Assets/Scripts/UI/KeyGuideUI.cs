@@ -1,9 +1,5 @@
 ﻿using UnityEngine;
 
-public class KeyGuideUI : MonoBehaviour
+public class KeyGuideUI : DOTweenUI
 {
-    public void OnClickExit()
-    {
-        UIManager.Instance.TogglePause();
-    }
 }

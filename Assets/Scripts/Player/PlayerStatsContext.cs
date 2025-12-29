@@ -24,6 +24,9 @@ public class PlayerStatsContext : MonoBehaviour
     private readonly Dictionary<int, StatMod[]> _dynamicModsByOwner = new();
 
 
+    public PlayerModel Model => _playerModel;
+
+
     // Result
     public PlayerFinalStats Current { get; private set; } = new PlayerFinalStats();
 
@@ -160,11 +163,16 @@ public class PlayerStatsContext : MonoBehaviour
         if (_triggeredBuffs == null) return;
 
         bool changed = false;
+        float healAmount = 0f;
 
         foreach (var buff in _triggeredBuffs)
         {
             if (buff == null) continue;
             if (buff.trigger != trigger) continue;
+
+            if (buff.healPerTrigger > 0f)
+                healAmount += buff.healPerTrigger;
+
             if (buff.mods == null || buff.mods.Length == 0) continue;
 
             // 이미 활성 중이면 duration으로 갱신
@@ -182,6 +190,9 @@ public class PlayerStatsContext : MonoBehaviour
 
             changed = true;
         }
+
+        if (healAmount > 0f && _playerModel !=null)
+            _playerModel.TakeHeal(healAmount);
 
         if (changed)
             Rebuild();

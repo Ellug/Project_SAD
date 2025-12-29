@@ -1,76 +1,81 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class WeaponView : MonoBehaviour
 {
-    [SerializeField] private PlayerModel _playerModel;
-    [SerializeField] private Transform _muzzlePos;
-    [SerializeField] private GameObject _weaponSelectPanel;
-    [SerializeField] private GameObject _perkSelectPanel;
+    [SerializeField] private GameObject _weaponSelectMainUI;
     [SerializeField] private PerkSelectPanelUI _perkPanelUI;
     [SerializeField] private WeaponBase[] _allWeaponData;
 
+    [Header("UI Selection (visual only)")]
+    [SerializeField] private WeaponSelectUI _weaponSelectUI;
+
     private WeaponPresenter _presenter;
-    private Button[] _perkSelectList;
-    private Button[] _weaponButtonList;
     private PerksTree _perksTree;
+    private TextMeshProUGUI _titleText;
 
     void Start()
     {
         Init();
+        
+        if (_weaponSelectUI != null)
+            _weaponSelectUI.OnWeaponClicked += OnClickWeapon;
+
+        // 기본 무기 표시(EquipManager 기준) - WeaponSelectUI가 표시 담당
+        int defaultId = 0;
+        if (EquipManager.Instance != null && EquipManager.Instance.Weapon != null)
+            defaultId = EquipManager.Instance.Weapon.GetWeaponId();
+
+        if (_weaponSelectUI != null)
+            _weaponSelectUI.SetSelectedVisualOnly(defaultId);
 
         WeaponModel model = new();
         model.Init(_allWeaponData);
         _presenter = new WeaponPresenter(model, this);
         _presenter.Init();
-        _playerModel.SetWeapon(_presenter.CurrentWeapon);
+    }
+
+    void OnDestroy()
+    {
+        if (_weaponSelectUI != null)
+            _weaponSelectUI.OnWeaponClicked -= OnClickWeapon;
     }
 
     // 무기 버튼과 특전 버튼을 모두 가져옴
     private void Init()
     {
-        _weaponButtonList = _weaponSelectPanel.GetComponentsInChildren<Button>();
-        _perkSelectList = _perkSelectPanel.GetComponentsInChildren<Button>();
-
-        TextMeshProUGUI buttonText;
-        foreach (Button button in _perkSelectList)
-        {
-            buttonText = button.transform.GetComponentInChildren<TextMeshProUGUI>();
-            buttonText.text = "";
-        }
+        _titleText = _weaponSelectMainUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
     }
 
     // 무기를 선택하면 일어날 일.
     // 무기 정보도 가져오고 무기별 특전도 가져와야함.
+    // UI 담당자 : 이제 무기 UI가 로비에 기본으로 있고, 무기 UI 누르면 바로 특전 UI 띄움.
+    // UI 담당자 : 추가로 UI 떠있는 상태에서 다른 무기 누르면 정보 바로 갱신.
     public void OnClickWeapon(int weaponId)
     {
-        PanelInit();
+        if (_presenter == null || EquipManager.Instance == null) return;
+
+        // 모델에서 선택(프리팹)
         _presenter.SelectWeapon(weaponId);
-        _weaponButtonList[weaponId].interactable = false;
 
-        // EquipManager에 프리팹 저장
+        // EquipManager가 단일 진실(Single Source of Truth)
         EquipManager.Instance.SetPlayerWeapon(_presenter.CurrentWeapon);
+        EquipManager.Instance.EquipPlayerWeapon(); // 여기서 인스턴스 생성/복원/브릿지/이벤트까지 처리
 
-        // 로비에 있는 플레이어에게 무기 쥐어줌.
-        if (_muzzlePos.childCount > 0)
-        {
-            for (int i = _muzzlePos.childCount - 1; i >= 0; i--)
-            {
-                Destroy(_muzzlePos.GetChild(i).gameObject);
-            }
-        }
+        // UI 트리도 "실제 장착 인스턴스" 기준으로 맞춘다
+        var inst = EquipManager.Instance.CurrentWeaponInstance;
+        var tree = inst != null ? inst.PerksTree : null;
 
-        GameObject weapon = Instantiate(_presenter.CurrentWeapon.gameObject, _muzzlePos);
-
-        var weaponInstance = weapon.GetComponent<WeaponBase>();
-        _playerModel.SetWeapon(weaponInstance);
-
-        // 무기의 PerksTree 변경을 GameManager에 저장
-        BindPerksTree(weaponInstance.PerksTree);
+        BindPerksTree(tree);
 
         if (_perkPanelUI != null)
-            _perkPanelUI.ApplyPerksTree(weaponInstance.PerksTree);
+            _perkPanelUI.ApplyPerksTree(tree);
+
+        if (!UIManager.Instance.IsUIPopUp())
+            UIManager.Instance.OpenUI(_weaponSelectMainUI);
+
+        if (_titleText != null && weaponId >= 0 && weaponId < _allWeaponData.Length)
+            _titleText.text = $"{_allWeaponData[weaponId].name.ToUpper()}";
     }
 
     private void BindPerksTree(PerksTree tree)
@@ -92,14 +97,5 @@ public class WeaponView : MonoBehaviour
     {
         // 선택 상태를 GameManager에 저장
         EquipManager.Instance.SavePerksFrom(_perksTree);
-
-        // 여기서 버튼 텍스트/하이라이트 갱신해도 됨. 현재는 
-    }
-
-    // 각 무기를 클릭할 때마다 모든 버튼을 접근 -> 불필요한 연산이 있긴 함. 개선 여지?
-    private void PanelInit()
-    {
-        foreach (Button item in _weaponButtonList)
-            item.interactable = true;
     }
 }

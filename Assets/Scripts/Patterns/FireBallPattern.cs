@@ -3,61 +3,83 @@ using System.Collections;
 
 public class FireBallPattern : PatternBase
 {
-    [Tooltip("PredictiveAim")][SerializeField] PredictiveAim _predictiveAim;
-    [Tooltip("경고 파티클")][SerializeField] ParticleSystem _WarnningArea;
-    [Tooltip("플레이어 예측 거리 (ex:0이면 플레이어 위치)")][SerializeField] float _ChaseOffset;
-    [Tooltip("경고 파티클 추적 시간")][SerializeField] float _WarnningTime;
-    [Tooltip("장판 추적 속도")][SerializeField] float _ChaseSpeed;
-    [Tooltip("경고 장판 지연시간")][SerializeField] float _WarnningDTime;
-    [Tooltip("화염구 프리팹")][SerializeField] FireBall _FireBallPrefab;
+    [Header("추적 및 예측")]
+    [Tooltip("경고 장판 프리팹")][SerializeField] private ParticleSystem _WarnningArea;
+    [Tooltip("플레이어 예측 거리")][SerializeField] private float _ChaseOffset;
+    [Tooltip("경고 파티클 추적 시간")][SerializeField] private float _WarnningTime;
+    [Tooltip("경고 장판 지연시간")][SerializeField] private float _WarnningDTime;
+
+    [Header("발사 설정")]
+    [Tooltip("화염구 프리팹")][SerializeField] private FireBall _FireBallPrefab;
     [Tooltip("화염구 생성 위치")][SerializeField] private GameObject _SpawnPoint;
-    [Tooltip("플레이어")][SerializeField] private GameObject Player;
-    private ParticleSystem _Warnning;
-    private bool chase = false;
-    private Transform WarnningPoint;
-    private Coroutine WarnningDelayCoroutine;
+    [Tooltip("화염구 생성 Y좌표 오프셋")][SerializeField] private float _SpawnYOffset = 5f;
 
-    private void Update()
+    private GameObject _player;
+    private ParticleSystem _currentWarnning;
+    private bool _isChasing = false;
+    private PredictiveAim _predictiveAim;
+
+    public override void Init(GameObject target)
     {
-        if (chase && _Warnning != null)
-        {
-            _Warnning.transform.position = Vector3.MoveTowards(
-                _Warnning.transform.position,
-                 Player.transform.position,
-                _ChaseSpeed * Time.deltaTime
-            );
-        }
-    }
-    public void WarnningEffect()
-    {
-        _Warnning = Instantiate(_WarnningArea);
-        _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
-        chase = true;
-        StartCoroutine(Chase());
-        _Warnning.Play();
-    }
-    private IEnumerator Chase()
-    {
-        yield return new WaitForSeconds(_WarnningTime);
-        WarnningPoint = _Warnning.transform;
-        Destroy(_Warnning.gameObject, _WarnningDTime);
-        Fire();
+        _player = target;
+        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
     }
 
-    private void Fire()
-    {
-        StopCoroutine(WarnningDelayCoroutine);
-        FireBall fireball = PoolManager.Instance.Spawn(_FireBallPrefab, _SpawnPoint.transform.position, _SpawnPoint.transform.rotation);
-        fireball.setTarget(WarnningPoint);
-    }
     protected override void PatternLogic()
     {
         WarnningEffect();
     }
 
-    public override void Init(GameObject target)
+    private void Update()
     {
-        Player = target;
+        if (_isChasing && _currentWarnning != null && _player != null)
+        {
+            _currentWarnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
+        }
+    }
+
+    public void WarnningEffect()
+    {
+        if (_WarnningArea == null) return;
+
+        _currentWarnning = Instantiate(_WarnningArea);
+        _currentWarnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
+
+        _isChasing = true;
+        _currentWarnning.Play();
+
+        StartCoroutine(ChaseRoutine());
+    }
+
+    private IEnumerator ChaseRoutine()
+    {
+        yield return new WaitForSeconds(_WarnningTime);
+
+        _isChasing = false;
+
+        GameObject targetMarker = new GameObject("FireBallTargetMarker");
+        targetMarker.transform.position = _currentWarnning.transform.position;
+
+        yield return new WaitForSeconds(_WarnningDTime);
+
+        Fire(targetMarker.transform);
+
+        if (_currentWarnning != null) Destroy(_currentWarnning.gameObject);
+        Destroy(targetMarker, 5f);
+    }
+
+    private void Fire(Transform target)
+    {
+        if (_FireBallPrefab == null || _SpawnPoint == null) return;
+
+        Vector3 firePos = _SpawnPoint.transform.position;
+        firePos.y += _SpawnYOffset;
+
+        FireBall fireball = PoolManager.Instance.Spawn(_FireBallPrefab, firePos, _SpawnPoint.transform.rotation);
+        if (fireball != null)
+        {
+            fireball.Init(_player);
+            fireball.setTarget(target);
+        }
     }
 }
-

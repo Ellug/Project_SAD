@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae57b753d0dd8a24b947cdb625f06555, type: 3}
   m_Name: StageNodeData 2
   m_EditorClassIdentifier: Assembly-CSharp::StageNodeData
-  _stageNumber: Stage 3
-  _areaInfo: "\uACE8\uB4DC \uBE44\uCE58"
-  _bossInfo: "\uBCF4\uC2A4 \uC815\uBCF4"
+  _stageNumber: 2
+  _bossImage: {fileID: 21300000, guid: 8d6cc946e7e3d1a4291b98d3c033522d, type: 3}
+  _bossInfo: "(\uC608\uC2DC) \uB2E4\uC591\uD55C \uC7A5\uD310 \uACF5\uACA9\uC73C\uB85C
+    \uD50C\uB808\uC774\uC5B4\uC758 \uD589\uB3D9\uC744 \uBC29\uD574\uD558\uACE0 \uB290\uB9AC\uC9C0\uB9CC
+    \uAC15\uD55C \uACF5\uACA9\uC744 \uD55C\uB2E4."

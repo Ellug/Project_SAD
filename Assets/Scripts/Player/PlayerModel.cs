@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerModel : MonoBehaviour
@@ -47,6 +48,14 @@ public class PlayerModel : MonoBehaviour
     private float _debuffSlowRate = 0f;
 
     private bool _isSPFireSoundReady = false;
+    // Knockback request (1-shot)
+    private bool _hasKbRequest;
+    private Vector3 _kbDir;
+    private float _kbDistance;
+    private float _kbDuration;
+    //화상 디버프 코루틴
+    private Coroutine _burnCoroutine;
+    private Coroutine _coldCoroutine;
 
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
@@ -254,9 +263,96 @@ public class PlayerModel : MonoBehaviour
             Die();
     }
 
+    public void BurnDebuff(float BurnDmg, float Burnduration, float TickInterval)
+    {
+        if (_burnCoroutine != null)
+            StopCoroutine(_burnCoroutine);
+
+        _burnCoroutine = StartCoroutine(ProcessBurn(BurnDmg, Burnduration, TickInterval));
+    }
+
+    public void ColdDebuff(float ColdDmg, float Coldduration, float TickInterval)
+    {
+        if (_coldCoroutine != null)
+            StopCoroutine(_coldCoroutine);
+
+        _coldCoroutine = StartCoroutine(Processcold(ColdDmg, Coldduration, TickInterval));
+    }
+
+    private IEnumerator ProcessBurn(float BurnDmg, float Burnduration, float TickInterval)
+    {
+        float BurnTime = 0;
+        while (BurnTime < Burnduration)
+        {
+            TakeDamage(BurnDmg * TickInterval); 
+
+            yield return new WaitForSeconds(TickInterval);
+            BurnTime += TickInterval;
+        }
+
+        _burnCoroutine = null; 
+    }
+
+    private IEnumerator Processcold(float ColdDmg, float Coldduration, float TickInterval)
+    {
+        float ColdTime = 0;
+        while (ColdTime < Coldduration)
+        {
+            TakeDamage(ColdDmg * TickInterval);
+
+            yield return new WaitForSeconds(TickInterval);
+            ColdTime += TickInterval;
+        }
+
+        _coldCoroutine = null;
+    }
+
     private void Die()
     {
         // Game Over
         GameManager.Instance.PlayerLose();
+    }
+
+    public void TakeHeal(float heal)
+    {
+        if (CurHp <= 0) return;
+
+        _curHp += MaxHp * heal;
+
+        if (CurHp > MaxHp)
+            _curHp = MaxHp;
+    }
+
+    // 넉백 예약
+    public void RequestKnockback(Vector3 dir, float distance, float duration)
+    {
+        dir.y = 0f;
+        if (distance <= 0f) return;
+
+        if (dir.sqrMagnitude < 1e-6f) return;
+        duration = Mathf.Max(0.01f, duration);
+
+        _hasKbRequest = true;
+        _kbDir = dir.normalized;
+        _kbDistance = distance;
+        _kbDuration = duration;
+    }
+
+    // 넉백 소비
+    public bool TryConsumeKnockbackRequest(out Vector3 dir, out float distance, out float duration)
+    {
+        if (!_hasKbRequest)
+        {
+            dir = default;
+            distance = 0f;
+            duration = 0f;
+            return false;
+        }
+
+        _hasKbRequest = false;
+        dir = _kbDir;
+        distance = _kbDistance;
+        duration = _kbDuration;
+        return true;
     }
 }

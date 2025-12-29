@@ -113,7 +113,7 @@ public class Sniper : WeaponBase
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
 
         PlayerBullet bullet = PoolManager.Instance.Spawn(stats.ProjectilePrefab, spawnPos, rot);
-        bullet.Init(stats, counterAttack: false, payload: payload);
+        bullet.Init(stats, false, payload);
     }
 
     private void Clear()
