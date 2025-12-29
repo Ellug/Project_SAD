@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1880858330334761104}
   - component: {fileID: -4043651985943119045}
   m_Layer: 0
-  m_Name: ShootingPattern2
+  m_Name: ShootingPattern 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,13 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98701e639e75834290238ce91300d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatternShooting
-  _counterable: 1
-  _startupDelay: 3
-  _cycleTime: 5
+  _counterable: 0
+  _startupDelay: 0
+  _cycleTime: 2
   _bulletPrefab: {fileID: 2245060522831277793, guid: 38d725455bafedd4b89852261a702488, type: 3}
-  _shootInterval: 0.1
-  _shootBulletNumber: 10
-  _spawnPosition: {fileID: 3812342574190452096, guid: a8d378197a09fb34f87965422fa42cf6, type: 3}
+  _shootInterval: 0.2
+  _shootBulletNumber: 1
+  _spawnPosition: {fileID: 2972957131812476677, guid: d1bad2f923e657f4da4a12464629e906, type: 3}
 --- !u!82 &-4043651985943119045
 AudioSource:
   m_ObjectHideFlags: 0

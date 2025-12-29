@@ -85,10 +85,10 @@ MonoBehaviour:
   _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
   _WarningArea: {fileID: 517166583863999149}
   _WarningTime: 2
-  _WarningFNTime: 0.3
+  _WarningFNTime: 0.2
   _WarningWidth: 5
   _WarningLength: 30
-  _WarningOffsetRate: 0
+  _WarningOffsetRate: 1
 --- !u!82 &-4762822488132172696
 AudioSource:
   m_ObjectHideFlags: 0
