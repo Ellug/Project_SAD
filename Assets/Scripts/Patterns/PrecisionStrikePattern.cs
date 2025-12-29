@@ -24,10 +24,7 @@ public class PrecisionStrikePattern : PatternBase
     private ParticleSystem _Warnning;
     private ParticleSystem _StaticWarnning;
     private bool chase = false;
-
-    private Vector3 _debugFirstPos;
-    private Vector3 _debugSecondPos;
-    private bool _showDebug = false;
+    private Vector3 _lastStaticPos;
 
     void Update()
     {
@@ -41,12 +38,12 @@ public class PrecisionStrikePattern : PatternBase
     {
         if (_WarnningArea == null) return;
 
-        _showDebug = false;
-        _Warnning = Instantiate(_WarnningArea);
-        _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
-        chase = true;
+        _Warnning = PoolManager.Instance.Spawn(_WarnningArea, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
 
+        chase = true;
+        _Warnning.Clear();
         _Warnning.Play();
+
         StartCoroutine(ChaseRoutine());
     }
 
@@ -59,34 +56,42 @@ public class PrecisionStrikePattern : PatternBase
         if (_Warnning != null)
         {
             Vector3 stopPos = _Warnning.transform.position;
-            Destroy(_Warnning.gameObject);
+
+            _Warnning.Stop();
+            PoolManager.Instance.Despawn(_Warnning.gameObject);
+            _Warnning = null;
 
             if (_StaticWarnningArea != null)
             {
-                _StaticWarnning = Instantiate(_StaticWarnningArea, stopPos, Quaternion.identity);
+                _StaticWarnning = PoolManager.Instance.Spawn(_StaticWarnningArea, stopPos, Quaternion.identity);
+                _StaticWarnning.Clear();
                 _StaticWarnning.Play();
             }
         }
 
         yield return new WaitForSeconds(_WarnningDTime);
 
-        if (_StaticWarnning != null) Destroy(_StaticWarnning.gameObject);
+        if (_StaticWarnning != null)
+        {
+            _lastStaticPos = _StaticWarnning.transform.position;
+
+            _StaticWarnning.Stop();
+            PoolManager.Instance.Despawn(_StaticWarnning.gameObject);
+            _StaticWarnning = null;
+        }
 
         StartCoroutine(ExplosionSequence());
     }
 
     private IEnumerator ExplosionSequence()
     {
-        Vector3 explosionPos = (_StaticWarnning != null) ? _StaticWarnning.transform.position : transform.position;
-        _debugFirstPos = explosionPos;
-        _showDebug = true;
+        Vector3 explosionPos = _lastStaticPos;
 
         SpawnExplosion(_FirstExplosionParticle, explosionPos);
         CheckDamage(explosionPos);
 
         yield return new WaitForSeconds(_ExpolsionTime);
 
-        _debugSecondPos = explosionPos;
         SpawnExplosion(_SecondExplosionParticle, explosionPos);
         CheckDamage(explosionPos);
     }
@@ -95,10 +100,21 @@ public class PrecisionStrikePattern : PatternBase
     {
         if (particlePrefab == null) return;
 
-        ParticleSystem exp = Instantiate(particlePrefab, position, Quaternion.identity);
-        var main = exp.main;
-        main.stopAction = ParticleSystemStopAction.Destroy;
+        ParticleSystem exp = PoolManager.Instance.Spawn(particlePrefab, position, Quaternion.identity);
+
+        exp.Clear();
         exp.Play();
+
+        StartCoroutine(DelayedDespawn(exp.gameObject, exp.main.duration + exp.main.startLifetime.constantMax));
+    }
+
+    private IEnumerator DelayedDespawn(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (obj != null && obj.activeSelf)
+        {
+            PoolManager.Instance.Despawn(obj);
+        }
     }
 
     private void CheckDamage(Vector3 position)
@@ -117,10 +133,7 @@ public class PrecisionStrikePattern : PatternBase
         }
     }
 
-    protected override void PatternLogic() 
-    {
-        WarnningEffect();
-    }
+    protected override void PatternLogic() => WarnningEffect();
 
     public override void Init(GameObject target)
     {

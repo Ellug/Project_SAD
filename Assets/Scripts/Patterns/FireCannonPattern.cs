@@ -71,9 +71,10 @@ public class FireCannonPattern : PatternBase
     {
         if (_WarnningAreaPrefab == null) yield break;
 
-        _currentWarnning = Instantiate(_WarnningAreaPrefab);
+        _currentWarnning = PoolManager.Instance.Spawn(_WarnningAreaPrefab, _SpawnPoint.position, Quaternion.identity);
         _warnningTransform = _currentWarnning.transform;
         Chase = true;
+        _currentWarnning.Clear();
         _currentWarnning.Play();
 
         yield return new WaitForSeconds(_WarnningTime);
@@ -84,7 +85,13 @@ public class FireCannonPattern : PatternBase
 
         Fire();
 
-        if (_currentWarnning != null) Destroy(_currentWarnning.gameObject);
+        if (_currentWarnning != null)
+        {
+            _currentWarnning.Stop();
+            PoolManager.Instance.Despawn(_currentWarnning.gameObject);
+            _currentWarnning = null;
+            _warnningTransform = null;
+        }
     }
 
     private void Fire()
@@ -97,9 +104,9 @@ public class FireCannonPattern : PatternBase
 
     private void OnDestroy()
     {
-        if (_currentWarnning != null)
+        if (_currentWarnning != null && PoolManager.Instance != null)
         {
-            Destroy(_currentWarnning.gameObject);
+            PoolManager.Instance.Despawn(_currentWarnning.gameObject);
         }
     }
 }

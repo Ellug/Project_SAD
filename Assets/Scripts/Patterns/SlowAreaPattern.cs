@@ -1,9 +1,8 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections;
 using UnityEngine;
 
 public class SlowAreaPattern : PatternBase
 {
-    [Tooltip("PredictiveAim")][SerializeField] PredictiveAim _predictiveAim;
     [Tooltip("생성 위치 거리")][SerializeField] float _ChaseOffset;
     [Tooltip("슬로우 파티클")][SerializeField] ParticleSystem _SlowParticle;
     [Tooltip("슬로우 예고 장판")][SerializeField] ParticleSystem _WarinningParticle;
@@ -14,12 +13,12 @@ public class SlowAreaPattern : PatternBase
     [Tooltip("슬로우 장판 추적속도")][SerializeField] float _ChaseSpeed;
     [Tooltip("슬로우 위력")][SerializeField] float _SlowPower;
     [Tooltip("슬로우 지속시간")][SerializeField] float _SlowTime;
-    [Tooltip("플레이어 이동경로 예상 여부")] public bool _PredictiveAimOn = true;
+
     private ParticleSystem Slow;
     private ParticleSystem Warinning;
-    public GameObject Player;
+    private GameObject Player;
     private PlayerModel model;
-    private bool isHit;
+    private PredictiveAim _predictiveAim;
     private bool ActivateWarinning = false;
     private bool ActivateSlow = false;
 
@@ -30,18 +29,18 @@ public class SlowAreaPattern : PatternBase
 
     private void Update()
     {
-        if (ActivateWarinning && Warinning != null) 
+        if (ActivateWarinning && Warinning != null)
         {
             Warinning.transform.position = Vector3.MoveTowards(
                 Warinning.transform.position,
-                 Player.transform.position,
+                Player.transform.position,
                 _ChaseSpeed * Time.deltaTime
             );
         }
 
         if (ActivateSlow && Slow != null)
         {
-            isHit = Physics.CheckSphere(Slow.transform.position, _SlowRange, _predictiveAim.targetLayer);
+            bool isHit = Physics.CheckSphere(Slow.transform.position, _SlowRange, _predictiveAim.targetLayer);
             if (isHit)
             {
                 model.SlowDebuff(_SlowPower, _SlowTime);
@@ -49,60 +48,62 @@ public class SlowAreaPattern : PatternBase
         }
     }
 
-    public void SetWarinning() 
+    private IEnumerator SlowSequence()
     {
         ActivateWarinning = true;
-        Warinning = Instantiate(_WarinningParticle);
-        Warinning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
+        Warinning = PoolManager.Instance.Spawn(_WarinningParticle, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
+        Warinning.Clear();
         Warinning.Play();
-        Invoke("DestoryWarinning", _WarinningAreaTime);
-    }
 
-    public void SetSlow() 
-    {
-        ActivateSlow = true;
-        Slow = Instantiate(_SlowParticle);
-        Slow.transform.position = Warinning.transform.position;
-        Slow.Play();
-        Invoke("DestorySlow", _SlowAreaTime);
-    }
+        yield return new WaitForSeconds(_WarinningAreaTime);
 
-    protected void DestoryWarinning() 
-    {
         ActivateWarinning = false;
-        Destroy(Warinning, _WarinningAreaDTime);
-        SetSlow();
+        Vector3 spawnPos = Warinning.transform.position;
+
+        StartCoroutine(DelayedWarinningDespawn(Warinning));
+        Warinning = null;
+
+        ActivateSlow = true;
+        Slow = PoolManager.Instance.Spawn(_SlowParticle, spawnPos, Quaternion.identity);
+        Slow.Clear();
+        Slow.Play();
+
+        yield return new WaitForSeconds(_SlowAreaTime);
+
+        ActivateSlow = false;
+        if (Slow != null)
+        {
+            Slow.Stop();
+            PoolManager.Instance.Despawn(Slow.gameObject);
+            Slow = null;
+        }
     }
 
-    protected void DestorySlow()
+    private IEnumerator DelayedWarinningDespawn(ParticleSystem target)
     {
-        ActivateSlow = false;
-        Destroy(Slow);
+        yield return new WaitForSeconds(_WarinningAreaDTime);
+        if (target != null)
+        {
+            target.Stop();
+            PoolManager.Instance.Despawn(target.gameObject);
+        }
     }
 
     protected override void PatternLogic()
     {
-        SetWarinning();
+        StartCoroutine(SlowSequence());
     }
 
     public override void Init(GameObject target)
     {
         Player = target;
+        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
     }
 
-
-    //범위 태스트용 기즈모
     private void OnDrawGizmos()
     {
         if (Slow == null) return;
-
-        // 실제 로직과 동일한 체크 수행 (디버그용)
-        bool isHit = Physics.CheckSphere(Slow.transform.position, _SlowRange, _predictiveAim.targetLayer);
-
-        // 감지되면 초록색, 아니면 빨간색
-        Gizmos.color = isHit ? Color.green : Color.red;
-
-        // 원 그리기
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(Slow.transform.position, _SlowRange);
     }
 }

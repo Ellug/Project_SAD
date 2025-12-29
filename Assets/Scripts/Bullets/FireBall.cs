@@ -21,9 +21,9 @@ public class FireBall : BulletBase, IPoolable
         _player = player;
     }
 
-    public void setTarget(Transform targetPoint)
+    public void setTarget(Vector3 targetPoint)
     {
-        _targetPos = targetPoint.position;
+        _targetPos = targetPoint;
         _isArrived = false;
         transform.LookAt(_targetPos);
     }
