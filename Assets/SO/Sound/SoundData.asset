@@ -12,8 +12,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323d846370b666d499d550b00554fe55, type: 3}
   m_Name: SoundData
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
-  WeaponSounds: []
-  BGMSounds: []
+  WeaponSounds:
+  - weapon: 0
+    soundType: 0
+    clip: {fileID: 0}
+  - weapon: 0
+    soundType: 1
+    clip: {fileID: 0}
+  - weapon: 0
+    soundType: 2
+    clip: {fileID: 0}
+  - weapon: 1
+    soundType: 0
+    clip: {fileID: 0}
+  - weapon: 1
+    soundType: 1
+    clip: {fileID: 0}
+  - weapon: 1
+    soundType: 2
+    clip: {fileID: 0}
+  - weapon: 0
+    soundType: 0
+    clip: {fileID: 0}
+  - weapon: 2
+    soundType: 0
+    clip: {fileID: 0}
+  - weapon: 2
+    soundType: 1
+    clip: {fileID: 0}
+  - weapon: 2
+    soundType: 2
+    clip: {fileID: 0}
+  BGMSounds:
+  - key: 0
+    clip: {fileID: 0}
+  - key: 1
+    clip: {fileID: 0}
+  - key: 2
+    clip: {fileID: 0}
+  - key: 3
+    clip: {fileID: 0}
+  - key: 4
+    clip: {fileID: 0}
+  - key: 5
+    clip: {fileID: 0}
+  - key: 6
+    clip: {fileID: 0}
   UISounds: []
   PatternSounds: []
   BossSounds: []
