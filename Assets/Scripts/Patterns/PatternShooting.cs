@@ -67,6 +67,5 @@ public class PatternShooting : PatternBase
     protected override void CleanupPattern()
     {
         _isPatternActive = false;
-        StopAllCoroutines();
     }
 }
