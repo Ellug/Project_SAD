@@ -1,6 +1,7 @@
 ﻿using DamageNumbersPro;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossController : MonoBehaviour
@@ -10,6 +11,14 @@ public class BossController : MonoBehaviour
     [Header("보스 체력&페이즈 정의")]
     [SerializeField] private float _bossMaxHp = 100;
     [SerializeField] private float[] _changePhaseHpRate;
+
+    [Header("Visual Effects")]
+    [SerializeField] public MeshRenderer[] _childRenderers;
+    [SerializeField] public Material _CounterMaterial;
+
+    private HashSet<Material> _activeDebuffs = new HashSet<Material>();
+    private Material _baseMaterial;
+
     private int _currentPhase;
 
     public float BossMaxHp { get { return _bossMaxHp; }}
@@ -29,6 +38,12 @@ public class BossController : MonoBehaviour
         _currentPhase = 1;
         BossCurrentHp = _bossMaxHp;
     }
+
+    void Start()
+    {
+        if (_childRenderers.Length > 0) _baseMaterial = _childRenderers[0].sharedMaterial;
+    }
+
     void Update()
     {
         TickBurn(Time.deltaTime);
@@ -122,6 +137,26 @@ public class BossController : MonoBehaviour
             _burnRemain = 0f;
             _burnDps = 0f;
             _burnTickAcc = 0f;
+        }
+    }
+
+    public void UpdateDebuffVisual(Material debuffMat, bool shouldAdd)
+    {
+        if (debuffMat == null) return;
+
+        // 1. 상태 변화 체크 (이미 추가됐거나 이미 없는 경우 실행 안 함)
+        bool isChanged = shouldAdd ? _activeDebuffs.Add(debuffMat) : _activeDebuffs.Remove(debuffMat);
+        if (!isChanged) return;
+
+        // 2. 새 머티리얼 배열 생성 (기본 + 활성 디버프들)
+        Material[] newMats = new Material[_activeDebuffs.Count + 1];
+        newMats[0] = _baseMaterial;
+        _activeDebuffs.CopyTo(newMats, 1);
+
+        // 3. 모든 렌더러에 한 번에 적용
+        foreach (var renderer in _childRenderers)
+        {
+            if (renderer != null) renderer.materials = newMats;
         }
     }
 }

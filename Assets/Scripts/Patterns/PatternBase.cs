@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PatternBase : MonoBehaviour
@@ -10,10 +11,13 @@ public abstract class PatternBase : MonoBehaviour
     [Header("공용 패턴 속성")]
     [SerializeField] protected float _cycleTime;
 
+    
+
     private WaitForSeconds _patternDelay;
     private Coroutine _patternCoroutine;
     private bool _isReadyCounterAttack;
     private bool _isTakeCounterAttack;
+    private BossController _Boss;
 
     public event Action<PatternEnum> OnPatternSound;
 
@@ -23,6 +27,13 @@ public abstract class PatternBase : MonoBehaviour
         _isReadyCounterAttack = false;
         _isTakeCounterAttack = false;
     }
+
+    private void Start()
+    {
+        _Boss = GameObject.FindAnyObjectByType<BossController>();
+    }
+
+
 
     public void StartPatternTimer()
     {
@@ -42,6 +53,8 @@ public abstract class PatternBase : MonoBehaviour
         }
     }
 
+    
+
     protected IEnumerator PatternCycle()
     {
         while (true)
@@ -51,6 +64,7 @@ public abstract class PatternBase : MonoBehaviour
             {
                 _isReadyCounterAttack = true;
                 // TODO : 카운터 준비 상태일 때 보스의 색상이 바뀌어 시각적 피드백 제공
+                _Boss.UpdateDebuffVisual(_Boss._CounterMaterial, true);
                 Debug.Log("강력한 공격 준비 상태 진입!");
                 // 카운터 가능한 공격은 준비 동작을 먼저 실행
                 yield return StartCoroutine(CounterableAttackReady());
@@ -65,7 +79,9 @@ public abstract class PatternBase : MonoBehaviour
                     Debug.Log("강력한 공격 취소됨!");
                     // 패턴 실행하지 않고 bool 값 원복
                     _isTakeCounterAttack = false;
-                } 
+                }
+                _Boss.UpdateDebuffVisual(_Boss._CounterMaterial, false);
+
             }
             else
             {
