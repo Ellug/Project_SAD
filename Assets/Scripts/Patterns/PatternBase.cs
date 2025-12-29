@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class PatternBase : MonoBehaviour
@@ -13,6 +14,8 @@ public abstract class PatternBase : MonoBehaviour
     private Coroutine _patternCoroutine;
     private bool _isReadyCounterAttack;
     private bool _isTakeCounterAttack;
+
+    public event Action<PatternEnum> OnPatternSound;
 
     protected virtual void Awake()
     {
@@ -86,6 +89,11 @@ public abstract class PatternBase : MonoBehaviour
             }
         }
         // 만약 준비시간 동안 bool 값이 변하지 않았다면 카운터 실패로 패턴을 수행함.
+    }
+
+    protected void PlayPatternSound(PatternEnum PatternEnum)
+    {
+        OnPatternSound?.Invoke(PatternEnum);
     }
 
     public abstract void Init(GameObject target);

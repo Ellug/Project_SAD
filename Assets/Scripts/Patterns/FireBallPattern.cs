@@ -64,6 +64,7 @@ public class FireBallPattern : PatternBase
         yield return new WaitForSeconds(_WarnningDTime);
 
         Fire(targetPosition);
+        PlayPatternSound(PatternEnum.FireBall);
 
         if (_currentWarnning != null)
         {

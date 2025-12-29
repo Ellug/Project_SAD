@@ -31,6 +31,18 @@ public enum BossEnum
 
 public enum PatternEnum
 {
+    NormalShot,
+    Cannon,
+    FireBall,
+    FireCannon,
+    Flamethrower,
+    FrostLaser,
+    GuidedMissile,
+    IceArea,
+    LaserBombing,
+    ObjectSpawn,
+    PrecisionStrike,
+    SlowArea
 }
 
 public enum UIEnum

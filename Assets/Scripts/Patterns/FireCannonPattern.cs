@@ -97,6 +97,8 @@ public class FireCannonPattern : PatternBase
     private void Fire()
     {
         if (_FireCannonPrefab == null || _warnningTransform == null) return;
+        
+        PlayPatternSound(PatternEnum.FireCannon);
 
         Quaternion fireRotation = _warnningTransform.rotation;
         PoolManager.Instance.Spawn(_FireCannonPrefab, _SpawnPoint.position, fireRotation);

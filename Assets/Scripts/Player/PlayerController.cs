@@ -115,6 +115,7 @@ public class PlayerController : MonoBehaviour
     // Movement
     private void HandleMovement()
     {
+        if (_isKnockback) return;
         if (_model.IsDodging) return;
         if (_model.IsOnSpecialAttack) return;
 

@@ -4,8 +4,8 @@ using UnityEngine.Audio;
 
 public class SettingManager : SingletonePattern<SettingManager>
 {
-    [SerializeField] SettingData _defaultData;
-    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private SettingData _defaultData;
+    [SerializeField] private AudioMixer _audioMixer;
 
     public SettingData Data { get; private set; }
 
@@ -15,8 +15,11 @@ public class SettingManager : SingletonePattern<SettingManager>
     protected override void Awake()
     {
         base.Awake();
-        Data = Instantiate(_defaultData);
 
+        if (Data != null)
+            return;
+
+        Data = Instantiate(_defaultData);
         Data.resolutionIndex = GetCurrentResolutionIndex();
 
         ApplyAll();
@@ -57,9 +60,9 @@ public class SettingManager : SingletonePattern<SettingManager>
         float effect = master * Data.effectVolume;
         float bgm = master * Data.BGMVolume;
 
-        audioMixer.SetFloat("MasterVolume", ToDecibel(master));
-        audioMixer.SetFloat("EffectVolume", ToDecibel(effect));
-        audioMixer.SetFloat("BGMVolume", ToDecibel(bgm));
+        _audioMixer.SetFloat("MasterVolume", ToDecibel(master));
+        _audioMixer.SetFloat("EffectVolume", ToDecibel(effect));
+        _audioMixer.SetFloat("BGMVolume", ToDecibel(bgm));
     }
     public void SetResolution(int index)
     {
