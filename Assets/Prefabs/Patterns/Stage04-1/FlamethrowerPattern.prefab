@@ -80,7 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlamethrowerPattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 5
+  _cycleTime: 20
   _flamePrefab: {fileID: 3972544336971986292, guid: 5e71ed609fd6f0047862ab6a49c1a1d9, type: 3}
   _spawnPosition: {fileID: 1592164106204890104, guid: 4f0013bb1b636ac48aba1774ac5af76e, type: 3}
   _fireDuration: 5

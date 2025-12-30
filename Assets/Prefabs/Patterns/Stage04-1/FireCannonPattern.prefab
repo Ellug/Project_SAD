@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireCannonPattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 10
+  _cycleTime: 12
   _FireCannonPrefab: {fileID: 1629741957410847622, guid: 8f042f308ee19564b9852e062f742243, type: 3}
   _SpawnPoint: {fileID: 2505410612352896865, guid: 66e2bd0550ae7e94c8d09a492852ea62, type: 3}
   _WarnningAreaPrefab: {fileID: 5098383528556321439}

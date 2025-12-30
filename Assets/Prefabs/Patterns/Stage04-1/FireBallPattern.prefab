@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireBallPattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 4
+  _cycleTime: 6.5
   _WarnningArea: {fileID: 4084010481113952989}
   _ChaseOffset: 0.2
   _WarnningTime: 1
