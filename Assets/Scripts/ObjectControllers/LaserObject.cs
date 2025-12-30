@@ -6,12 +6,14 @@ public class LaserObject : MonoBehaviour
     [Tooltip("오브젝트 이동 속도")][SerializeField] float _moveSpeed = 5f;
     [Tooltip("오브젝트 활성화 시간")][SerializeField] float _lifeTime = 5f;
     [Tooltip("오브젝트 회전 속도")][SerializeField] float _rotationSpeed = 5f;
+    [Tooltip("오브젝트 업 포지션")][SerializeField] float _upPosition = -0.2f;
+    [Tooltip("오브젝트 다운 포지션")][SerializeField] float _underPosition = -1.45f;
+
+
 
     private bool _moving = false;
     private bool _rotate = false;
     private Vector3 _targetPosition;
-    private const float _upPosition = -0.2f;
-    private const float _underPosition = -1.45f;
     private Coroutine _actionCoroutine;
     private GameObject _player;
     private SetLaser[] _lasers;
