@@ -131,7 +131,7 @@ MonoBehaviour:
         value: 2
       - stat: 10
         op: 1
-        value: 0.2
+        value: -0.4
       - stat: 11
         op: 1
         value: 2

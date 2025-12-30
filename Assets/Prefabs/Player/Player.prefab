@@ -216,7 +216,7 @@ MonoBehaviour:
   _dodgeDuration: 0.3
   _dodgeSpeed: 30
   _dodgeCoolTime: 3
-  _specialCoolTime: 4
+  _specialCoolTime: 7
   _attackMinSpeed: 8
   _attackSlowRate: 2
   _childRenderers:
