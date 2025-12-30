@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 173748972}
   - component: {fileID: 173748971}
   m_Layer: 0
-  m_Name: Stage1BGM
+  m_Name: Stage2BGM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -545,7 +545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafa7b50d30d0b44b83b831957336a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneBGM
-  _bgm: 2
+  _bgm: 3
 --- !u!4 &173748972
 Transform:
   m_ObjectHideFlags: 0
@@ -598,6 +598,8 @@ MonoBehaviour:
   _bossMaxHp: 1000
   _changePhaseHpRate:
   - 0.5
+  _childRenderers: []
+  _CounterMaterial: {fileID: 0}
 --- !u!136 &223490256
 CapsuleCollider:
   m_ObjectHideFlags: 0
