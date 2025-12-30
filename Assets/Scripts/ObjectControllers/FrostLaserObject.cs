@@ -15,10 +15,12 @@ public class FrostLaserObject : MonoBehaviour
     private Coroutine _actionCoroutine;
     private GameObject _player;
     private SetFrostLaser[] _lasers;
+    private Quaternion _initialRotation;
 
     private void Awake()
     {
         _lasers = GetComponentsInChildren<SetFrostLaser>(true);
+        _initialRotation = transform.rotation;
     }
 
     private void Start()
@@ -58,7 +60,7 @@ public class FrostLaserObject : MonoBehaviour
     {
         if (_actionCoroutine != null) StopCoroutine(_actionCoroutine);
 
-        transform.rotation = Quaternion.identity;
+        transform.rotation = _initialRotation;
         _targetPosition = new Vector3(transform.position.x, _upPosition, transform.position.z);
         _moving = true;
     }
