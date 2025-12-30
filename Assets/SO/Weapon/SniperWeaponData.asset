@@ -16,11 +16,11 @@ MonoBehaviour:
   _weaponId: 1
   _weaponType: 1
   attack: 20
-  attackSpeed: 0.5
+  attackSpeed: 0.8
   projectileCount: 1
   projectileAngle: 0
   projectileRange: 30
-  projectileSpeed: 60
+  projectileSpeed: 80
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
   SpecialAttack: 0.1
   SpecialAttackBeforeDelay: 0.5
