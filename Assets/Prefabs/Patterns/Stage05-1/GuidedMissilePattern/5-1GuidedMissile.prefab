@@ -51,8 +51,8 @@ MonoBehaviour:
   _Trails: []
   _MissileLifeTime: 10
   _MissileSpeed: 14
-  _MissileRotationSpeed: 2
-  _Dmg: 10
+  _MissileRotationSpeed: 3
+  _Dmg: 20
   Player: {fileID: 1843839388801252768, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
 --- !u!136 &5352139090238327445
 CapsuleCollider:

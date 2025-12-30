@@ -844,7 +844,7 @@ MonoBehaviour:
   _dmgFont: {fileID: 3889284073795406282, guid: b6ff9f396955d35488d8ca4df292e2f5, type: 3}
   _bossMaxHp: 1000
   _changePhaseHpRate:
-  - 0.5
+  - 0.4
   _childRenderers:
   - {fileID: 223490257}
   - {fileID: 1286288163}
@@ -1546,7 +1546,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

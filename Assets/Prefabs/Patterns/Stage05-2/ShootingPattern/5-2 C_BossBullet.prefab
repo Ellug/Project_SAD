@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 5100019339834059322}
   - component: {fileID: 2245060522831277793}
   m_Layer: 12
-  m_Name: 5-3 BossBullet
+  m_Name: 5-2 C_BossBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossBullet
   _speed: 20
   _maxDistance: 50
-  _dmg: 10
+  _dmg: 25
   HitAreaLength: 1
   _HitAreaRadius: 0.3
   _PlayerLayer:

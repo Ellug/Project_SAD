@@ -49,10 +49,10 @@ MonoBehaviour:
   _MuzzlePrefab: {fileID: 5298398091398872510, guid: 16f45383ac421cb44a1e101daca79a93, type: 3}
   _ExplosionPrefab: {fileID: 5815045670644359433, guid: 16f6f9c28a093ad459f7621d3d0d1ccd, type: 3}
   _Trails: []
-  _MissileLifeTime: 5
-  _MissileSpeed: 14
-  _MissileRotationSpeed: 2
-  _Dmg: 10
+  _MissileLifeTime: 3
+  _MissileSpeed: 20
+  _MissileRotationSpeed: 3
+  _Dmg: 20
   Player: {fileID: 1843839388801252768, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
 --- !u!136 &5352139090238327445
 CapsuleCollider:

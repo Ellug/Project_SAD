@@ -34402,8 +34402,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FrostLaserObject
   _moveSpeed: 5
-  _lifeTime: 20
-  _rotationSpeed: 10
+  _lifeTime: 4
+  _rotationSpeed: 40
+  _upPosition: -0.2
+  _underPosition: -1.45
 --- !u!1 &3764711985296177819
 GameObject:
   m_ObjectHideFlags: 0
@@ -59111,7 +59113,7 @@ MonoBehaviour:
   _DmgDelayTime: 0.5
   _ColdDmg: 5
   _ColdTime: 5
-  _ColdInterval: 5
+  _ColdInterval: 0.5
 --- !u!1 &6315615575644362120
 GameObject:
   m_ObjectHideFlags: 0

@@ -714,9 +714,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
   _dmgFont: {fileID: 3889284073795406282, guid: b6ff9f396955d35488d8ca4df292e2f5, type: 3}
-  _bossMaxHp: 1000
+  _bossMaxHp: 2200
   _changePhaseHpRate:
-  - 0.5
+  - 0.35
   _childRenderers:
   - {fileID: 223490257}
   - {fileID: 1159027501}

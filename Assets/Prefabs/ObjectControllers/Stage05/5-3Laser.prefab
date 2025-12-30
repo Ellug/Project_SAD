@@ -10094,8 +10094,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserObject
   _moveSpeed: 5
-  _lifeTime: 10
+  _lifeTime: 5
   _rotationSpeed: 0
+  _upPosition: -0.2
+  _underPosition: -1.45
 --- !u!1 &5091161952085340174
 GameObject:
   m_ObjectHideFlags: 0

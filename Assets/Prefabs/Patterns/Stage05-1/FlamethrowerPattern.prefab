@@ -81,9 +81,10 @@ MonoBehaviour:
   _counterable: 0
   _startupDelay: 0
   _cycleTime: 5
-  _flamePrefab: {fileID: 3972544336971986292, guid: 739b459f6cd943642b5695374da1fbf9, type: 3}
+  _flamePrefab: {fileID: 3972544336971986292, guid: ad9c73d4583e1014dbc83b167fdd404e, type: 3}
   _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
-  _WarningArea: {fileID: 517166583863999149}
+  _fireDuration: 5
+  _WarningAreaPrefab: {fileID: 0}
   _WarningTime: 2
   _WarningFNTime: 0.2
   _WarningWidth: 5
@@ -275,11 +276,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce0b87fa2b7f89649a8af83314563f66, type: 3}
---- !u!198 &517166583863999149 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1705881344474540260, guid: ce0b87fa2b7f89649a8af83314563f66, type: 3}
-  m_PrefabInstance: {fileID: 1189471813578822217}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8465551454152051076 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7348313826559974349, guid: ce0b87fa2b7f89649a8af83314563f66, type: 3}
