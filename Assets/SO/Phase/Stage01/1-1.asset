@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: 1-1
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   _patterns:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 348944954044248798, guid: 12bfe81a2814b9f45bd8c8e79bacdf39, type: 3}
+  - {fileID: 348944954044248798, guid: 00a1f30536228bb4db285122e0821b1d, type: 3}
+  - {fileID: 8020916841353739512, guid: 74a4e1c1994086547b7d53fcab0ecb4d, type: 3}
+  - {fileID: 1310841223788787128, guid: 22f16ddf5fd8b6a4f97dfbdfaa72299d, type: 3}
+  - {fileID: 8020916841353739512, guid: 52e881dfee49a4d4aa1882df61a29ae8, type: 3}
+  - {fileID: 8020916841353739512, guid: 7ece6c4e651ed9a4a9f7625e473c354f, type: 3}
+  - {fileID: 8020916841353739512, guid: d338c680563b97d4897f3dd161c4c3a6, type: 3}

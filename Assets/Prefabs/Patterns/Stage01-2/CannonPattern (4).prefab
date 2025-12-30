@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 348944954044248798}
   - component: {fileID: 8302400667519359762}
   m_Layer: 0
-  m_Name: CannonPattern
+  m_Name: CannonPattern (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,11 +48,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CannonPattern
   _counterable: 1
   _startupDelay: 1
-  _cycleTime: 5
-  _bulletPrefab: {fileID: 6547672779303436957, guid: e539c1389c1cbba4db5c410393de51c0, type: 3}
+  _cycleTime: 9
+  _bulletPrefab: {fileID: 6547672779303436957, guid: 6993d496e570f55498ccce76772cee0f, type: 3}
   _shootInterval: 0.1
   _shootBulletNumber: 1
-  _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
+  _spawnPosition: {fileID: 7406611455383550715, guid: 432ac9c2b835647489bbaf44cf86039f, type: 3}
   _WarnningArea: {fileID: 1651267398265640262}
   _WarnningTime: 2
   _WarnningFNTime: 0.5

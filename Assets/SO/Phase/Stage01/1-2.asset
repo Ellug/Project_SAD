@@ -13,8 +13,14 @@ MonoBehaviour:
   m_Name: 1-2
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   _patterns:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 348944954044248798, guid: 900bb8e738898984ca4254ea216ef8bf, type: 3}
+  - {fileID: 348944954044248798, guid: d8fb15e979308ea4ea12c1a9913c81bf, type: 3}
+  - {fileID: 8020916841353739512, guid: 0bc93e224c01c5c438bfe6e49fa5b1a0, type: 3}
+  - {fileID: 8020916841353739512, guid: 973af7bea49903d438a68badcf8e1437, type: 3}
+  - {fileID: 8020916841353739512, guid: f39609d1cd0a0394f9d5c3027dfe8602, type: 3}
+  - {fileID: 1310841223788787128, guid: 6f1d3d16cc05a6b40b63ca62d2dbf807, type: 3}
+  - {fileID: 348944954044248798, guid: f4729f9d9ce989144a444d68d4909dfb, type: 3}
+  - {fileID: 348944954044248798, guid: 81c71f7e3e1518e4e9c4fb262dabe5df, type: 3}
+  - {fileID: 8020916841353739512, guid: 4a6e5512b0a89d349bc3460bd8f3cc4f, type: 3}
+  - {fileID: 8020916841353739512, guid: a599a706bd7aaf448ba617a2127f3e78, type: 3}
+  - {fileID: 8020916841353739512, guid: d338c680563b97d4897f3dd161c4c3a6, type: 3}

@@ -2025,8 +2025,8 @@ MonoBehaviour:
   _boss: {fileID: 223490255}
   _spawnPosition: {fileID: 0}
   _phase:
-  - {fileID: 11400000, guid: ee9a4d3701baf6e45868a4b42c4c2e7b, type: 2}
-  - {fileID: 11400000, guid: ee9a4d3701baf6e45868a4b42c4c2e7b, type: 2}
+  - {fileID: 11400000, guid: 510f19aba94a0254cb4352701d116c52, type: 2}
+  - {fileID: 11400000, guid: 6d6a3c97545e8854b8325732284b649e, type: 2}
 --- !u!4 &505577145
 Transform:
   m_ObjectHideFlags: 0
