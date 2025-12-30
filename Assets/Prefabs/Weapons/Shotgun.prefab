@@ -66,19 +66,19 @@ MonoBehaviour:
       mods:
       - stat: 10
         op: 1
-        value: 3
+        value: 1.5
       - stat: 11
         op: 1
-        value: -0.5
+        value: -0.2
       buffs: []
     right:
       mods:
       - stat: 10
         op: 1
-        value: 0.5
-      - stat: 13
+        value: 0.2
+      - stat: 15
         op: 0
-        value: 2
+        value: -5
       buffs: []
   - left:
       mods: []
@@ -88,10 +88,10 @@ MonoBehaviour:
         mods:
         - stat: 10
           op: 1
-          value: 3
+          value: 1.5
         - stat: 11
           op: 1
-          value: 0.5
+          value: 0.2
         healPerTrigger: 0
     right:
       mods: []
@@ -101,22 +101,25 @@ MonoBehaviour:
         mods:
         - stat: 1
           op: 1
-          value: 1
-        - stat: 13
+          value: 0.1
+        - stat: 15
+          op: 0
+          value: -5
+        - stat: 2
           op: 1
-          value: 1
+          value: 0.1
         healPerTrigger: 0
   - left:
       mods:
       - stat: 10
         op: 1
-        value: 4
+        value: 0.8
       buffs: []
     right:
       mods:
       - stat: 11
         op: 1
-        value: 0.2
+        value: 0.4
       buffs: []
   - left:
       mods:
@@ -129,6 +132,9 @@ MonoBehaviour:
       - stat: 15
         op: 2
         value: 3
+      - stat: 10
+        op: 1
+        value: 1.5
       buffs: []
     right:
       mods:
@@ -143,19 +149,19 @@ MonoBehaviour:
       mods:
       - stat: 0
         op: 1
-        value: -0.5
+        value: -0.4
       - stat: 10
         op: 1
-        value: 0.5
+        value: 0.6
       - stat: 11
         op: 1
-        value: 0.5
+        value: 0.6
       - stat: 1
         op: 1
-        value: 0.5
+        value: 0.6
       - stat: 2
         op: 1
-        value: 0.5
+        value: 0.6
       buffs:
       - trigger: 0
         duration: 0
@@ -165,24 +171,24 @@ MonoBehaviour:
       mods:
       - stat: 10
         op: 1
-        value: 0.1
+        value: 0.15
       - stat: 11
         op: 1
-        value: 0.1
+        value: 0.15
       - stat: 1
         op: 1
-        value: 0.1
+        value: 0.15
       - stat: 2
         op: 1
-        value: 0.1
+        value: 0.15
       buffs:
       - trigger: 1
         duration: 3
         mods:
         - stat: 1
           op: 1
-          value: 0.8
+          value: 0.2
         - stat: 2
           op: 1
-          value: 0.8
+          value: 0.2
         healPerTrigger: 0
