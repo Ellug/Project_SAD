@@ -5002,7 +5002,7 @@ MonoBehaviour:
   _hitParticleOffset: 0.05
   _BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
   _DecalTime: 5
-  Player: {fileID: 0}
+  _player: {fileID: 0}
   _Dmg: 5
   _DmgDelayTime: 0.5
 --- !u!1 &94225460030019979
@@ -58539,7 +58539,7 @@ MonoBehaviour:
   _hitParticleOffset: 0.05
   _BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
   _DecalTime: 5
-  Player: {fileID: 0}
+  _player: {fileID: 0}
   _Dmg: 5
   _DmgDelayTime: 0.5
 --- !u!1 &7661745365747752022
@@ -58839,7 +58839,7 @@ MonoBehaviour:
   _hitParticleOffset: 0.05
   _BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
   _DecalTime: 5
-  Player: {fileID: 0}
+  _player: {fileID: 0}
   _Dmg: 5
   _DmgDelayTime: 0.5
 --- !u!1 &7891909137991081298
@@ -73634,7 +73634,7 @@ MonoBehaviour:
   _hitParticleOffset: 0.05
   _BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
   _DecalTime: 5
-  Player: {fileID: 0}
+  _player: {fileID: 0}
   _Dmg: 5
   _DmgDelayTime: 0.5
 --- !u!1 &9016676218997375718
