@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 5100019339834059322}
   - component: {fileID: 2245060522831277793}
   m_Layer: 12
-  m_Name: 1-1.BossBullet
+  m_Name: 1-1.C_BossBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -407,7 +407,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.16509432, g: 0.27724582, b: 1, a: 0.78431374}
+      maxColor: {r: 1, g: 0.16470587, b: 0.1812349, a: 0.78431374}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

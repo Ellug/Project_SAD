@@ -34382,7 +34382,7 @@ GameObject:
   - component: {fileID: 6547672779303436957}
   - component: {fileID: 7852107671252040528}
   m_Layer: 12
-  m_Name: 1-1.BossCannon
+  m_Name: 1-2.BossCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34425,9 +34425,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d0a1c155c11234085b99bc75404661, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossCannon
-  _speed: 20
+  _speed: 15
   _maxDistance: 50
-  _dmg: 10
+  _dmg: 20
   _MuzzlePrefab: {fileID: -328383707900397120, guid: 6aee52032bcb8a84e88bc2669d317e6e, type: 3}
   _ExplosionParticle: {fileID: 2845398557905050838, guid: 6575a169445bee64db7a433acdd8041b, type: 3}
   _Trails: []
