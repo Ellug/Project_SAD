@@ -87,13 +87,13 @@ public class BossController : MonoBehaviour
         MeshRenderer[] temp = armor.GetComponentsInChildren<MeshRenderer>();
         foreach (MeshRenderer renderer in temp)
         {
-            renderer.gameObject.AddComponent<BoxCollider>();
+            renderer.gameObject.AddComponent<MeshCollider>().convex = true;
             Rigidbody temp2 = renderer.gameObject.AddComponent<Rigidbody>();
-            temp2.mass = 3f;
-            temp2.AddForce(temp2.transform.forward * 60f, ForceMode.Impulse);
+            temp2.mass = 5f;
+            temp2.AddForce(temp2.transform.forward * 30f, ForceMode.Impulse);
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
         armor.SetActive(false);
     }

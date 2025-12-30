@@ -21,11 +21,16 @@ public class PlayerStatsContext : MonoBehaviour
     private IEnumerable<StatMod> _playerMods;
     private IEnumerable<StatMod> _weaponMods;
     private IEnumerable<TriggeredBuff> _triggeredBuffs;
+
     private readonly Dictionary<int, StatMod[]> _dynamicModsByOwner = new();
 
+    // for Debuff
+    private float _activeDebuffRemain;
+
+    // 디버프는 동적 모드 딕셔너리에 예약 키로 합산
+    private const int DebuffOwnerId = 1001;
 
     public PlayerModel Model => _playerModel;
-
 
     // Result
     public PlayerFinalStats Current { get; private set; } = new PlayerFinalStats();
@@ -62,7 +67,11 @@ public class PlayerStatsContext : MonoBehaviour
         UnbindWeaponPerks();
 
         _weapon = weapon;
+
+        // 대기실 장착이라면 잔여 런타임 효과는 전부 초기화
         _activeBuffs.Clear();
+        _dynamicModsByOwner.Clear();
+        _activeDebuffRemain = 0f;
 
         if (_weapon != null)
         {
@@ -132,7 +141,7 @@ public class PlayerStatsContext : MonoBehaviour
             return;
 
         IEnumerable<StatMod> buffMods = EnumerateActiveBuffMods();
-        IEnumerable<StatMod> dynMods  = EnumerateDynamicMods();
+        IEnumerable<StatMod> dynMods = EnumerateDynamicMods();
 
         // Player = PlayerMods + BuffMods + DynMods
         var playerAll = ConcatMods(ConcatMods(_playerMods, buffMods), dynMods);
@@ -191,7 +200,7 @@ public class PlayerStatsContext : MonoBehaviour
             changed = true;
         }
 
-        if (healAmount > 0f && _playerModel !=null)
+        if (healAmount > 0f && _playerModel != null)
             _playerModel.TakeHeal(healAmount);
 
         if (changed)
@@ -285,6 +294,35 @@ public class PlayerStatsContext : MonoBehaviour
 
             for (int i = 0; i < arr.Length; i++)
                 yield return arr[i];
+        }
+    }
+
+    // Debuff
+    public void ApplyDebuff(StatMod[] mods, float duration)
+    {
+        if (mods == null || mods.Length == 0) return;
+
+        duration = Mathf.Max(0.01f, duration);
+
+        // 디버프 지속시간 갱신
+        _activeDebuffRemain = Mathf.Max(_activeDebuffRemain, duration);
+
+        // 디버프 스탯은 동적 모드 딕셔너리에 합산
+        SetDynamicMods(DebuffOwnerId, mods); // 내부에서 Rebuild 호출
+    }
+
+    public void TickDynamicDebuffs(float dt)
+    {
+        if (_activeDebuffRemain <= 0f) return;
+
+        _activeDebuffRemain -= dt;
+
+        if (_activeDebuffRemain <= 0f)
+        {
+            _activeDebuffRemain = 0f;
+
+            // 디버프 키 제거 (내부에서 Rebuild 호출)
+            SetDynamicMods(DebuffOwnerId, null);
         }
     }
 }

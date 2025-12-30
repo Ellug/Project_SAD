@@ -13,7 +13,13 @@ public class SlowAreaPattern : PatternBase
     [Tooltip("슬로우 장판 추적속도")][SerializeField] float _ChaseSpeed;
     [Tooltip("슬로우 위력")][SerializeField] float _SlowPower;
     [Tooltip("슬로우 지속시간")][SerializeField] float _SlowTime;
+    
+    [Tooltip("슬로우 호출 간격")][SerializeField] private float _applyInterval = 0.2f;
+    private float _nextApplyTime = 0f;
 
+    // 슬로우 노드 2개
+    private readonly StatMod[] _slowMods = new StatMod[2];
+    
     private ParticleSystem Slow;
     private ParticleSystem Warinning;
     private GameObject Player;
@@ -47,9 +53,18 @@ public class SlowAreaPattern : PatternBase
         {
             // 슬로우 장판 범위
             bool isHit = Physics.CheckSphere(Slow.transform.position, _SlowRange, _predictiveAim.targetLayer);
+
             if (isHit && model != null)
             {
-                model.SlowDebuff(_SlowPower, _SlowTime);
+                if (Time.time >= _nextApplyTime)
+                {
+                    model.ApplyDebuff(_slowMods, _SlowTime, _SlowTime);
+                    _nextApplyTime = Time.time + _applyInterval;
+                }
+            }
+            else
+            {
+                _nextApplyTime = 0f;
             }
         }
     }
@@ -74,6 +89,25 @@ public class SlowAreaPattern : PatternBase
         Warinning = null;
 
         ActivateSlow = true;
+        // slow 데이터 처리
+        float mul = Mathf.Clamp01(1f - _SlowPower);
+
+        // 노드 처리
+        _slowMods[0] = new StatMod
+        {
+            stat = StatId.Player_MaxSpeed,
+            op = ModOp.Mul,
+            value = mul,
+        };
+
+        _slowMods[1] = new StatMod
+        {
+            stat = StatId.Player_AccelForce,
+            op = ModOp.Mul,
+            value = mul,
+        };
+
+
         Slow = PoolManager.Instance.Spawn(_SlowParticle, spawnPos, Quaternion.identity);
         Slow.transform.localScale = new Vector3(targetScale, targetScale, targetScale);
 

@@ -17,9 +17,6 @@ public class WeaponView : MonoBehaviour
     void Start()
     {
         Init();
-        
-        if (_weaponSelectUI != null)
-            _weaponSelectUI.OnWeaponClicked += OnClickWeapon;
 
         // 기본 무기 표시(EquipManager 기준) - WeaponSelectUI가 표시 담당
         int defaultId = 0;
@@ -32,7 +29,23 @@ public class WeaponView : MonoBehaviour
         WeaponModel model = new();
         model.Init(_allWeaponData);
         _presenter = new WeaponPresenter(model, this);
+        _presenter.SelectWeapon(defaultId);
         _presenter.Init();
+    }
+
+    void OnEnable()
+    {
+        if (_weaponSelectUI != null)
+        {
+            _weaponSelectUI.OnWeaponClicked -= OnClickWeapon;
+            _weaponSelectUI.OnWeaponClicked += OnClickWeapon;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (_weaponSelectUI != null)
+            _weaponSelectUI.OnWeaponClicked -= OnClickWeapon;
     }
 
     void OnDestroy()

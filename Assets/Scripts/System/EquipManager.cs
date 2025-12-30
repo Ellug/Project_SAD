@@ -18,16 +18,25 @@ public class EquipManager : SingletonePattern<EquipManager>
     private PlayerModel _boundPlayer;
     private PerksTree _boundTree;
 
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoad;
+        SceneManager.sceneLoaded += OnSceneLoad;        
+    }
+
+    void OnDisable()
+    {        
+        SceneManager.sceneLoaded -= OnSceneLoad;
+    }
+
     void Start()
     {
-        SceneManager.sceneLoaded += OnSceneLoad;
         EnsureDefaultWeapon();
         TryEquipOnCurrentScene();
     }
 
     void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoad;
         UnbindPerksBridge();
     }
 
@@ -52,10 +61,9 @@ public class EquipManager : SingletonePattern<EquipManager>
 
     public void SetPlayerWeapon(WeaponBase weapon)
     {
-        // 무기 선택시 퍽 초기화. 저장 필요하면 따로 저장 시스템 도입
-        if (Weapon != null && weapon != null && Weapon.GetWeaponId() != weapon.GetWeaponId())
-            _perkSelections = null;
+        if (Weapon != null && Weapon.GetWeaponId() == weapon.GetWeaponId()) return;
 
+        _perkSelections = null;
         Weapon = weapon;
     }
 
