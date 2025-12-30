@@ -158,6 +158,14 @@ public class PlayerBullet : BulletBase
                 if (_payload.effect == BulletEffect.Burn)
                     boss.ApplyBurn(_payload.burnDps, _payload.burnDuration);
             }
+            else
+            {
+                if (other.TryGetComponent<DummyController>(out var dummy))
+                {
+                    float dmg = _dmg * _payload.damageMul;
+                    dummy.TakeDamage(dmg, _counterAttack);
+                }
+            }
 
             PlayHitFX(hitPoint, normal);
             Despawn();
