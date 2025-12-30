@@ -7,95 +7,140 @@ public abstract class PatternBase : MonoBehaviour
     [Header("카운터 관련 속성")]
     [SerializeField] protected bool _counterable;
     [SerializeField] protected float _startupDelay;
+
     [Header("공용 패턴 속성")]
     [SerializeField] protected float _cycleTime;
 
     private WaitForSeconds _patternDelay;
-    private Coroutine _patternCoroutine;
-    private bool _isReadyCounterAttack;
-    private bool _isTakeCounterAttack;
+    private Coroutine _patternCycleCoroutine;
+    private Coroutine _currentPatternCoroutine;
+
+    private bool _isReadyCounter;
+    private bool _isCounterTaken;
+
+    protected bool _isPatternActive; // Update 제어용
+    protected BossController _boss;
 
     public event Action<PatternEnum> OnPatternSound;
 
     protected virtual void Awake()
     {
         _patternDelay = new WaitForSeconds(_cycleTime);
-        _isReadyCounterAttack = false;
-        _isTakeCounterAttack = false;
+        _isReadyCounter = false;
+        _isCounterTaken = false;
     }
 
-    public void StartPatternTimer()
+    private void Start()
     {
-        _patternCoroutine = StartCoroutine(PatternCycle());
+        _boss = GameObject.FindAnyObjectByType<BossController>();
+    }
+    protected virtual void Update()
+    { 
     }
 
-    public void StopPatternTimer()
+    #region Pattern Cycle Control
+    public void StartPatternCycle()
     {
-        StopCoroutine(_patternCoroutine);
+        if (_patternCycleCoroutine == null)
+            _patternCycleCoroutine = StartCoroutine(PatternCycle());
     }
 
-    public void CounterAttackTrigger()
+    public void StopPatternCycle()
     {
-        if (_counterable && _isReadyCounterAttack)
+        if (_patternCycleCoroutine != null)
         {
-            _isTakeCounterAttack = true;
+            StopCoroutine(_patternCycleCoroutine);
+            _patternCycleCoroutine = null;
         }
+
+        ForceStopCurrentPattern();
     }
 
-    protected IEnumerator PatternCycle()
+    private IEnumerator PatternCycle()
     {
         while (true)
         {
             yield return _patternDelay;
+
             if (_counterable)
             {
-                _isReadyCounterAttack = true;
-                // TODO : 카운터 준비 상태일 때 보스의 색상이 바뀌어 시각적 피드백 제공
-                Debug.Log("강력한 공격 준비 상태 진입!");
-                // 카운터 가능한 공격은 준비 동작을 먼저 실행
-                yield return StartCoroutine(CounterableAttackReady());
-                _isReadyCounterAttack = false;
-                if (_isTakeCounterAttack == false)
+                _isReadyCounter = true;
+                _boss?.UpdateDebuffVisual(_boss._CounterMaterial, true);
+                yield return StartCoroutine(CounterableDelay());
+                _isReadyCounter = false;
+
+                if (!_isCounterTaken)
                 {
-                    Debug.Log("강력한 공격 발동!");
-                    PatternLogic();
+                    ExecutePattern();
                 }
                 else
                 {
-                    Debug.Log("강력한 공격 취소됨!");
-                    // 패턴 실행하지 않고 bool 값 원복
-                    _isTakeCounterAttack = false;
-                } 
+                    _isCounterTaken = false;
+                }
+
+                _boss?.UpdateDebuffVisual(_boss._CounterMaterial, false);
             }
             else
             {
-                PatternLogic();
+                ExecutePattern();
             }
         }
     }
 
-    private IEnumerator CounterableAttackReady()
+    private IEnumerator CounterableDelay()
     {
-        float elapsedTime = 0f;
-        while (elapsedTime < _startupDelay) 
+        float elapsed = 0f;
+        while (elapsed < _startupDelay)
         {
-            // 매 프레임 bool 값을 검사하다가 이것이 true가 되는 순간 탈출함.
-            // 이 bool 값은 어딘가에서 값을 바꿔줘야 함.
-            yield return null;
-            elapsedTime += Time.deltaTime;
-            if (_isTakeCounterAttack)
-            {
+            if (_isCounterTaken)
                 yield break;
-            }
+
+            elapsed += Time.deltaTime;
+            yield return null;
         }
-        // 만약 준비시간 동안 bool 값이 변하지 않았다면 카운터 실패로 패턴을 수행함.
     }
 
-    protected void PlayPatternSound(PatternEnum PatternEnum)
+    public void TriggerCounter()
     {
-        OnPatternSound?.Invoke(PatternEnum);
+        if (_counterable && _isReadyCounter)
+            _isCounterTaken = true;
+    }
+    #endregion
+
+    #region Pattern Execution
+    protected void ExecutePattern()
+    {
+        ForceStopCurrentPattern(); // 이전 패턴 종료
+        _isPatternActive = true;
+        _currentPatternCoroutine = StartCoroutine(PatternRoutine());
+    }
+
+    protected virtual IEnumerator PatternRoutine()
+    {
+        // 실제 패턴 로직은 여기서 구현
+        yield break;
+    }
+
+    protected void ForceStopCurrentPattern()
+    {
+        _isPatternActive = false;
+
+        if (_currentPatternCoroutine != null)
+        {
+            StopCoroutine(_currentPatternCoroutine);
+            _currentPatternCoroutine = null;
+        }
+
+        CleanupPattern();
+    }
+
+    protected abstract void CleanupPattern(); // 파티클 제거, 상태 초기화 등
+    #endregion
+
+    protected void PlayPatternSound(PatternEnum patternEnum)
+    {
+        OnPatternSound?.Invoke(patternEnum);
     }
 
     public abstract void Init(GameObject target);
-    protected abstract void PatternLogic();
 }

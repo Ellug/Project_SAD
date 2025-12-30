@@ -15,19 +15,35 @@ public class SetLaser : MonoBehaviour
     [Tooltip("그을음 프리팹 생성주기")] public float _DecalTime = 5f;
 
     [Header("플레이어 정보")]
-    [Tooltip("플레이어")] public GameObject Player;
+    [Tooltip("플레이어")] public GameObject _player;
     [Tooltip("데미지")] public float _Dmg = 5f;
     [Tooltip("데미지 딜레이")] public float _DmgDelayTime = 0.5f;
 
-    private bool DelayCheck = true;
-    private bool DmgDelayCheck = true;
+    private bool _delayCheck = true;
+    private bool _dmgDelayCheck = true;
     private LayerMask _layerMask;
     private ParticleSystem[] _sparkChildren;
 
     private void Awake()
     {
-        _layerMask += 1 << LayerMask.NameToLayer("Player");
-        _layerMask += 1 << LayerMask.NameToLayer("Wall");
+        _layerMask = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("Wall"));
+    }
+
+    private void OnEnable()
+    {
+        _delayCheck = true;
+        _dmgDelayCheck = true;
+    }
+
+    private void OnDisable()
+    {
+        if (_lineRenderer != null)
+        {
+            _lineRenderer.SetPosition(0, Vector3.zero);
+            _lineRenderer.SetPosition(1, Vector3.zero);
+        }
+
+        if (_laserHitObject != null) _laserHitObject.SetActive(false);
     }
 
     private void Start()
@@ -65,25 +81,26 @@ public class SetLaser : MonoBehaviour
 
             if (hit.collider.CompareTag("Player"))
             {
-                if (DmgDelayCheck)
+                if (_dmgDelayCheck)
                 {
-                    if (Player.TryGetComponent<PlayerModel>(out var player))
+                    if (_player != null && _player.TryGetComponent<PlayerModel>(out var player))
                     {
                         player.TakeDamage(_Dmg);
-                        DmgDelayCheck = false;
-                        StartCoroutine(DmgDelayTime());
+                        _dmgDelayCheck = false;
+                        StartCoroutine(DmgDelayRoutine());
                     }
                 }
-                return;
             }
-
-            EmitAllChildren(_sparkChildren, 3);
-
-            if (DelayCheck)
+            else
             {
-                PoolManager.Instance.Spawn(_BurnDecalPrefab, hit.point, hitRot);
-                DelayCheck = false;
-                StartCoroutine(DelayTime());
+                EmitAllChildren(_sparkChildren, 3);
+
+                if (_delayCheck)
+                {
+                    PoolManager.Instance.Spawn(_BurnDecalPrefab, hit.point, hitRot);
+                    _delayCheck = false;
+                    StartCoroutine(DecalDelayRoutine());
+                }
             }
         }
         else
@@ -92,9 +109,7 @@ public class SetLaser : MonoBehaviour
             _lineRenderer.SetPosition(1, _firePoint.position + _firePoint.forward * _maxLaserDistance);
 
             if (_laserHitObject != null && _laserHitObject.activeSelf)
-            {
                 _laserHitObject.SetActive(false);
-            }
         }
     }
 
@@ -107,20 +122,20 @@ public class SetLaser : MonoBehaviour
         }
     }
 
-    IEnumerator DelayTime()
+    IEnumerator DecalDelayRoutine()
     {
         yield return new WaitForSeconds(_DecalTime);
-        DelayCheck = true;
+        _delayCheck = true;
     }
 
-    IEnumerator DmgDelayTime()
+    IEnumerator DmgDelayRoutine()
     {
         yield return new WaitForSeconds(_DmgDelayTime);
-        DmgDelayCheck = true;
+        _dmgDelayCheck = true;
     }
 
     public void Init(GameObject target)
     {
-        Player = target;
+        _player = target;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class SetFrostLaser : MonoBehaviour
 {
@@ -26,17 +25,32 @@ public class SetFrostLaser : MonoBehaviour
     [Tooltip("추위 지속시간")] public float _ColdTime = 5f;
     [Tooltip("틱 인터벌")] public float _ColdInterval = 5f;
 
-    private bool DelayCheck = true;
-    private bool DmgDelayCheck = true;
+    private bool _delayCheck = true;
+    private bool _dmgDelayCheck = true;
     private LayerMask _layerMask;
-
     private ParticleSystem[] _spark1Children;
     private ParticleSystem[] _spark2Children;
 
     private void Awake()
     {
-        _layerMask += 1 << LayerMask.NameToLayer("Player");
-        _layerMask += 1 << LayerMask.NameToLayer("Wall");
+        _layerMask = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("Wall"));
+    }
+
+    private void OnEnable()
+    {
+        _delayCheck = true;
+        _dmgDelayCheck = true;
+    }
+
+    private void OnDisable()
+    {
+        if (_lineRenderer != null)
+        {
+            _lineRenderer.SetPosition(0, Vector3.zero);
+            _lineRenderer.SetPosition(1, Vector3.zero);
+        }
+
+        if (_laserHitObject != null) _laserHitObject.SetActive(false);
     }
 
     private void Start()
@@ -60,17 +74,8 @@ public class SetFrostLaser : MonoBehaviour
             Vector3 hitPos = hit.point + hit.normal * _hitParticleOffset;
             Quaternion hitRot = Quaternion.LookRotation(hit.normal);
 
-            if (_sparkParticle != null)
-            {
-                _sparkParticle.transform.position = hitPos;
-                _sparkParticle.transform.rotation = hitRot;
-            }
-
-            if (_sparkParticle2 != null)
-            {
-                _sparkParticle2.transform.position = hitPos;
-                _sparkParticle2.transform.rotation = hitRot;
-            }
+            UpdateEffectTransform(_sparkParticle, hitPos, hitRot);
+            UpdateEffectTransform(_sparkParticle2, hitPos, hitRot);
 
             if (_laserHitObject != null)
             {
@@ -81,27 +86,28 @@ public class SetFrostLaser : MonoBehaviour
 
             if (hit.collider.CompareTag("Player"))
             {
-                if (DmgDelayCheck)
+                if (_dmgDelayCheck)
                 {
                     if (_Player != null && _Player.TryGetComponent<PlayerModel>(out var player))
                     {
                         player.TakeDamage(_Dmg);
                         player.ColdDebuff(_ColdDmg, _ColdTime, _ColdInterval);
-                        DmgDelayCheck = false;
-                        StartCoroutine(DmgDelayTime());
+                        _dmgDelayCheck = false;
+                        StartCoroutine(DmgDelayRoutine());
                     }
                 }
-                return;
             }
-
-            EmitAllChildren(_spark1Children, 3);
-            EmitAllChildren(_spark2Children, 3);
-
-            if (DelayCheck)
+            else
             {
-                PoolManager.Instance.Spawn(_BurnDecalPrefab, hit.point, hitRot);
-                DelayCheck = false;
-                StartCoroutine(DelayTime());
+                EmitAllChildren(_spark1Children, 3);
+                EmitAllChildren(_spark2Children, 3);
+
+                if (_delayCheck)
+                {
+                    PoolManager.Instance.Spawn(_BurnDecalPrefab, hit.point, hitRot);
+                    _delayCheck = false;
+                    StartCoroutine(DecalDelayRoutine());
+                }
             }
         }
         else
@@ -114,26 +120,34 @@ public class SetFrostLaser : MonoBehaviour
         }
     }
 
+    private void UpdateEffectTransform(ParticleSystem ps, Vector3 pos, Quaternion rot)
+    {
+        if (ps != null)
+        {
+            ps.transform.position = pos;
+            ps.transform.rotation = rot;
+        }
+    }
+
     private void EmitAllChildren(ParticleSystem[] systems, int count)
     {
         if (systems == null) return;
-
         foreach (var ps in systems)
         {
             if (ps != null) ps.Emit(count);
         }
     }
 
-    IEnumerator DelayTime()
+    IEnumerator DecalDelayRoutine()
     {
         yield return new WaitForSeconds(_DecalTime);
-        DelayCheck = true;
+        _delayCheck = true;
     }
 
-    IEnumerator DmgDelayTime()
+    IEnumerator DmgDelayRoutine()
     {
         yield return new WaitForSeconds(_DmgDelayTime);
-        DmgDelayCheck = true;
+        _dmgDelayCheck = true;
     }
 
     public void Init(GameObject target)

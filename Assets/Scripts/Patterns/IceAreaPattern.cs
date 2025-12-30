@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class IceAreaPattern : PatternBase
@@ -10,68 +9,52 @@ public class IceAreaPattern : PatternBase
     [Tooltip("경고 장판 정지 후 대기 시간")][SerializeField] private float _WarnningDTime = 0.5f;
 
     [Header("냉기 장판 생성")]
-    [Tooltip("냉기 장판 프리팹 (IceArea 컴포넌트 포함)")][SerializeField] private IceArea _IceAreaPrefab;
+    [Tooltip("냉기 장판 프리팹")][SerializeField] private IceArea _IceAreaPrefab;
     [Tooltip("생성 위치 예측 오프셋")][SerializeField] private float _ChaseOffset = 0.2f;
 
     private PredictiveAim _predictiveAim;
-    private GameObject Player;
-    private ParticleSystem _Warnning;
-    private bool chase = false;
+    private GameObject _player;
+    private ParticleSystem _currentWarning;
 
     public override void Init(GameObject target)
     {
-        Player = target;
+        _player = target;
         _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
     }
 
-    protected override void PatternLogic()
+    protected override void Update()
     {
-        WarnningEffect();
-    }
-
-    void Update()
-    {
-        if (chase && _Warnning != null && _predictiveAim != null)
+        if (_isPatternActive && _currentWarning != null && _predictiveAim != null)
         {
-            _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
+            _currentWarning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
         }
     }
 
-    public void WarnningEffect()
+    protected override IEnumerator PatternRoutine()
     {
-        if (_WarnningArea == null) return;
+        if (_WarnningArea == null) yield break;
 
-        _Warnning = PoolManager.Instance.Spawn(_WarnningArea, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
-        _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
-        chase = true;
+        _currentWarning = PoolManager.Instance.Spawn(_WarnningArea, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
+        _currentWarning.Clear();
+        _currentWarning.Play();
 
-        _Warnning.Clear();
-        _Warnning.Play();
-        StartCoroutine(ChaseRoutine());
-    }
+        _isPatternActive = true;
 
-    private IEnumerator ChaseRoutine()
-    {
         yield return new WaitForSeconds(_WarnningTime);
 
-        chase = false;
-        Vector3 stopPos = transform.position;
-
-        if (_Warnning != null)
-        {
-            stopPos = _Warnning.transform.position;
-        }
+        _isPatternActive = false;
+        Vector3 spawnPos = _currentWarning != null ? _currentWarning.transform.position : _predictiveAim.PredictiveAimCalc(_ChaseOffset);
 
         yield return new WaitForSeconds(_WarnningDTime);
 
-        if (_Warnning != null)
+        if (_currentWarning != null)
         {
-            _Warnning.Stop();
-            PoolManager.Instance.Despawn(_Warnning.gameObject);
-            _Warnning = null;
+            _currentWarning.Stop();
+            PoolManager.Instance.Despawn(_currentWarning.gameObject);
+            _currentWarning = null;
         }
 
-        SpawnIceArea(stopPos);
+        SpawnIceArea(spawnPos);
     }
 
     private void SpawnIceArea(Vector3 position)
@@ -79,12 +62,24 @@ public class IceAreaPattern : PatternBase
         if (_IceAreaPrefab == null) return;
 
         PlayPatternSound(PatternEnum.IceArea);
-
         IceArea ice = PoolManager.Instance.Spawn(_IceAreaPrefab, position, Quaternion.identity);
 
         if (ice != null)
         {
-            ice.Init(Player);
+            ice.Init(_player);
+        }
+    }
+
+    protected override void CleanupPattern()
+    {
+        _isPatternActive = false;
+
+        if (_currentWarning != null)
+        {
+            _currentWarning.Stop();
+            if (PoolManager.Instance != null)
+                PoolManager.Instance.Despawn(_currentWarning.gameObject);
+            _currentWarning = null;
         }
     }
 }

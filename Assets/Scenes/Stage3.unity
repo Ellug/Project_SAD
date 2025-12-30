@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 173748972}
   - component: {fileID: 173748971}
   m_Layer: 0
-  m_Name: Stage1BGM
+  m_Name: Stage3BGM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -607,7 +607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafa7b50d30d0b44b83b831957336a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneBGM
-  _bgm: 2
+  _bgm: 4
 --- !u!4 &173748972
 Transform:
   m_ObjectHideFlags: 0
@@ -658,7 +658,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossController
   _dmgFont: {fileID: 3889284073795406282, guid: b6ff9f396955d35488d8ca4df292e2f5, type: 3}
   _bossMaxHp: 1000
-  _changePhaseHpRate: 0.5
+  _changePhaseHpRate:
+  - 0.5
+  _childRenderers: []
+  _CounterMaterial: {fileID: 0}
 --- !u!136 &223490256
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -751,12 +754,12 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 718002022}
   - {fileID: 1159027500}
   - {fileID: 1780182008}
   - {fileID: 527715109}
   - {fileID: 2023551116}
   - {fileID: 904359489}
+  - {fileID: 718002022}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &223490260
@@ -2695,7 +2698,7 @@ GameObject:
   m_Component:
   - component: {fileID: 718002022}
   m_Layer: 0
-  m_Name: Armor
+  m_Name: Armor01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2799,6 +2802,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736151537}
   m_CullTransparentMesh: 1
+--- !u!1 &778733550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 778733552}
+  - component: {fileID: 778733551}
+  m_Layer: 0
+  m_Name: '[EquipManager]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &778733551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778733550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b617f0e50ad982f4fa4a23f435b6f401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipManager
+  _defaultWeapon: {fileID: 1683954902342705239, guid: 009afe63e1be5da4b8be0d0ea8aa705e, type: 3}
+--- !u!4 &778733552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778733550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -45.07198, y: 0, z: 22.25838}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &806892925
 GameObject:
   m_ObjectHideFlags: 0
@@ -8536,6 +8584,7 @@ SceneRoots:
   - {fileID: 505577145}
   - {fileID: 1242839630}
   - {fileID: 1099610020}
+  - {fileID: 778733552}
   - {fileID: 1100461561}
   - {fileID: 337574884}
   - {fileID: 173748972}

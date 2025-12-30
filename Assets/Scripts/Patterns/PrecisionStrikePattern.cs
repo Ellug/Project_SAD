@@ -23,39 +23,40 @@ public class PrecisionStrikePattern : PatternBase
     private GameObject Player;
     private ParticleSystem _Warnning;
     private ParticleSystem _StaticWarnning;
-    private bool chase = false;
     private Vector3 _lastStaticPos;
 
-    void Update()
+    public override void Init(GameObject target)
     {
-        if (chase && _Warnning != null && _predictiveAim != null)
+        Player = target;
+        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
+    }
+
+    protected override void Update()
+    {
+        if (_isPatternActive && _Warnning != null && _predictiveAim != null)
         {
             _Warnning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
         }
     }
 
-    public void WarnningEffect()
+    protected override IEnumerator PatternRoutine()
     {
-        if (_WarnningArea == null) return;
+        if (_WarnningArea == null) yield break;
 
         _Warnning = PoolManager.Instance.Spawn(_WarnningArea, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
-
-        chase = true;
         _Warnning.Clear();
         _Warnning.Play();
 
-        StartCoroutine(ChaseRoutine());
-    }
+        _isPatternActive = true;
 
-    private IEnumerator ChaseRoutine()
-    {
         yield return new WaitForSeconds(_WarnningTime);
 
-        chase = false;
+        _isPatternActive = false;
 
         if (_Warnning != null)
         {
             Vector3 stopPos = _Warnning.transform.position;
+            _lastStaticPos = stopPos;
 
             _Warnning.Stop();
             PoolManager.Instance.Despawn(_Warnning.gameObject);
@@ -74,13 +75,12 @@ public class PrecisionStrikePattern : PatternBase
         if (_StaticWarnning != null)
         {
             _lastStaticPos = _StaticWarnning.transform.position;
-
             _StaticWarnning.Stop();
             PoolManager.Instance.Despawn(_StaticWarnning.gameObject);
             _StaticWarnning = null;
         }
 
-        StartCoroutine(ExplosionSequence());
+        yield return ExplosionSequence();
     }
 
     private IEnumerator ExplosionSequence()
@@ -103,7 +103,6 @@ public class PrecisionStrikePattern : PatternBase
         if (particlePrefab == null) return;
 
         ParticleSystem exp = PoolManager.Instance.Spawn(particlePrefab, position, Quaternion.identity);
-
         exp.Clear();
         exp.Play();
 
@@ -135,11 +134,22 @@ public class PrecisionStrikePattern : PatternBase
         }
     }
 
-    protected override void PatternLogic() => WarnningEffect();
-
-    public override void Init(GameObject target)
+    protected override void CleanupPattern()
     {
-        Player = target;
-        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
+        _isPatternActive = false;
+
+        if (_Warnning != null)
+        {
+            _Warnning.Stop();
+            if (PoolManager.Instance != null) PoolManager.Instance.Despawn(_Warnning.gameObject);
+            _Warnning = null;
+        }
+
+        if (_StaticWarnning != null)
+        {
+            _StaticWarnning.Stop();
+            if (PoolManager.Instance != null) PoolManager.Instance.Despawn(_StaticWarnning.gameObject);
+            _StaticWarnning = null;
+        }
     }
 }
