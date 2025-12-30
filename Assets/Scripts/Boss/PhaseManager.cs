@@ -5,7 +5,6 @@ public class PhaseManager : MonoBehaviour
 {
     [SerializeField] private GameObject _player;
     [SerializeField] private BossController _boss;
-    [SerializeField] private Transform _spawnPosition;
     [SerializeField] private List<PhaseData> _phase;
 
     private PhaseData _curPhase;
