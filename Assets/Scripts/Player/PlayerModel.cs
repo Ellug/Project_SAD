@@ -66,6 +66,9 @@ public class PlayerModel : MonoBehaviour
     //화상 디버프 코루틴
     private Coroutine _burnCoroutine;
     private Coroutine _coldCoroutine;
+    // 피격 시 하이라이트 효과
+    private Material _playerMaterial;
+    private WaitForSeconds _effectLifetime;
 
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
@@ -114,6 +117,7 @@ public class PlayerModel : MonoBehaviour
             _statsContext = gameObject.AddComponent<PlayerStatsContext>();
 
         _statsContext.Bind(this);
+        _effectLifetime = new WaitForSeconds(0.15f);
     }
 
     // Base 스탯 스냅샷 생성 (Final 계산용)
@@ -146,6 +150,7 @@ public class PlayerModel : MonoBehaviour
     void Start()
     {
         Init();
+        _playerMaterial = transform.GetChild(0).GetComponent<MeshRenderer>().material;
         if (_childRenderers.Length > 0) _baseMaterial = _childRenderers[0].sharedMaterial;
     }
 
@@ -277,10 +282,17 @@ public class PlayerModel : MonoBehaviour
     {
         if (_isInvincible) return; // 무적 판정
 
+        StartCoroutine(TakeDamageEffect());
         _curHp -= dmg;
 
         if (_curHp <= 0)
             Die();
+    }
+    private IEnumerator TakeDamageEffect()
+    {
+        _playerMaterial.color = Color.red;
+        yield return _effectLifetime;
+        _playerMaterial.color = Color.white;
     }
 
     // 디버프 비주얼 업데이트 (마테리얼 추가 / 삭제로 적용)
