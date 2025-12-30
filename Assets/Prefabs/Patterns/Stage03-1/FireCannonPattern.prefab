@@ -48,19 +48,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireCannonPattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 3
-  _FireCannonPrefab: {fileID: 1629741957410847622, guid: bbd853e9da7912c4685489ebf1411b9f, type: 3}
+  _cycleTime: 3.5
+  _FireCannonPrefab: {fileID: 1629741957410847622, guid: 9c1937b0f75cdab4c98c5bb94211428f, type: 3}
   _SpawnPoint: {fileID: 7406611455383550715, guid: 3574154a30911cc4588ace04e981c8a5, type: 3}
   _WarnningAreaPrefab: {fileID: 5098383528556321439}
-  _WarnningTime: 2
-  _WarnningFNTime: 0.5
+  _WarnningTime: 0
+  _WarnningFNTime: 0
   _WarnningMaxLength: 20
   _WarnningWidth: 3
   _ObstacleLayer:
     serializedVersion: 2
     m_Bits: 64
   _lengthScaleModifier: 0.45
-  _predictiveOffset: 0.2
+  _predictiveOffset: 0.6
 --- !u!82 &6337064814057573210
 AudioSource:
   m_ObjectHideFlags: 0
