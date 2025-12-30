@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LaserBombingPattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 10
+  _cycleTime: 8
   _warningAreaPrefab: {fileID: 4742255281639719975}
   _chaseTime: 2
   _readyTime: 0.5

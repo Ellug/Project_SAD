@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
   _counterable: 1
   _startupDelay: 1.5
-  _cycleTime: 45
+  _cycleTime: 15
   _objectTag:
   - {fileID: 0}
   _laserObject:
