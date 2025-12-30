@@ -81,12 +81,11 @@ MonoBehaviour:
   _counterable: 0
   _startupDelay: 0
   _cycleTime: 12
-  _WarnningArea: {fileID: 1053945783359283152}
-  _ChaseOffset: 0
-  _WarnningTime: 2
-  _ChaseSpeed: 10
   _MissilePrefab: {fileID: 821262787588371134, guid: 1c020718d9119e840bf0bb49d20f6269, type: 3}
   _SpawnPoint: {fileID: 2617888972641789572, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
+  _WarningAreaPrefab: {fileID: 1053945783359283152}
+  _ChaseOffset: 0
+  _WarningTime: 2
 --- !u!82 &-3600035148881012456
 AudioSource:
   m_ObjectHideFlags: 0
