@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CannonPattern
   _counterable: 1
   _startupDelay: 0.5
-  _cycleTime: 5
+  _cycleTime: 7
   _bulletPrefab: {fileID: 6547672779303436957, guid: 057927847c53d0a4aa670a7d03ecd991, type: 3}
   _shootInterval: 0.1
   _shootBulletNumber: 1

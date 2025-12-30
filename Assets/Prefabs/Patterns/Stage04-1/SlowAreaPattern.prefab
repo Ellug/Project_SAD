@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlowAreaPattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 5
+  _cycleTime: 7
   _ChaseOffset: 0
   _SlowParticle: {fileID: 3521858460786768127}
   _WarinningParticle: {fileID: 5028210697168788272}
@@ -59,6 +59,7 @@ MonoBehaviour:
   _ChaseSpeed: 10
   _SlowPower: 0.1
   _SlowTime: 2
+  _applyInterval: 0.2
 --- !u!82 &4108840657820736238
 AudioSource:
   m_ObjectHideFlags: 0
