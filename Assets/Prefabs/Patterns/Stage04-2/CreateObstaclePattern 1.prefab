@@ -46,6 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectSpawnPattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 21
+  _cycleTime: 20
   _patternObject: []
   _movingObject: []

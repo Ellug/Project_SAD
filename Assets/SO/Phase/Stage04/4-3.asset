@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   _patterns:
   - {fileID: 549464321743560484, guid: 1c4c0c93f3c242d4692f59f20ea52676, type: 3}
-  - {fileID: 6032859720665524462, guid: ef9ec75e1d8d6344fae54673a5a572f8, type: 3}
   - {fileID: 6362132479619892622, guid: 646ba5f406e83064fa2defe3a6c5d2e0, type: 3}
   - {fileID: 5919493470705018589, guid: 87cee141488eb8641a791574335f4c25, type: 3}
   - {fileID: 2291198960588659728, guid: 23f4994e3531a4f41aed8874de4f62d2, type: 3}

@@ -6,15 +6,16 @@ public class MovingObject : MonoBehaviour
     [Tooltip("오브젝트 이동 속도")][SerializeField] private float _moveSpeed = 5f;
     [Tooltip("오브젝트 활성화 시간")][SerializeField] private float _lifeTime = 5f;
 
+    [Header("위치 설정")]
+    [Tooltip("오브젝트 업 포지션")][SerializeField] private float _upPosition = 0.5f;
+    [Tooltip("오브젝트 다운 포지션")][SerializeField] private float _underPosition = -0.6f;
+
     private bool _isMoving = false;
     private Vector3 _targetPosition;
-    private float _upPosition;
-    private float _underPosition;
     private Coroutine _actionCoroutine;
 
     private void Start()
     {
-        _underPosition = -((transform.localScale.y / 2f) + 0.1f);
         Vector3 initPos = transform.position;
         initPos.y = _underPosition;
         transform.position = initPos;
@@ -46,7 +47,6 @@ public class MovingObject : MonoBehaviour
     {
         if (_actionCoroutine != null) StopCoroutine(_actionCoroutine);
 
-        _upPosition = transform.localScale.y / 2f;
         _targetPosition = new Vector3(transform.position.x, _upPosition, transform.position.z);
         _isMoving = true;
     }
@@ -55,7 +55,6 @@ public class MovingObject : MonoBehaviour
     {
         if (_actionCoroutine != null) StopCoroutine(_actionCoroutine);
 
-        _underPosition = -((transform.localScale.y / 2f) + 0.1f);
         _targetPosition = new Vector3(transform.position.x, _underPosition, transform.position.z);
         _isMoving = true;
     }
