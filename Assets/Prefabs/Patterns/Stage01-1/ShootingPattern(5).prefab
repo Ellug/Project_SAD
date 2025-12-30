@@ -49,11 +49,11 @@ MonoBehaviour:
   _startupDelay: 0
   _cycleTime: 3
   _bulletPrefab: {fileID: 2245060522831277793, guid: 89236ddc88ce0074a89402d591207f07, type: 3}
-  _shootInterval: 0.1
-  _shootBulletNumber: 5
+  _shootInterval: 0.2
+  _shootBulletNumber: 3
   _spawnPosition: {fileID: 7406611455383550715, guid: 3574154a30911cc4588ace04e981c8a5, type: 3}
-  _bulletDamage: 1
-  _bulletSpeed: 20
+  _bulletDamage: 15
+  _bulletSpeed: 60
   _bulletDistance: 50
 --- !u!82 &1668651442522837303
 AudioSource:

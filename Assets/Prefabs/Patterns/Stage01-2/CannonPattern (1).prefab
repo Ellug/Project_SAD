@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4716483ba26e54f45868fc20233b2a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CannonPattern
-  _counterable: 1
+  _counterable: 0
   _startupDelay: 1
   _cycleTime: 7
-  _bulletPrefab: {fileID: 6547672779303436957, guid: 6993d496e570f55498ccce76772cee0f, type: 3}
+  _bulletPrefab: {fileID: 6547672779303436957, guid: ae6a8e0d8567bf8408149f615372acf1, type: 3}
   _shootInterval: 0.1
   _shootBulletNumber: 1
   _spawnPosition: {fileID: 7406611455383550715, guid: 37b20ad13a00e8741828f6b1f46377a4, type: 3}
