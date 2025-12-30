@@ -15,10 +15,10 @@ MonoBehaviour:
   _weaponPrefab: {fileID: 7016535136198836579, guid: 84565852de6988e43b1f083de2fdd742, type: 3}
   _weaponId: 2
   _weaponType: 2
-  attack: 5
-  attackSpeed: 1.5
+  attack: 4
+  attackSpeed: 1
   projectileCount: 8
-  projectileAngle: 20
+  projectileAngle: 45
   projectileRange: 30
   projectileSpeed: 80
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
