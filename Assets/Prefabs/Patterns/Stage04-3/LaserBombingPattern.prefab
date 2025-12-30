@@ -52,12 +52,12 @@ MonoBehaviour:
   _warningAreaPrefab: {fileID: 4742255281639719975}
   _chaseTime: 2
   _readyTime: 0.5
-  _chaseOffset: 0.2
+  _chaseOffset: 0.5
   _laserParticlePrefab: {fileID: 5440208619642781528}
   _laserCount: 15
-  _bombingRadius: 5
+  _bombingRadius: 15
   _intervalBetweenLasers: 0.1
-  _explosionRange: 1.5
+  _explosionRange: 2
   _damage: 10
 --- !u!82 &4639690507874272462
 AudioSource:

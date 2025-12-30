@@ -84,17 +84,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PrecisionStrikePattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 15
+  _cycleTime: 5.5
   _WarnningArea: {fileID: 4839915569361387953}
   _StaticWarnningArea: {fileID: 4492684248554453628}
-  _WarnningTime: 2
+  _WarnningTime: 1
   _WarnningDTime: 1
   _FirstExplosionParticle: {fileID: 5943681133329445055}
   _SecondExplosionParticle: {fileID: 8605577470561055736}
-  _ChaseOffset: 0.2
+  _ChaseOffset: 1
   _ExpolsionTime: 1
   _ExplosionRange: 3
-  _Dmg: 20
+  _Dmg: 30
 --- !u!82 &3679604084673449938
 AudioSource:
   m_ObjectHideFlags: 0

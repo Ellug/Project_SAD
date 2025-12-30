@@ -50,9 +50,9 @@ MonoBehaviour:
   _startupDelay: 0
   _cycleTime: 10
   _WarnningArea: {fileID: 4084010481113952989}
-  _ChaseOffset: 0.2
-  _WarnningTime: 1
-  _WarnningDTime: 0.5
+  _ChaseOffset: -0.5
+  _WarnningTime: 0
+  _WarnningDTime: 0
   _FireBallPrefab: {fileID: 3146484714131750423, guid: 2ecceccb36c001e42963c207da0f0e5d, type: 3}
   _SpawnPoint: {fileID: 5065293726572768536, guid: dd41ea9b7ab138546a85e6574a07d4fb, type: 3}
   _SpawnYOffset: 5

@@ -54,9 +54,9 @@ MonoBehaviour:
   _WarinningParticle: {fileID: 5028210697168788272}
   _SlowRange: 2.5
   _SlowAreaTime: 5
-  _WarinningAreaTime: 2
-  _WarinningAreaDTime: 0.5
-  _ChaseSpeed: 10
+  _WarinningAreaTime: 0
+  _WarinningAreaDTime: 0
+  _ChaseSpeed: 5
   _SlowPower: 0.1
   _SlowTime: 2
   _applyInterval: 0.2

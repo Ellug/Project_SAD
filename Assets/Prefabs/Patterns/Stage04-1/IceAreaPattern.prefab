@@ -50,10 +50,10 @@ MonoBehaviour:
   _startupDelay: 0
   _cycleTime: 5
   _WarnningArea: {fileID: 5402580152695258218}
-  _WarnningTime: 2
+  _WarnningTime: 0
   _WarnningDTime: 0.5
-  _IceAreaPrefab: {fileID: 7463013888460847592, guid: 092478fb09f8d3e4296bf2d3497a352a, type: 3}
-  _ChaseOffset: 0.2
+  _IceAreaPrefab: {fileID: 7463013888460847592, guid: f867a4f5b4469154bb8be8c080d95ccb, type: 3}
+  _ChaseOffset: 0
 --- !u!82 &-3616581369151974552
 AudioSource:
   m_ObjectHideFlags: 0

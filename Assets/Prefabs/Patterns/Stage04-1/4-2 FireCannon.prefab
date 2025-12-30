@@ -48,12 +48,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireBall
   _speed: 20
   _maxDistance: 50
-  _dmg: 10
+  _dmg: 20
   _MuzzlePrefab: {fileID: -1221231353037482399, guid: 41a27b891a1713248b24db288db4e291, type: 3}
   _ExplosionParticle: {fileID: 8339795211286830760, guid: d081a79daedd41147950398b0763e86f, type: 3}
   _Trails: []
   _BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
-  BurnDebuffDmg: 5
+  BurnDebuffDmg: 1
   BurnDebuffTime: 2
   BurnDebuffInterval: 0.1
 --- !u!135 &742727695083380215

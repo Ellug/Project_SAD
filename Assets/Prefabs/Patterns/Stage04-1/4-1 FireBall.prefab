@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireBall
   _speed: 20
   _maxDistance: 50
-  _dmg: 10
+  _dmg: 20
   _MuzzlePrefab: {fileID: -1750336529975655779, guid: 03b18645a710fee4097e3980a036af3d, type: 3}
   _ExplosionParticle: {fileID: 1305370156250492567, guid: d027848562c5c7d438c2ee73aa157dc2, type: 3}
   _Trails: []

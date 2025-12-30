@@ -94,7 +94,7 @@ MonoBehaviour:
   _ChaseOffset: 0.2
   _ExpolsionTime: 1
   _ExplosionRange: 3
-  _Dmg: 20
+  _Dmg: 30
 --- !u!82 &3679604084673449938
 AudioSource:
   m_ObjectHideFlags: 0
