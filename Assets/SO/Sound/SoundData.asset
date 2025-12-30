@@ -75,10 +75,10 @@ MonoBehaviour:
   PatternSounds:
   - key: 0
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.1
+    volume: 0.01
   - key: 1
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.1
+    volume: 0.04
   - key: 2
     clip: {fileID: 8300000, guid: 15dbb71fecc5b9e41a2e42d8325fac6c, type: 3}
     volume: 0.15
