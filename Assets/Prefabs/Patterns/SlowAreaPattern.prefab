@@ -59,6 +59,7 @@ MonoBehaviour:
   _ChaseSpeed: 10
   _SlowPower: 0.1
   _SlowTime: 2
+  _applyInterval: 0.2
 --- !u!82 &4108840657820736238
 AudioSource:
   m_ObjectHideFlags: 0
