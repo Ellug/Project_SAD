@@ -90,21 +90,18 @@ public class SlowAreaPattern : PatternBase
 
         ActivateSlow = true;
         // slow 데이터 처리
-        float mul = Mathf.Clamp01(1f - _SlowPower);
-
-        // 노드 처리
         _slowMods[0] = new StatMod
         {
             stat = StatId.Player_MaxSpeed,
             op = ModOp.Mul,
-            value = mul,
+            value = -_SlowPower,
         };
 
         _slowMods[1] = new StatMod
         {
             stat = StatId.Player_AccelForce,
             op = ModOp.Mul,
-            value = mul,
+            value = -_SlowPower,
         };
 
 
