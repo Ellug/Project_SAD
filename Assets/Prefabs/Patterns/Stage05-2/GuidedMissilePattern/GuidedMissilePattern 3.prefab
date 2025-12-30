@@ -80,12 +80,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuidedMissilePattern
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 5
+  _cycleTime: 7
   _MissilePrefab: {fileID: 821262787588371134, guid: 6e2fc771cc1a0bc4287619232a3590a1, type: 3}
-  _SpawnPoint: {fileID: 3951244350657474253, guid: e4b386d4143b11940aab7f4f4f87cb1d, type: 3}
-  _WarningAreaPrefab: {fileID: 0}
+  _SpawnPoint: {fileID: 1109702314466349679, guid: a766fcad1bda2f244abeb03a857c14a4, type: 3}
+  _WarningAreaPrefab: {fileID: 1053945783359283152}
   _ChaseOffset: 0
-  _WarningTime: 0
+  _WarningTime: 2
 --- !u!82 &-3600035148881012456
 AudioSource:
   m_ObjectHideFlags: 0
@@ -256,6 +256,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 258c4d8f700d1b149bb6519babdf49ec, type: 3}
+--- !u!198 &1053945783359283152 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7701612061490733406, guid: 258c4d8f700d1b149bb6519babdf49ec, type: 3}
+  m_PrefabInstance: {fileID: 7224267785527000718}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7787758455807078764 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 599660772126003170, guid: 258c4d8f700d1b149bb6519babdf49ec, type: 3}

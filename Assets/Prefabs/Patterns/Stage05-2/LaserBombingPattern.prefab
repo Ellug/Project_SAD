@@ -54,9 +54,9 @@ MonoBehaviour:
   _readyTime: 0.5
   _chaseOffset: 0
   _laserParticlePrefab: {fileID: 5440208619642781528}
-  _laserCount: 30
-  _bombingRadius: 7
-  _intervalBetweenLasers: 0.1
+  _laserCount: 10
+  _bombingRadius: 10
+  _intervalBetweenLasers: 0.2
   _explosionRange: 5
   _damage: 10
 --- !u!82 &4639690507874272462

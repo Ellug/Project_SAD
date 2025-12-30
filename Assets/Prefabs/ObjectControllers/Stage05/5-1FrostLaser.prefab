@@ -34310,7 +34310,7 @@ GameObject:
   - component: {fileID: 6773560925832377963}
   - component: {fileID: 1213275951799988567}
   m_Layer: 0
-  m_Name: FrostLaser
+  m_Name: 5-1FrostLaser
   m_TagString: FrostLaserObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
