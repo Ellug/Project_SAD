@@ -54,15 +54,16 @@ public class PlayerModel : MonoBehaviour
     private float _curAttackCoolTime = 0f;
     private float _curSpecialCoolTime = 0f;
 
-    private float _curDebuffSlowTime = 0f;
-    private float _debuffSlowRate = 0f;
+    private float _slowVfxRemain = 0f;
 
     private bool _isSPFireSoundReady = false;
+
     // Knockback request (1-shot)
     private bool _hasKbRequest;
     private Vector3 _kbDir;
     private float _kbDistance;
     private float _kbDuration;
+    
     //화상 디버프 코루틴
     private Coroutine _burnCoroutine;
     private Coroutine _coldCoroutine;
@@ -73,6 +74,7 @@ public class PlayerModel : MonoBehaviour
     // Properties
     public WeaponBase CurrentWeapon { get; private set; }
     public PlayerFinalStats FinalStats => _statsContext.Current;
+    public PlayerStatsContext StatsCtx => _statsContext;
 
     public float MaxHp => FinalStats.Player.MaxHp;
     public float CurHp => _curHp;
@@ -101,10 +103,6 @@ public class PlayerModel : MonoBehaviour
     public bool CanAttack => _curAttackCoolTime <= 0f;
 
     [HideInInspector] public float attackImpulse = 0f;
-
-    // 디버프 관련 파이널 스탯츠 or 버프 디버프 매니져로 분리 필요해 보임
-    public bool IsInDebuffSlow => _curDebuffSlowTime > 0f;
-    public float DebuffSlowRate => _debuffSlowRate;
 
     // 기본 스탯 적용
     void Awake()
@@ -164,6 +162,8 @@ public class PlayerModel : MonoBehaviour
         _isOnSpecialAttack = false;
         _curSpecialCoolTime = 0f;
         _curAttackCoolTime = 0f;
+        _slowVfxRemain = 0f;
+        SetSlowVfx(false);
     }
 
     public void StartDodge()
@@ -224,12 +224,17 @@ public class PlayerModel : MonoBehaviour
         if (!CanAttack) return;
         _curAttackCoolTime = FinalStats.AttackCoolTime;
     }
-    
-    public void SlowDebuff(float rate, float duration)
+
+    public void SetSlowVfx(bool on)
     {
-        UpdateDebuffVisual(_slowMaterial, true);
-        _debuffSlowRate = Mathf.Clamp01(rate); 
-        _curDebuffSlowTime = duration;         
+        UpdateDebuffVisual(_slowMaterial, on);
+    }
+
+    public void RefreshSlowVfx(float duration)
+    {
+        duration = Mathf.Max(0.01f, duration);
+        _slowVfxRemain = Mathf.Max(_slowVfxRemain, duration);
+        SetSlowVfx(true);
     }
 
     public void UpdateTimer(float deltaTime)
@@ -243,18 +248,21 @@ public class PlayerModel : MonoBehaviour
         if (_curAttackCoolTime > 0f)
             _curAttackCoolTime = Mathf.Max(0f, _curAttackCoolTime - deltaTime);
 
-        if (_curDebuffSlowTime > 0f)
+        if (_statsContext != null)
         {
-            _curDebuffSlowTime -= deltaTime;
-            if (_curDebuffSlowTime <= 0f)
-            {
-                _curDebuffSlowTime = 0f;
-                UpdateDebuffVisual(_slowMaterial, false);
-            }
+            _statsContext.TickBuffs(deltaTime);
+            _statsContext.TickDynamicDebuffs(deltaTime);
         }
 
-        if (_statsContext != null)
-            _statsContext.TickBuffs(deltaTime);
+        if (_slowVfxRemain > 0f)
+        {
+            _slowVfxRemain -= deltaTime;
+            if (_slowVfxRemain <= 0f)
+            {
+                _slowVfxRemain = 0f;
+                SetSlowVfx(false);
+            }
+        }
 
         bool canSpecial = _curSpecialCoolTime <= 0f;
         
@@ -413,5 +421,13 @@ public class PlayerModel : MonoBehaviour
         distance = _kbDistance;
         duration = _kbDuration;
         return true;
+    }
+
+    public void ApplyDebuff(StatMod[] mods, float duration, float vfxDuration = 0f)
+    {
+        _statsContext.ApplyDebuff(mods, duration);
+        
+        if (vfxDuration > 0f)
+            RefreshSlowVfx(vfxDuration);
     }
 }
