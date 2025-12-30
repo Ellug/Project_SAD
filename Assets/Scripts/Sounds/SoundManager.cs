@@ -32,29 +32,30 @@ public class SoundManager : SingletonePattern<SoundManager>
 
     private void PlayPatternSound(PatternEnum patternType, AudioSource audioSource)
     {
-        var clip = _soundData.GetPattern(patternType);
-        if (clip == null) return;
+        var data = _soundData.GetPattern(patternType);
+        if (data.clip == null) return;
 
-        audioSource.PlayOneShot(clip, 0.5f);
+        audioSource.PlayOneShot(data.clip, data.volume);
     }
 
     private void PlayWeaponSound(WeaponRuntimeStats stats, WeaponSoundEnum type, AudioSource audioSource)
     {
-        var clip = _soundData.GetWeapon(stats.WeaponEnum, type);
-        if (clip == null) return;
+        var data = _soundData.GetWeapon(stats.WeaponEnum, type);
+        if (data.clip == null) return;
 
-        audioSource.PlayOneShot(clip, 0.5f);
+        audioSource.PlayOneShot(data.clip, data.volume);
     }
 
     public void PlayBGM(BGMEnum bgmType)
     {
-        var clip = _soundData.GetBGM(bgmType);
-        if (clip == null) return;
+        var data = _soundData.GetBGM(bgmType);
+        if (data.clip == null) return;
 
-        if (_bgmSource.clip == clip && _bgmSource.isPlaying)
+        if (_bgmSource.clip == data.clip && _bgmSource.isPlaying)
             return;
 
-        _bgmSource.clip = clip;
+        _bgmSource.clip = data.clip;
+        _bgmSource.volume = data.volume;
         _bgmSource.Play();
     }
 }
