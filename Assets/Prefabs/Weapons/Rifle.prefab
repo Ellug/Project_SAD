@@ -81,7 +81,7 @@ MonoBehaviour:
         value: 0.2
       - stat: 11
         op: 1
-        value: 0.1
+        value: 0.2
       buffs: []
   - left:
       mods: []
@@ -104,19 +104,19 @@ MonoBehaviour:
         mods:
         - stat: 1
           op: 1
-          value: 0.1
+          value: 0.15
         healPerTrigger: 0
   - left:
       mods:
       - stat: 10
         op: 1
-        value: 0.4
+        value: 0.8
       buffs: []
     right:
       mods:
       - stat: 11
         op: 1
-        value: 0.2
+        value: 0.5
       buffs: []
   - left:
       mods:
