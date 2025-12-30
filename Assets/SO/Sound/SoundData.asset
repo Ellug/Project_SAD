@@ -75,34 +75,34 @@ MonoBehaviour:
   PatternSounds:
   - key: 0
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.15
+    volume: 0.1
   - key: 1
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.15
+    volume: 0.1
   - key: 2
     clip: {fileID: 8300000, guid: 15dbb71fecc5b9e41a2e42d8325fac6c, type: 3}
-    volume: 0.25
+    volume: 0.15
   - key: 3
     clip: {fileID: 8300000, guid: 7b838d779d71e8540864a285f9d37f58, type: 3}
-    volume: 0.25
+    volume: 0.15
   - key: 4
     clip: {fileID: 8300000, guid: 36a1ffb76a5962f45a541549e5c93d36, type: 3}
-    volume: 0.3
+    volume: 0.2
   - key: 5
     clip: {fileID: 8300000, guid: 98d77592e4560224286d556e26c3a60f, type: 3}
-    volume: 0.25
+    volume: 0.15
   - key: 6
     clip: {fileID: 8300000, guid: 7bbbc2eb62ea2524983d0958d751dc0d, type: 3}
-    volume: 0.2
+    volume: 0.1
   - key: 7
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
     volume: 0
   - key: 8
     clip: {fileID: 8300000, guid: 01e13c9e57ffffe43b21bf1a113b8ad2, type: 3}
-    volume: 0.25
+    volume: 0.15
   - key: 10
     clip: {fileID: 8300000, guid: b5ffcd1d2d7a47d43b1bc319ac0a3f79, type: 3}
-    volume: 0.25
+    volume: 0.15
   - key: 11
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
     volume: 0
