@@ -83,7 +83,8 @@ MonoBehaviour:
   _cycleTime: 5
   _flamePrefab: {fileID: 3972544336971986292, guid: 739b459f6cd943642b5695374da1fbf9, type: 3}
   _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
-  _WarningArea: {fileID: 517166583863999149}
+  _fireDuration: 5
+  _WarningAreaPrefab: {fileID: 517166583863999149}
   _WarningTime: 2
   _WarningFNTime: 0.2
   _WarningWidth: 5
