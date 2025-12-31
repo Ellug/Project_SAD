@@ -48,7 +48,7 @@ MonoBehaviour:
   _weaponData: {fileID: 11400000, guid: 05085080f1e69ad43beae1b9e96a5fc0, type: 2}
   _perksTree: {fileID: 729990337974837786}
   _maxBounces: 3
-  _bouncedDamageMul: 3
+  _bouncedDamageMul: 5
   _shotsPerCycle: 4
   _fourthShotMul: 2
 --- !u!114 &729990337974837786
@@ -125,6 +125,9 @@ MonoBehaviour:
       - stat: 24
         op: 2
         value: 1
+      - stat: 13
+        op: 1
+        value: 2
       buffs: []
     right:
       mods:

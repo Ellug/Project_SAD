@@ -50,8 +50,8 @@ MonoBehaviour:
   _stackInterval: 1
   _maxStacks: 5
   _breakInterval: 0.5
-  _attackMulPerStack: 0.12
-  _atkSpdMulPerStack: 0.12
+  _attackMulPerStack: 0.16
+  _atkSpdMulPerStack: 0.16
 --- !u!114 &-1396832517224262730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,9 +135,9 @@ MonoBehaviour:
       - stat: 11
         op: 1
         value: 2
-      - stat: 9
-        op: 1
-        value: 0
+      - stat: 15
+        op: 0
+        value: 10
       buffs: []
   - left:
       mods:
