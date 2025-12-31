@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public enum GameState
 {
@@ -35,7 +36,7 @@ public class GameManager : SingletonePattern<GameManager>
         CurEnterStage = 0;
     }
 
-    private void Start()
+    void Start()
     {
         if (_fadeInOutEffectPrefab != null)
         {
@@ -44,6 +45,13 @@ public class GameManager : SingletonePattern<GameManager>
             instance.SetActive(false);
             DontDestroyOnLoad(instance);
         }
+    }
+
+    // Stage Unlock for Debug
+    void Update()
+    {
+        if(Keyboard.current.pKey.wasPressedThisFrame)
+            UnlockStage = 5;
     }
 
     public void PlayerWin()
