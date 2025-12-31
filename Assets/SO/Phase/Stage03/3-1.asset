@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc51b4512194dfa449cd0d34d84bfd99, type: 3}
+  m_Name: 3-1
+  m_EditorClassIdentifier: Assembly-CSharp::PhaseData
+  _patterns:
+  - {fileID: 5915148834135745965, guid: ebc7eeb893f689d4397b0dcb68f304d2, type: 3}
+  - {fileID: 8732858642152262995, guid: 23053849640e1a649a5d7baf44883d65, type: 3}
+  - {fileID: 1824724111547315888, guid: f682c223bf544f245b1c493b4baf78bd, type: 3}
+  - {fileID: 1824724111547315888, guid: caa216330932dfa4fbaebff27d2bccc5, type: 3}
+  - {fileID: 1824724111547315888, guid: 85bf6f6a41a36d7458e174409680dc94, type: 3}
+  - {fileID: 1824724111547315888, guid: 5c049a1facec5444fac13afc56a1edbf, type: 3}
+  - {fileID: 2291198960588659728, guid: dd242682c2a2c6041948f6729204abf1, type: 3}

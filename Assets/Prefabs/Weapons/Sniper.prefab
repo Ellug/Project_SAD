@@ -48,9 +48,9 @@ MonoBehaviour:
   _weaponData: {fileID: 11400000, guid: 05085080f1e69ad43beae1b9e96a5fc0, type: 2}
   _perksTree: {fileID: 729990337974837786}
   _maxBounces: 3
-  _bouncedDamageMul: 3
+  _bouncedDamageMul: 5
   _shotsPerCycle: 4
-  _fourthShotMul: 2
+  _fourthShotMul: 3
 --- !u!114 &729990337974837786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,19 +68,19 @@ MonoBehaviour:
       mods:
       - stat: 10
         op: 1
-        value: 1.5
+        value: 0.8
       - stat: 11
         op: 1
-        value: -0.2
+        value: -0.15
       buffs: []
     right:
       mods:
       - stat: 10
         op: 1
-        value: 0.5
+        value: 0.2
       - stat: 11
         op: 1
-        value: 0.4
+        value: 0.2
       buffs: []
   - left:
       mods: []
@@ -90,10 +90,11 @@ MonoBehaviour:
         mods:
         - stat: 10
           op: 1
-          value: 2
+          value: 1
         - stat: 11
           op: 1
-          value: 0.4
+          value: 0.3
+        healPerTrigger: 0
     right:
       mods: []
       buffs:
@@ -102,57 +103,83 @@ MonoBehaviour:
         mods:
         - stat: 1
           op: 1
-          value: 1
+          value: 0.15
+        - stat: 2
+          op: 1
+          value: 0.15
+        healPerTrigger: 0
   - left:
       mods:
       - stat: 10
         op: 1
-        value: 3
+        value: 0.6
       buffs: []
     right:
       mods:
       - stat: 11
         op: 1
-        value: 0.25
+        value: 0.35
       buffs: []
   - left:
       mods:
       - stat: 24
         op: 2
         value: 1
+      - stat: 13
+        op: 1
+        value: 3
+      - stat: 10
+        op: 1
+        value: 0.5
       buffs: []
     right:
       mods:
       - stat: 24
         op: 2
         value: 2
+      - stat: 10
+        op: 1
+        value: 0.3
       buffs: []
   - left:
       mods:
       - stat: 0
         op: 1
-        value: -0.3
+        value: -0.2
+      - stat: 10
+        op: 1
+        value: 0.25
+      - stat: 11
+        op: 1
+        value: 0.25
+      - stat: 1
+        op: 1
+        value: 0.25
+      - stat: 2
+        op: 1
+        value: 0.25
       buffs:
       - trigger: 0
-        duration: 4
+        duration: 7
         mods:
         - stat: 10
           op: 1
-          value: 1
+          value: 2
+        healPerTrigger: 0
     right:
       mods:
       - stat: 10
         op: 1
-        value: 0.1
+        value: 0.2
       - stat: 11
         op: 1
-        value: 0.1
+        value: 0.2
       - stat: 1
         op: 1
-        value: 0.1
-      - stat: 1
+        value: 0.2
+      - stat: 2
         op: 1
-        value: 0.5
+        value: 0.2
       buffs:
       - trigger: 1
         duration: 3
@@ -160,3 +187,4 @@ MonoBehaviour:
         - stat: 10
           op: 1
           value: 0.3
+        healPerTrigger: 0

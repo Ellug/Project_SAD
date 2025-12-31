@@ -16,94 +16,94 @@ MonoBehaviour:
   - weapon: 0
     soundType: 0
     clip: {fileID: 8300000, guid: 72233bd888f226a4e881c31fcc9d2c5c, type: 3}
-    volume: 0.177
+    volume: 0.1
   - weapon: 0
     soundType: 1
-    clip: {fileID: 8300000, guid: c8a743fa244f97f41b341c523af5f3f3, type: 3}
-    volume: 0.646
+    clip: {fileID: 8300000, guid: 6b60af99940da38469cecc1b0ba56b62, type: 3}
+    volume: 0.15
   - weapon: 0
-    soundType: 2
-    clip: {fileID: 8300000, guid: cde72bf32276ca74c9ede4fb39393e76, type: 3}
-    volume: 1
-  - weapon: 1
-    soundType: 0
-    clip: {fileID: 8300000, guid: ab43a49a9c7baa843b1cbd9fb312229b, type: 3}
-    volume: 0
-  - weapon: 1
-    soundType: 1
-    clip: {fileID: 8300000, guid: 689a1a75cdef5934bb75a22d680dac67, type: 3}
-    volume: 0
-  - weapon: 1
     soundType: 2
     clip: {fileID: 8300000, guid: 090bb97fd9b9a224f87cd46715e34f29, type: 3}
-    volume: 0
-  - weapon: 2
+    volume: 0.2
+  - weapon: 1
     soundType: 0
-    clip: {fileID: 8300000, guid: 012ca4ae1465e714296da9b5820a7cce, type: 3}
-    volume: 0
-  - weapon: 2
+    clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
+    volume: 0.2
+  - weapon: 1
     soundType: 1
-    clip: {fileID: 8300000, guid: 4c7c17e753969504592f3c1ee91dc400, type: 3}
-    volume: 0
-  - weapon: 2
+    clip: {fileID: 8300000, guid: ab43a49a9c7baa843b1cbd9fb312229b, type: 3}
+    volume: 0.25
+  - weapon: 1
     soundType: 2
     clip: {fileID: 8300000, guid: 39ea48aa7e553ac438b0d0b317493d99, type: 3}
-    volume: 0
+    volume: 0.3
+  - weapon: 2
+    soundType: 0
+    clip: {fileID: 8300000, guid: 689a1a75cdef5934bb75a22d680dac67, type: 3}
+    volume: 0.2
+  - weapon: 2
+    soundType: 1
+    clip: {fileID: 8300000, guid: 981e494a14656c547b0f3dedfdee3d9c, type: 3}
+    volume: 0.3
+  - weapon: 2
+    soundType: 2
+    clip: {fileID: 8300000, guid: 7d43e5f0b36e6994a9639edce421a89c, type: 3}
+    volume: 0.4
   BGMSounds:
   - key: 0
     clip: {fileID: 8300000, guid: 608ff3064ad292245a7714646598e426, type: 3}
-    volume: 0.84
+    volume: 0.4
   - key: 1
     clip: {fileID: 8300000, guid: 9ee686a6f971560439e534fb699a8777, type: 3}
-    volume: 0.986
+    volume: 0.6
   - key: 2
     clip: {fileID: 8300000, guid: c02e4bb504b224b4da7d38e9d8cac4dc, type: 3}
-    volume: 0.252
+    volume: 0.2
   - key: 3
     clip: {fileID: 8300000, guid: f0a618ceddb68ca4e82d5731d1b9c225, type: 3}
-    volume: 0
+    volume: 0.2
   - key: 4
     clip: {fileID: 8300000, guid: c8b84e17a007ce643bf6f8a251cd3bb5, type: 3}
-    volume: 0
+    volume: 0.2
   - key: 5
-    clip: {fileID: 8300000, guid: 7b1b3e6bb12f5ed46b37cba884d1d568, type: 3}
-    volume: 0
+    clip: {fileID: 8300000, guid: 299e1fac3fade1547bfb1c34c3cd6647, type: 3}
+    volume: 0.1
   - key: 6
     clip: {fileID: 8300000, guid: 84bfa7272acbf2845a7f73e7c2517510, type: 3}
-    volume: 0
+    volume: 0.2
   UISounds: []
   PatternSounds:
   - key: 0
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.68
+    volume: 0.01
   - key: 1
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.7
+    volume: 0.04
   - key: 2
-    clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 15dbb71fecc5b9e41a2e42d8325fac6c, type: 3}
+    volume: 0.15
   - key: 3
-    clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.66
+    clip: {fileID: 8300000, guid: 7b838d779d71e8540864a285f9d37f58, type: 3}
+    volume: 0.15
   - key: 4
-    clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 36a1ffb76a5962f45a541549e5c93d36, type: 3}
+    volume: 0.2
   - key: 5
-    clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.33
+    clip: {fileID: 8300000, guid: 98d77592e4560224286d556e26c3a60f, type: 3}
+    volume: 0.15
   - key: 6
-    clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.41
+    clip: {fileID: 8300000, guid: 7bbbc2eb62ea2524983d0958d751dc0d, type: 3}
+    volume: 0.1
   - key: 7
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.56
+    volume: 0
   - key: 8
-    clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.6
+    clip: {fileID: 8300000, guid: 01e13c9e57ffffe43b21bf1a113b8ad2, type: 3}
+    volume: 0.15
   - key: 10
-    clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.49
+    clip: {fileID: 8300000, guid: b5ffcd1d2d7a47d43b1bc319ac0a3f79, type: 3}
+    volume: 0.15
   - key: 11
     clip: {fileID: 8300000, guid: 2ca9ea96a8e19d5469755619eed5340e, type: 3}
-    volume: 0.41
+    volume: 0
   BossSounds: []

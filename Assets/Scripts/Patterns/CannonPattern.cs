@@ -24,6 +24,7 @@ public class CannonPattern : PatternBase
     private Transform _warningTransform;
     private GameObject _target;
     private WaitForSeconds _shootDelay;
+    private Vector3 dir = Vector3.zero;
 
     protected override void Awake()
     {
@@ -31,7 +32,7 @@ public class CannonPattern : PatternBase
         _shootDelay = new WaitForSeconds(_shootInterval);
     }
 
-    void Update()
+    protected override void Update()
     {
         if (_isPatternActive && _warningTransform != null && _target != null)
             UpdateWarningLogic();
@@ -76,13 +77,13 @@ public class CannonPattern : PatternBase
         if (_currentWarning != null)
         {
             _currentWarning.Stop();
+            dir = _currentWarning.transform.forward;
+            dir.y = 0f;
             PoolManager.Instance.Despawn(_currentWarning.gameObject);
             _currentWarning = null;
             _warningTransform = null;
         }
 
-        Vector3 dir = (_target.transform.position - _spawnPosition.position);
-        dir.y = 0f;
         if (dir != Vector3.zero)
         {
             Quaternion rotation = Quaternion.LookRotation(dir);

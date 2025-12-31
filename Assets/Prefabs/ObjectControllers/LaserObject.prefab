@@ -155,14 +155,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa3663d7e31ec8449428cccbe4801c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
-  lineRenderer: {fileID: 4555379342207246826}
-  firePoint: {fileID: 7122505622828259620}
-  maxLaserDistance: 100
-  sparkParticle: {fileID: 0}
-  laserHitObject: {fileID: 0}
-  hitParticleOffset: 0.05
-  BurnDecalPrefab: {fileID: 0}
+  _lineRenderer: {fileID: 0}
+  _firePoint: {fileID: 0}
+  _maxLaserDistance: 50
+  _sparkParticle: {fileID: 0}
+  _laserHitObject: {fileID: 0}
+  _hitParticleOffset: 0.05
+  _BurnDecalPrefab: {fileID: 0}
   _DecalTime: 5
+  _player: {fileID: 0}
+  _Dmg: 5
+  _DmgDelayTime: 0.5
 --- !u!1 &4171321156029612469
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,14 +321,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa3663d7e31ec8449428cccbe4801c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
-  lineRenderer: {fileID: 6724663026293785938}
-  firePoint: {fileID: 4254561912140290163}
-  maxLaserDistance: 100
-  sparkParticle: {fileID: 0}
-  laserHitObject: {fileID: 0}
-  hitParticleOffset: 0.05
-  BurnDecalPrefab: {fileID: 0}
+  _lineRenderer: {fileID: 0}
+  _firePoint: {fileID: 0}
+  _maxLaserDistance: 50
+  _sparkParticle: {fileID: 0}
+  _laserHitObject: {fileID: 0}
+  _hitParticleOffset: 0.05
+  _BurnDecalPrefab: {fileID: 0}
   _DecalTime: 5
+  _player: {fileID: 0}
+  _Dmg: 5
+  _DmgDelayTime: 0.5
 --- !u!1 &4433514574762181373
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,14 +487,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa3663d7e31ec8449428cccbe4801c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
-  lineRenderer: {fileID: 8908904887952710696}
-  firePoint: {fileID: 5041641394669642539}
-  maxLaserDistance: 100
-  sparkParticle: {fileID: 0}
-  laserHitObject: {fileID: 0}
-  hitParticleOffset: 0.05
-  BurnDecalPrefab: {fileID: 0}
+  _lineRenderer: {fileID: 0}
+  _firePoint: {fileID: 0}
+  _maxLaserDistance: 50
+  _sparkParticle: {fileID: 0}
+  _laserHitObject: {fileID: 0}
+  _hitParticleOffset: 0.05
+  _BurnDecalPrefab: {fileID: 0}
   _DecalTime: 5
+  _player: {fileID: 0}
+  _Dmg: 5
+  _DmgDelayTime: 0.5
 --- !u!1 &4604135888913103695
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,11 +784,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa3663d7e31ec8449428cccbe4801c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
-  lineRenderer: {fileID: 304993008802748954}
-  firePoint: {fileID: 7484294069785855525}
-  maxLaserDistance: 100
-  sparkParticle: {fileID: 0}
-  laserHitObject: {fileID: 0}
-  hitParticleOffset: 0.05
-  BurnDecalPrefab: {fileID: 0}
+  _lineRenderer: {fileID: 0}
+  _firePoint: {fileID: 0}
+  _maxLaserDistance: 50
+  _sparkParticle: {fileID: 0}
+  _laserHitObject: {fileID: 0}
+  _hitParticleOffset: 0.05
+  _BurnDecalPrefab: {fileID: 0}
   _DecalTime: 5
+  _player: {fileID: 0}
+  _Dmg: 5
+  _DmgDelayTime: 0.5

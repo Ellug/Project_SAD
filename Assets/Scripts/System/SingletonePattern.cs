@@ -3,6 +3,9 @@
 public class SingletonePattern<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
+
+    protected bool IsMainInstance { get; private set; }
+    
     public static T Instance
     {
         get
@@ -28,12 +31,14 @@ public class SingletonePattern<T> : MonoBehaviour where T : MonoBehaviour
         if (_instance == null)
         {
             _instance = this as T;
+            IsMainInstance = true;
             DontDestroyOnLoad(gameObject);
         }
         else
         {
             if (_instance != this)
             {
+                IsMainInstance = false;
                 Destroy(gameObject);
             }
         }
