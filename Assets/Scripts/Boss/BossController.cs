@@ -62,6 +62,7 @@ public class BossController : MonoBehaviour
         {
             if (BossCurrentHp / BossMaxHp <= _changePhaseHpRate[_currentPhase - 1])
             {
+                UpdateDebuffVisual(_CounterMaterial, false);
                 StartCoroutine(PhaseChangeAnimation());
                 _phaseChange?.Invoke();
                 _currentPhase++;
