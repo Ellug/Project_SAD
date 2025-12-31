@@ -24,7 +24,7 @@ public class CannonPattern : PatternBase
     private Transform _warningTransform;
     private GameObject _target;
     private WaitForSeconds _shootDelay;
-    private Vector3 dir
+    private Vector3 dir = Vector3.zero;
 
     protected override void Awake()
     {
