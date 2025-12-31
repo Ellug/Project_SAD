@@ -21,6 +21,9 @@ public class SettingManager : SingletonePattern<SettingManager>
     {
         base.Awake();
 
+        if (!IsMainInstance)
+            return;
+
         if (Data != null)
             return;
 
@@ -142,34 +145,21 @@ public class SettingManager : SingletonePattern<SettingManager>
         _availableResolutions.Clear();
 
         Resolution[] all = Screen.resolutions;
-
-        // 모니터 최대 해상도 제한
-        int maxW = Screen.currentResolution.width;
-        int maxH = Screen.currentResolution.height;
-
-        // (w,h)별 최고 Hz만 유지
         Dictionary<(int w, int h), Resolution> bestBySize = new();
 
         foreach (var r in all)
         {
-            if (r.width > maxW || r.height > maxH)
-                continue;
-
             if (!IsAspect16x9(r.width, r.height))
                 continue;
 
             var key = (r.width, r.height);
 
-            if (!bestBySize.TryGetValue(key, out var prev) ||
-                r.refreshRateRatio.value > prev.refreshRateRatio.value)
-            {
+            if (!bestBySize.TryGetValue(key, out var prev) || r.refreshRateRatio.value > prev.refreshRateRatio.value)
                 bestBySize[key] = r;
-            }
         }
 
         var list = new List<Resolution>(bestBySize.Values);
 
-        // 작은 해상도 -> 큰 해상도 순 정렬
         list.Sort((a, b) =>
         {
             int c = a.width.CompareTo(b.width);
