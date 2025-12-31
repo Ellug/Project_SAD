@@ -7,6 +7,7 @@ TagManager:
   - LaserObject
   - Boss
   - Obstacle
+  - FrostLaserObject
   layers:
   - Default
   - TransparentFX
@@ -14,13 +15,13 @@ TagManager:
   - 
   - Water
   - UI
-  - test
+  - Wall
+  - Player
+  - InteractionObject
+  - Ground
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - Bullet
   - 
   - 
   - 

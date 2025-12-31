@@ -2,25 +2,58 @@
 
 public class LobbyUI : MonoBehaviour
 {
-    [SerializeField] private LobbyManager _lobbyManager;
-
     [SerializeField] private GameObject _loadOutUI;
     [SerializeField] private GameObject _stageSelectUI;
+    [SerializeField] private GameObject _settingsUI;
     [SerializeField] private GameObject _keyGuideUI;
+    [SerializeField] private GameObject _pausePanel;
+
+    private void Start()
+    {
+        UIManager.Instance.PauseUItrigger += OnOpenPausePanel;
+    }
+
+    private void OnDestroy()
+    {
+        if (UIManager.Instance != null)
+            UIManager.Instance.PauseUItrigger -= OnOpenPausePanel;
+    }
 
     public void OnClickLoadOutUI()
     {
-        _lobbyManager.OpenUI(_loadOutUI);
+        UIManager.Instance.OpenUI(_loadOutUI);
     }
 
     public void OnClickStageSelectUI()
     {
-        _lobbyManager.OpenUI(_stageSelectUI);
+        UIManager.Instance.OpenUI(_stageSelectUI);
     }
 
     public void OnClickKeyGuideUI()
     {
-        _lobbyManager.OpenUI(_keyGuideUI);
-        _keyGuideUI.SetActive(true);
+        UIManager.Instance.OpenUI(_keyGuideUI);
+    }
+
+    public void OnClickSettingsUI()
+    {
+        UIManager.Instance.OpenUI(_settingsUI);
+    }
+
+    public void OnCloseUI()
+    {
+        UIManager.Instance.TogglePause();
+    }
+
+    private void OnOpenPausePanel()
+    {
+        if (_pausePanel != null)
+        {
+            UIManager.Instance.OpenUI(_pausePanel);
+        }
+    }
+
+    public void GoToTitle()
+    {
+        GameManager.Instance.GoToTitle();
     }
 }

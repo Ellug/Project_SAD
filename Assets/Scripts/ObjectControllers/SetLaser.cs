@@ -3,82 +3,139 @@ using System.Collections;
 
 public class SetLaser : MonoBehaviour
 {
-    [Tooltip("라인 렌더러")] public LineRenderer lineRenderer;
-    [Tooltip("레이저 시작지점")] public Transform firePoint;
-    [Tooltip("레이저 최대 거리")] public float maxLaserDistance = 50f;
+    [Tooltip("라인 렌더러")] public LineRenderer _lineRenderer;
+    [Tooltip("레이저 시작지점")] public Transform _firePoint;
+    [Tooltip("레이저 최대 거리")] public float _maxLaserDistance = 50f;
 
     [Header("히트 이펙트")]
-    [Tooltip("스파크 파티클")] public ParticleSystem sparkParticle;
-    [Tooltip("레이저 히트 지점")] public GameObject laserHitObject;
-    [Tooltip("히트 포인트 이격거리")] public float hitParticleOffset = 0.05f;
-    [Tooltip("그을음  프리팹")] public BurnDecal BurnDecalPrefab;
-    [Tooltip("그을음  프리팹 생성주기")] public float _DecalTime = 5f;
+    [Tooltip("스파크 파티클")] public ParticleSystem _sparkParticle;
+    [Tooltip("레이저 히트 지점")] public GameObject _laserHitObject;
+    [Tooltip("히트 포인트 이격거리")] public float _hitParticleOffset = 0.05f;
+    [Tooltip("그을음 프리팹")] public BurnDecal _BurnDecalPrefab;
+    [Tooltip("그을음 프리팹 생성주기")] public float _DecalTime = 5f;
 
-    private bool DelayCheck = true;
+    [Header("플레이어 정보")]
+    [Tooltip("플레이어")] public GameObject _player;
+    [Tooltip("데미지")] public float _Dmg = 5f;
+    [Tooltip("데미지 딜레이")] public float _DmgDelayTime = 0.5f;
+
+    private bool _delayCheck = true;
+    private bool _dmgDelayCheck = true;
+    private LayerMask _layerMask;
+    private ParticleSystem[] _sparkChildren;
+
+    private void Awake()
+    {
+        _layerMask = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("Wall"));
+    }
+
+    private void OnEnable()
+    {
+        _delayCheck = true;
+        _dmgDelayCheck = true;
+    }
+
+    private void OnDisable()
+    {
+        if (_lineRenderer != null)
+        {
+            _lineRenderer.SetPosition(0, Vector3.zero);
+            _lineRenderer.SetPosition(1, Vector3.zero);
+        }
+
+        if (_laserHitObject != null) _laserHitObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        if (_sparkParticle != null)
+        {
+            _sparkChildren = _sparkParticle.GetComponentsInChildren<ParticleSystem>();
+        }
+    }
 
     void Update()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance))
+        if (Physics.Raycast(_firePoint.position, _firePoint.forward, out hit, _maxLaserDistance, _layerMask))
         {
-            //라인 렌더러의 시작지점과 끝지점을 설정
-            lineRenderer.SetPosition(0, firePoint.position);
-            lineRenderer.SetPosition(1, hit.point);
+            _lineRenderer.SetPosition(0, _firePoint.position);
+            _lineRenderer.SetPosition(1, hit.point);
 
-            //레이저 히트 지점, 스파크 튀기는 지점 설정
-            sparkParticle.transform.position = hit.point + hit.normal * hitParticleOffset;
-            laserHitObject.transform.position = sparkParticle.transform.position;
+            Vector3 hitPos = hit.point + hit.normal * _hitParticleOffset;
+            Quaternion hitRot = Quaternion.LookRotation(hit.normal);
 
-            //회전각을 초기화 
-            sparkParticle.transform.rotation = Quaternion.LookRotation(hit.normal);
-            laserHitObject.transform.rotation = Quaternion.LookRotation(hit.normal);
-
-            if (!laserHitObject.activeSelf)
+            if (_sparkParticle != null)
             {
-                laserHitObject.SetActive(true);
+                _sparkParticle.transform.position = hitPos;
+                _sparkParticle.transform.rotation = hitRot;
             }
 
-            sparkParticle.Emit(3);
-            StartCoroutine(DelayTime());
-            if (DelayCheck) 
+            if (_laserHitObject != null)
             {
-                BurnDecal dec = PoolManager.Instance.Spawn(BurnDecalPrefab, hit.point, Quaternion.LookRotation(hit.normal));
-                DelayCheck = false;
-            }            
+                _laserHitObject.transform.position = hitPos;
+                _laserHitObject.transform.rotation = hitRot;
+                if (!_laserHitObject.activeSelf) _laserHitObject.SetActive(true);
+            }
+
+            if (hit.collider.CompareTag("Player"))
+            {
+                if (_dmgDelayCheck)
+                {
+                    if (_player != null && _player.TryGetComponent<PlayerModel>(out var player))
+                    {
+                        player.TakeDamage(_Dmg);
+                        _dmgDelayCheck = false;
+                        StartCoroutine(DmgDelayRoutine());
+                    }
+                }
+            }
+            else
+            {
+                EmitAllChildren(_sparkChildren, 3);
+
+                if (_delayCheck)
+                {
+                    PoolManager.Instance.Spawn(_BurnDecalPrefab, hit.point, hitRot);
+                    _delayCheck = false;
+                    StartCoroutine(DecalDelayRoutine());
+                }
+            }
         }
         else
         {
-            lineRenderer.SetPosition(0, firePoint.position);
-            lineRenderer.SetPosition(1, firePoint.position + firePoint.forward * maxLaserDistance);
+            _lineRenderer.SetPosition(0, _firePoint.position);
+            _lineRenderer.SetPosition(1, _firePoint.position + _firePoint.forward * _maxLaserDistance);
 
-            if (laserHitObject != null && laserHitObject.activeSelf)
-            {
-                laserHitObject.SetActive(false);
-            }
+            if (_laserHitObject != null && _laserHitObject.activeSelf)
+                _laserHitObject.SetActive(false);
         }
     }
 
-    IEnumerator DelayTime() 
+    private void EmitAllChildren(ParticleSystem[] systems, int count)
+    {
+        if (systems == null) return;
+        foreach (var ps in systems)
+        {
+            if (ps != null) ps.Emit(count);
+        }
+    }
+
+    IEnumerator DecalDelayRoutine()
     {
         yield return new WaitForSeconds(_DecalTime);
-        DelayCheck = true;
+        _delayCheck = true;
+    }
+
+    IEnumerator DmgDelayRoutine()
+    {
+        yield return new WaitForSeconds(_DmgDelayTime);
+        _dmgDelayCheck = true;
+    }
+
+    public void Init(GameObject target)
+    {
+        _player = target;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

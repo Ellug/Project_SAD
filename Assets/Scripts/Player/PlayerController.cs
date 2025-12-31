@@ -1,28 +1,33 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerModel _model;
     [SerializeField] private PlayerView _view;
+    [SerializeField] private PlayerCameraController _cameraController;
 
-    [Header("Camera Settings")]
-    [SerializeField] private Transform _cameraTarget;
-    [SerializeField] private float _cameraOffset = 6f;
-    [SerializeField] private float _cameraDisMultiplier = 0.2f;
+    [Header("PlayerLaser Settings")]
+    [SerializeField] private PlayerLaser playerLaser;
 
     private Camera _cam;
     private Plane _groundPlane;
     private Vector2 _moveInput;
-    private Vector3 _dodgeDirection;
     private Vector3 _aimAt;
 
-    private PlayerInput _playerInput;
+    private Vector3 _dodgeDir;
+    private float _dodgeRemainDist;
+    private bool _isAttackHold;
 
-    private void Awake()
-    {
-        _playerInput = GetComponent<PlayerInput>();
-    }
+    // 넉백
+    private float _kbSkin = 0.02f; // 벽에 딱 붙는 걸 방지하는 여유값
+    private bool _isKnockback;
+    private Vector3 _kbDir;
+    private float _kbRemainDist;
+    private float _kbSpeed;
+
+    public event Action interactionObject;
 
     void Start()
     {
@@ -34,15 +39,17 @@ public class PlayerController : MonoBehaviour
     {
         _model.UpdateTimer(Time.deltaTime);
         _model.UpdateDodge(Time.deltaTime);
-        _model.UpdateAttackSlow(Time.deltaTime);
 
-        HandleAim();
+        Fire();
     }
 
     void FixedUpdate()
     {
         HandleMovement();
         HandleDodgeState();
+        HandleAim();
+
+        HandleKnockbackState();
     }
 
     // Input Actions - New Input System
@@ -53,39 +60,62 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext ctx)
     {
-        if (!ctx.performed) return;
-        if (_model.IsOnSpecialAttack) return;
-        if (!_model.CanAttack) return;
+        if (ctx.started)
+            _isAttackHold = true;
+        else if (ctx.canceled)
+            _isAttackHold = false;
 
-        _model.StartAttack();
-        _model.CurrentWeapon?.Attack(_model);
+        if (_model.CurrentWeapon is Rifle rifle)
+            rifle.SetAttackHold(_isAttackHold);
     }
+
 
     public void OnSpecialAttack(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
         if (!_model.CanSpecialAttack) return;
+
         _model.StartSpecialAttack();
-        _model.CurrentWeapon?.SpecialAttack(_model);
+        _model.CurrentWeapon?.SpecialAttack();
     }
 
     public void OnDodge(InputAction.CallbackContext ctx)
     {
         if (!ctx.performed) return;
         if (!_model.CanDodge) return;
-        if (_model.IsOnSpecialAttack) return;
 
-        _dodgeDirection = new Vector3(_moveInput.x, 0, _moveInput.y).normalized;
+        // 닷지시 특수공격 취소
+        if (_model.IsOnSpecialAttack && _model.CurrentWeapon != null)
+            _model.CurrentWeapon.CancelSpecialAttack();
 
-        if (_dodgeDirection.sqrMagnitude < 0.01f)
-            _dodgeDirection = _view.Body.transform.forward;
+        Vector3 inputDir = new(_moveInput.x, 0, _moveInput.y);
+        if (inputDir.sqrMagnitude < 0.01f)
+            inputDir = _view.Body.forward;
+
+        _dodgeDir = inputDir.normalized;
+        _dodgeRemainDist = _model.DodgeSpeed * _model.DodgeDuration;
 
         _model.StartDodge();
+    }
+
+    public void OnInteraction(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+
+        interactionObject?.Invoke();
+    }
+
+    public void OnPause(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+
+        UIManager.Instance.TogglePause();
     }
 
     // Movement
     private void HandleMovement()
     {
+        if (_isKnockback) return;
         if (_model.IsDodging) return;
         if (_model.IsOnSpecialAttack) return;
 
@@ -110,10 +140,17 @@ public class PlayerController : MonoBehaviour
 
         float newSpeed = Mathf.MoveTowards(curSpeed, targetSpeed, _model.AccelForce * Time.fixedDeltaTime);
 
-        //공격이 확인되면 감속까지 추가 계산
-        if (_model.IsOnAttack)
+        //공격이 확인되면 즉시 감속 처리
+        if (_model.attackImpulse > 0f)
         {
-            newSpeed = ApplyAttackSlow(_model.AttackSlowRate, newSpeed);
+            newSpeed = Mathf.Max(newSpeed - _model.AttackSlowRate, _model.AttackMinSpeed);
+            _model.attackImpulse = 0f;
+        }
+
+        //공격중이면서 이동입력X
+        if (_isAttackHold && dir.sqrMagnitude < 0.01f)
+        {
+            newSpeed = 0f;
         }
 
         // 최종 velocity 계산
@@ -123,14 +160,21 @@ public class PlayerController : MonoBehaviour
         _view.RotateBody(newDir);
     }
 
-
     // Dodge
     private void HandleDodgeState()
     {
         if (!_model.IsDodging) return;
 
-        // View에 Dodge 속도 적용
-        _view.Move(_dodgeDirection * _model.DodgeSpeed);
+        float moveDist = _model.DodgeSpeed * Time.fixedDeltaTime;
+        moveDist = Mathf.Min(moveDist, _dodgeRemainDist);
+
+        Vector3 move = _dodgeDir * moveDist;
+        _view.Rb.MovePosition(_view.Rb.position + move);
+
+        _dodgeRemainDist -= moveDist;
+
+        if (_dodgeRemainDist <= 0f)
+            _model.StopDodge();
     }
 
     // Cursor Aim
@@ -142,53 +186,87 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 hitPoint = ray.GetPoint(enter);
             AimAt(hitPoint);
+            if (playerLaser != null)
+            {
+                playerLaser.CursorPoint = hitPoint;
+                if (_model.CurrentWeapon != null)
+                    playerLaser.maxLaserDistance = _model.FinalStats.Weapon.ProjectileRange;
+            }
         }
     }
 
     public void AimAt(Vector3 worldCursorPos)
     {
-        if (_model.IsOnSpecialAttack) return;
-
         _aimAt = worldCursorPos - _view.transform.position;
         _aimAt.y = 0;
-        _view.RotateTurret(_aimAt);        
+
+        _cameraController.SetAimDirection(_aimAt);
+
+        if (_model.IsOnSpecialAttack) return;
+        _view.RotateTurret(_aimAt);
     }
 
-    void LateUpdate()
+    private void Fire()
     {
-        // 카메라 업데이트
-        UpdateCameraTarget(_aimAt);        
+        if (!_isAttackHold) return;
+        if (_model.IsOnSpecialAttack) return;
+        if (!_model.CanAttack) return;
+
+        if (_model.CurrentWeapon != null && _model.CurrentWeapon.TryAttack())
+            _model.StartAttack();
     }
 
-    // 씨네머신 카메라 페이크 타겟 추적
-    private void UpdateCameraTarget(Vector3 aimDir)
+    // 넉백
+    private void HandleKnockbackState()
     {
-        Vector3 playerPos = _view.transform.position;
+        // 이미 넉백 진행 중이면 "짧고 빠르게" 이동 처리
+        if (_isKnockback)
+        {
+            float moveDist = _kbSpeed * Time.fixedDeltaTime;
+            moveDist = Mathf.Min(moveDist, _kbRemainDist);
 
-        // 마우스까지의 거리
-        float dist = aimDir.magnitude;
-        float maxDist = _cameraOffset;
-        float clampedDist = Mathf.Min(dist * _cameraDisMultiplier, maxDist);
+            if (moveDist > 0f)
+            {
+                // 이동 전 충돌 스윕으로 안전 거리만큼만 이동
+                if (_view.Rb.SweepTest(_kbDir, out RaycastHit hit, moveDist + _kbSkin, QueryTriggerInteraction.Ignore))
+                {
+                    float safeDist = Mathf.Max(0f, hit.distance - _kbSkin);
 
-        Vector3 dir = aimDir.normalized;
+                    if (safeDist > 0f)
+                        _view.Rb.MovePosition(_view.Rb.position + _kbDir * safeDist);
 
-        Vector3 targetPos = playerPos + dir * clampedDist;
-        targetPos.y = _cameraTarget.position.y;
+                    // 벽에 막히면 즉시 종료(타격감)
+                    _kbRemainDist = 0f;
+                }
+                else
+                {
+                    _view.Rb.MovePosition(_view.Rb.position + _kbDir * moveDist);
+                    _kbRemainDist -= moveDist;
+                }
+            }
 
-        _cameraTarget.position = targetPos;
-    }
+            if (_kbRemainDist <= 0f)
+                _isKnockback = false;
 
-    //Move할 속도에 SlowRate % 만큼 감속
-    private float ApplyAttackSlow(float OnAttackSlowRate, float newSpeed)
-    {
-        return (1 - OnAttackSlowRate) * newSpeed;
-    }
+            return;
+        }
 
-    public void OpenCloseUI(bool isOpen)
-    {
-        if (isOpen) 
-            _playerInput.SwitchCurrentActionMap("UI");
-        else
-            _playerInput.SwitchCurrentActionMap("Player");
+        // 넉백 요청이 있으면 시작
+        if (_model.TryConsumeKnockbackRequest(out Vector3 dir, out float dist, out float duration))
+        {
+            // 닷지 중이면 넉백 무시(원하면 우선순위 조정 가능)
+            if (_model.IsDodging) return;
+
+            dir.y = 0f;
+            if (dir.sqrMagnitude < 1e-6f) return;
+
+            _kbDir = dir.normalized;
+            _kbRemainDist = dist;
+            _kbSpeed = dist / Mathf.Max(0.01f, duration);
+            _isKnockback = true;
+
+            // 넉백 시작 순간, 기존 관성 제거(원치 않으면 삭제)
+            _view.Rb.linearVelocity = Vector3.zero;
+        }
     }
 }

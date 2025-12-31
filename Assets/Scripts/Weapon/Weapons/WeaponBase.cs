@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
@@ -8,42 +8,24 @@ public abstract class WeaponBase : MonoBehaviour
 
     [Header("Perks")]
     [SerializeField] private PerksTree _perksTree;
-
-    private WeaponRuntimeStats _baseStats;
-    private WeaponRuntimeStats _runtimeStats;
     
+    private float _specialKnockbackDistance = 3f;
+    private float _specialKnockbackDuration = 0.04f;
+
+    protected PlayerStatsContext _statsContext;
+    private Coroutine _specialAttackRoutine;
+
     public WeaponData WeaponData => _weaponData;
     public PerksTree PerksTree => _perksTree;
-    public WeaponRuntimeStats RuntimeStats => _runtimeStats;
 
-    void Awake()
-    {
-        CaptureBaseStats();
-        _runtimeStats = _baseStats;
-    }
+    public event Action<WeaponRuntimeStats> OnFire;
+    public event Action<WeaponRuntimeStats> OnReload;
+    public event Action<WeaponRuntimeStats> OnSPFire;
 
-    private void CaptureBaseStats()
+    protected virtual void Awake()
     {
-        _baseStats = new WeaponRuntimeStats
-        {
-            Attack = _weaponData.attack,
-            AttackSpeed = _weaponData.attackSpeed,
-            ProjectileCount = _weaponData.projectileCount,
-            ProjectileRange = _weaponData.projectileRange,
-            ProjectileSpeed = _weaponData.projectileSpeed,
-
-            SpecialAttack = _weaponData.SpecialAttack,
-            SpecialAttackBeforeDelay = _weaponData.SpecialAttackBeforeDelay,
-            SpecialAttackAfterDelay = _weaponData.SpecialAttackAfterDelay,
-            SpecialProjectileCount = _weaponData.SpecialProjectileCount,
-            SpecialProjectileRange = _weaponData.SpecialProjectileRange,
-            SpecialProjectileSpeed = _weaponData.SpecialProjectileSpeed
-        };
-    }
-    public void RebuildRuntimeStats(IEnumerable<StatMod> mods)
-    {
-        _runtimeStats = _baseStats;
-        PerkCalculator.ApplyToWeapon(ref _runtimeStats, mods);
+        if (_statsContext == null)
+            _statsContext = GetComponentInParent<PlayerStatsContext>();
     }
 
     public int GetWeaponId()
@@ -51,40 +33,75 @@ public abstract class WeaponBase : MonoBehaviour
         return _weaponData.WeaponId;
     }
 
-    public void Attack(PlayerModel player)
+    public virtual bool TryAttack()
     {
         FireProjectile(false);
-        player.StartAttackSlow();
+
+        // 공격 감속 트리거는 Context를 통해 PlayerModel로 전달
+        if (_statsContext != null)
+            _statsContext.NotifyAttackSlow();
+
+        return true;
     }
 
-    public void SpecialAttack(PlayerModel player)
+    public void SpecialAttack()
     {
-        StartCoroutine(CoSpecialAttack(player));
+        if (_specialAttackRoutine != null)
+            StopCoroutine(_specialAttackRoutine);
+        _specialAttackRoutine = StartCoroutine(CoSpecialAttack());
     }
 
-    private IEnumerator CoSpecialAttack(PlayerModel player)
+    public void CancelSpecialAttack()
     {
-        yield return StartCoroutine(CoBeforeSpecialAttack(player));
+        if (_specialAttackRoutine != null)
+        {
+            StopCoroutine(_specialAttackRoutine);
+            _specialAttackRoutine = null;
+        }
+
+        if (_statsContext != null)
+            _statsContext.NotifySpecialAttackState(false);
+    }
+
+    private IEnumerator CoSpecialAttack()
+    {
+        if (_statsContext == null)
+            yield break;
+
+        WeaponRuntimeStats stats = _statsContext.Current.Weapon;
+
+        yield return StartCoroutine(CoBeforeSpecialAttack(stats));
         FireProjectile(true);
-        yield return StartCoroutine(CoAfterSpecialAttack(player));
-    }
-    private IEnumerator CoBeforeSpecialAttack(PlayerModel player)
-    {
-        player.SetSpecialAttackState(true);
-        yield return new WaitForSeconds(_runtimeStats.SpecialAttackBeforeDelay);
+        FireSound(stats, true);
+
+        // 넉백 요청
+        _statsContext.Model.RequestKnockback(-transform.forward, _specialKnockbackDistance, _specialKnockbackDuration);
+        yield return StartCoroutine(CoAfterSpecialAttack(stats));
+
+        _specialAttackRoutine = null;
     }
 
-    private IEnumerator CoAfterSpecialAttack(PlayerModel player)
+    private IEnumerator CoBeforeSpecialAttack(WeaponRuntimeStats stats)
     {
-        yield return new WaitForSeconds(_runtimeStats.SpecialAttackAfterDelay);
-        player.SetSpecialAttackState(false);
+        _statsContext.NotifySpecialAttackState(true);
+        yield return new WaitForSeconds(stats.SpecialAttackBeforeDelay);
+    }
+
+    private IEnumerator CoAfterSpecialAttack(WeaponRuntimeStats stats)
+    {
+        yield return new WaitForSeconds(stats.SpecialAttackAfterDelay);
+        _statsContext.NotifySpecialAttackState(false);
     }
 
     //불릿 정보 줄거
-    private void FireProjectile(bool isSpecial)
+    protected void FireProjectile(bool isSpecial)
     {
-        int count = Mathf.Max(1, _runtimeStats.ProjectileCount);
-        float totalAngle = _weaponData.projectileAngle;
+        if (_statsContext == null) return;
+
+        WeaponRuntimeStats stats = _statsContext.Current.Weapon;
+
+        int count = Mathf.Max(1, isSpecial ? stats.SpecialProjectileCount : stats.ProjectileCount);
+        float totalAngle = isSpecial ? stats.SpecialProjectileAngle : stats.ProjectileAngle;
 
         Vector3 baseDir = transform.forward;
         baseDir.y = 0f;
@@ -95,7 +112,7 @@ public abstract class WeaponBase : MonoBehaviour
         // 각도, 숫자로 산탄 계산
         if (count == 1 || totalAngle == 0f)
         {
-            SpawnBullet(spawnPos, baseDir, isSpecial);
+            SpawnBullet(spawnPos, baseDir, stats, isSpecial);
             return;
         }
 
@@ -107,14 +124,40 @@ public abstract class WeaponBase : MonoBehaviour
             float angle = Mathf.Lerp(-halfAngle, halfAngle, t);
 
             Vector3 dir = Quaternion.AngleAxis(angle, Vector3.up) * baseDir;
-            SpawnBullet(spawnPos, dir, isSpecial);
+            SpawnBullet(spawnPos, dir, stats, isSpecial);
         }
     }
 
-    private void SpawnBullet(Vector3 pos, Vector3 dir, bool isSpecial)
+    protected void SpawnBullet(Vector3 pos, Vector3 dir, WeaponRuntimeStats stats, bool isSpecial)
     {
         Quaternion rot = Quaternion.LookRotation(dir, Vector3.up);
-        PlayerBullet bullet = PoolManager.Instance.Spawn(_weaponData.projectilePrefab, pos, rot);
-        bullet.Init(_weaponData, isSpecial);
+
+        PlayerBullet prefab = isSpecial ? stats.SpecialProjectilePrefab : stats.ProjectilePrefab;
+        PlayerBullet bullet = PoolManager.Instance.Spawn(prefab, pos, rot);
+
+        BulletEffectPayload payload = default;
+
+        if (isSpecial)
+            payload.dmgPerMaxHp = stats.SpecialAttack;
+
+        bullet.Init(stats, isSpecial, payload);
+    }
+
+    protected void FireSound(WeaponRuntimeStats stats, bool isSPFire)
+    {
+        if (isSPFire)
+            OnSPFire?.Invoke(stats);
+        else
+            OnFire?.Invoke(stats);
+    }
+    protected void ReloadSound(WeaponRuntimeStats stats)
+    {
+        OnReload?.Invoke(stats);
+    }
+
+    public void NotifySpecialReady()
+    {
+        if (_statsContext == null) return;
+        ReloadSound(_statsContext.Current.Weapon);
     }
 }

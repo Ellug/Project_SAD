@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   _weaponPrefab: {fileID: 7016535136198836579, guid: 84565852de6988e43b1f083de2fdd742, type: 3}
   _weaponId: 2
-  attack: 10
-  attackSpeed: 5
-  projectileCount: 10
-  projectileAngle: 20
+  _weaponType: 2
+  attack: 4
+  attackSpeed: 1
+  projectileCount: 8
+  projectileAngle: 45
   projectileRange: 30
-  projectileSpeed: 15
+  projectileSpeed: 80
   projectilePrefab: {fileID: 2756237478549187170, guid: fe21f753c9b91cb45b3c7306b3d3c823, type: 3}
-  SpecialAttack: 0
-  SpecialAttackSpeed: 0
-  SpecialAttackBeforeDelay: 1
-  SpecialAttackAfterDelay: 1
-  SpecialProjectileCount: 0
+  SpecialAttack: 0.07
+  SpecialAttackBeforeDelay: 0.3
+  SpecialAttackAfterDelay: 0.3
+  SpecialProjectileCount: 1
   SpecialProjectileAngle: 0
-  SpecialProjectileRange: 0
-  SpecialProjectileSpeed: 0
-  SpecialProjectilePrefab: {fileID: 8378940865896947848, guid: bd4a612256ec45a46beb3d67d910c36d, type: 3}
+  SpecialProjectileRange: 90
+  SpecialProjectileSpeed: 70
+  SpecialProjectilePrefab: {fileID: 2756237478549187170, guid: 51a7c4f183e01ce40b2870fbbf6b3474, type: 3}

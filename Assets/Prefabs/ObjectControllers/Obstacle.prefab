@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3071185749097158397}
   - component: {fileID: 8071865458633665267}
   - component: {fileID: 318802869790814855}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Obstacle
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -104,8 +104,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad9851d0de5b9c94dbccdb75994c3bfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovingObject
-  MoveSpeed: 5
-  LifeTime: 15
+  _moveSpeed: 5
+  _lifeTime: 5
+  _upPosition: 1
+  _underPosition: -4
 --- !u!65 &8071865458633665267
 BoxCollider:
   m_ObjectHideFlags: 0

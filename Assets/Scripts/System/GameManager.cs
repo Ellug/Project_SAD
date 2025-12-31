@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
+using System.Collections;
+using UnityEngine.InputSystem;
 
 public enum GameState
 {
@@ -11,15 +14,12 @@ public enum GameState
 
 public class GameManager : SingletonePattern<GameManager>
 {
+    [SerializeField] private GameObject _fadeInOutEffectPrefab;
+
     public GameState CurrentState { get; private set; } = GameState.Playing;
     public bool IsPlayerWin { get; private set; }
-
-    public WeaponBase Weapon { get; private set; } // 프리팹 참조
-    public WeaponBase CurrentWeaponInstance { get; private set; } // 실제 현재 장착 무기
-    public event Action<WeaponBase> OnWeaponEquipped;
-
-    private int[] _perkSelections; // 딕셔너리 같은거 써서 전체 퍽 상태 저장하는 방식으로 변경 할 수도...
-    // 아니면 아예 웨펀, 퍽스 관련을 따로 좀 빼는 것도 방법. 게임 매니져가 점점 지저분해짐.
+    public int UnlockStage { get; private set; }
+    public int CurEnterStage { get; private set; }
 
     public bool IsPlaying => CurrentState == GameState.Playing;
     public bool IsPaused  => CurrentState == GameState.Paused;
@@ -27,19 +27,38 @@ public class GameManager : SingletonePattern<GameManager>
 
     public event Action<GameState> OnGameStateChanged;
 
-    void Start()
+    private CanvasGroup _fadeInOutEffect;
+
+    protected override void Awake()
     {
-        SceneManager.sceneLoaded += OnSceneLoad;
+        base.Awake();
+        UnlockStage = 1;
+        CurEnterStage = 0;
     }
 
-    void OnDestroy()
+    void Start()
     {
-        SceneManager.sceneLoaded -= OnSceneLoad;
+        if (_fadeInOutEffectPrefab != null)
+        {
+            GameObject instance = Instantiate(_fadeInOutEffectPrefab);
+            _fadeInOutEffect = instance.GetComponent<CanvasGroup>();
+            instance.SetActive(false);
+            DontDestroyOnLoad(instance);
+        }
+    }
+
+    // Stage Unlock for Debug
+    void Update()
+    {
+        if(Keyboard.current.pKey.wasPressedThisFrame)
+            UnlockStage = 5;
     }
 
     public void PlayerWin()
     {
         IsPlayerWin = true;
+        if (CurEnterStage == UnlockStage)
+            UnlockStage++;
         SetState(GameState.Result);
     }
 
@@ -79,87 +98,68 @@ public class GameManager : SingletonePattern<GameManager>
         SetState(GameState.Playing);
     }
 
+    public void EnterTheStage(int stage)
+    {
+        CurEnterStage = stage;
+        string sceneName = "Stage" + stage.ToString();
+
+        ChangeSceneWithFadeEffect(sceneName);
+    }
+
     public void GoToLobby()
     {
-        SetState(GameState.Playing);
-        SceneManager.LoadScene("Lobby");
+        ChangeSceneWithFadeEffect("Lobby");
+    }
+
+    public void GoToTitle()
+    {
+        ChangeSceneWithFadeEffect("Title", false);
     }
 
     public void ReloadCurrentScene()
     {
+        ChangeSceneWithFadeEffect(SceneManager.GetActiveScene().name);
+    }
+
+    private void ChangeSceneWithFadeEffect(string scene, bool animation = true)
+    {
+        if (animation && _fadeInOutEffect != null) 
+        {
+            StartCoroutine(FadeOutInLoading(scene));
+        }
+        else
+        {
+            SetState(GameState.Playing);
+            SceneManager.LoadScene(scene);
+        } 
+    }
+
+    private IEnumerator FadeOutInLoading(string scene)
+    {
+        SetState(GameState.Paused);
+
+        // 비동기 로딩 시작
+        AsyncOperation temp = SceneManager.LoadSceneAsync(scene);
+        temp.allowSceneActivation = false;
+        _fadeInOutEffect.gameObject.SetActive(true);
+
+        // 애니메이션 재생이 완료될 때까지 대기함.
+        yield return _fadeInOutEffect.DOFade(1f, 0.5f).SetUpdate(true).WaitForCompletion();
+
+        // 진행도에 따라 대기함 (규모가 작아서 대기할 일이 거의 없음)
+        while (temp.progress < 0.9f) 
+            yield return null;
+        temp.allowSceneActivation = true;
+
+        // 한 프레임 대기 : 이게 없으면 페이드 인 효과가 제대로 나타나지 않고 씬 시작 시 끊기는 느낌이 있음
+        // 찾아보니 새로운 씬의 오브젝트들이 Awake, Start 등을 실행하도록 하기 위함이라고 함.
+        yield return null;
+
+        // 애니메이션 대기 후 나머지 처리
+        yield return _fadeInOutEffect.DOFade(0f, 0.5f).SetUpdate(true).WaitForCompletion();
+        _fadeInOutEffect.gameObject.SetActive(false);
         SetState(GameState.Playing);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
-    private void OnSceneLoad(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name.Contains("Stage") || scene.name == "Lobby")        
-            EquipPlayerWeapon();        
-    }
-
-    public void SetPlayerWeapon(WeaponBase weapon)
-    {
-        // 무기 선택시 퍽 초기화. 저장 필요하면 따로 저장 시스템 도입
-        if (Weapon != null && weapon != null && Weapon.GetWeaponId() != weapon.GetWeaponId())
-            _perkSelections = null;
-
-        Weapon = weapon;
-    }
-
-    public void EquipPlayerWeapon()
-    {
-        var playerGo = GameObject.FindWithTag("Player");
-        if (playerGo == null) return;
-
-        var player = playerGo.GetComponent<PlayerModel>();
-        if (player == null) return;
-
-        var firePoint = GameObject.Find("FirePoint");
-        if (firePoint == null) return;
-
-        // 로비/스테이지에서 FirePoint 밑에 무기 중복 생성 방지
-        for (int i = firePoint.transform.childCount - 1; i >= 0; i--)
-            Destroy(firePoint.transform.GetChild(i).gameObject);
-
-        var weaponObj = Instantiate(Weapon.gameObject, firePoint.transform);
-        var weaponInstance = weaponObj.GetComponent<WeaponBase>();
-
-        CurrentWeaponInstance = weaponInstance;
-
-        player.SetWeapon(weaponInstance);
-
-        RestorePerksTo(weaponInstance.PerksTree);
-        ApplyPerksTo(player, weaponInstance, resetHpToMax: true);
-
-        // UI가 반드시 복원된 트리 참조
-        OnWeaponEquipped?.Invoke(weaponInstance);
-    }
-
-    private void ApplyPerksTo(PlayerModel player, WeaponBase weapon, bool resetHpToMax)
-    {
-        if (player == null || weapon == null) return;
-        if (weapon.PerksTree == null) return;
-
-        var mods = weapon.PerksTree.GetActiveMods();
-
-        player.RebuildRuntimeStats(mods, resetHpToMax);
-        weapon.RebuildRuntimeStats(mods);
-    }
-
-    public void SavePerksFrom(PerksTree tree)
-    {
-        if (tree == null) return;
-        _perkSelections = tree.ExportSelections();
-    }
-
-    private void RestorePerksTo(PerksTree tree)
-    {
-        if (tree == null) return;
-        if (_perkSelections == null) return;
-
-        tree.ImportSelections(_perkSelections, notify: true);
-    }
-
 
     public void GameExit()
     {

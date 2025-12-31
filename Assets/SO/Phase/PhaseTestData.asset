@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PhaseTestData
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   _patterns:
-  - {fileID: 8020916841353739512, guid: aed32bfc3fcb54c4fb7431b2193f8647, type: 3}
-  - {fileID: 3153455433497496169, guid: c7a98a82a739e094d8866f27d6463f71, type: 3}
-  - {fileID: 2291198960588659728, guid: a9719f81ed1a4634fb423d88d5c501e8, type: 3}
-  - {fileID: 549464321743560484, guid: aa3bec730b5b9ca43bc4f1631dfa61af, type: 3}
-  - {fileID: 1880858330334761104, guid: bd34ffd0a85accc4e92f09ae0ecc0ea4, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

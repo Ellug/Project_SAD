@@ -3,56 +3,65 @@ using System.Collections;
 
 public class MovingObject : MonoBehaviour
 {
-    private bool Moving = false;
-    [Tooltip("오브젝트 이동 속도")][SerializeField] float MoveSpeed = 5f;
-    [Tooltip("오브젝트 활성화 시간")][SerializeField] float LifeTime = 5f;
-    private Vector3 TargetPosition;
-    private float UpPosition;
-    private float UnderPosition;
+    [Tooltip("오브젝트 이동 속도")][SerializeField] private float _moveSpeed = 5f;
+    [Tooltip("오브젝트 활성화 시간")][SerializeField] private float _lifeTime = 5f;
+
+    [Header("위치 설정")]
+    [Tooltip("오브젝트 업 포지션")][SerializeField] private float _upPosition = 0.5f;
+    [Tooltip("오브젝트 다운 포지션")][SerializeField] private float _underPosition = -0.6f;
+
+    private bool _isMoving = false;
+    private Vector3 _targetPosition;
+    private Coroutine _actionCoroutine;
 
     private void Start()
     {
         Vector3 initPos = transform.position;
-        initPos.y = -((transform.localScale.y / 2) + 0.1f);
+        initPos.y = _underPosition;
         transform.position = initPos;
     }
 
     // 장애물 오브젝트는 맵 아래에 항상 존재함. 그래서 패턴 수행 명령이 아닐 때도
     // FixedUpdate는 계속 돌아갈 것임. -> 패턴 수행 됐을 때만 실행하면 안될까?
+
     private void FixedUpdate()
     {
-        if (Moving)            
+        if (_isMoving)
         {
-            transform.position = Vector3.MoveTowards(transform.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.fixedDeltaTime);
 
-            if (transform.position.y == UpPosition)
+            if (Mathf.Approximately(transform.position.y, _upPosition))
             {
-                StartCoroutine(DeActivateObject());
-                Moving = false;
+                _actionCoroutine = StartCoroutine(DeActivateRoutine());
+                _isMoving = false;
             }
 
-            if (transform.position.y == UnderPosition)
+            if (Mathf.Approximately(transform.position.y, _underPosition))
             {
-                StopCoroutine(DeActivateObject());
-                Moving = false;
+                _isMoving = false;
             }
         }
     }
 
-
-
     public void ActivateObject()
     {
-        UpPosition = transform.localScale.y / 2;
-        Moving = true;
-        TargetPosition = new Vector3(transform.position.x, UpPosition, transform.position.z);
+        if (_actionCoroutine != null) StopCoroutine(_actionCoroutine);
+
+        _targetPosition = new Vector3(transform.position.x, _upPosition, transform.position.z);
+        _isMoving = true;
     }
 
-    IEnumerator DeActivateObject()
+    public void DeactivateObject()
     {
-        yield return new WaitForSeconds(LifeTime);
-        UnderPosition = -((transform.localScale.y / 2) + 0.1f);
-        Moving = true;
-        TargetPosition = new Vector3(transform.position.x, UnderPosition, transform.position.z);
+        if (_actionCoroutine != null) StopCoroutine(_actionCoroutine);
+
+        _targetPosition = new Vector3(transform.position.x, _underPosition, transform.position.z);
+        _isMoving = true;
+    }
+
+    private IEnumerator DeActivateRoutine()
+    {
+        yield return new WaitForSeconds(_lifeTime);
+        DeactivateObject();
     }
 }

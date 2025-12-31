@@ -1,31 +1,53 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class ObjectSpawnPattern : PatternBase
 {
-    [Tooltip("오브젝트 태그")][SerializeField] GameObject[] PatternObject;
-    public MovingObject[] MovingObject;
+    [Tooltip("오브젝트 태그")][SerializeField] private GameObject[] _patternObject;
+    [Tooltip("이동 오브젝트 컴포넌트들")] public MovingObject[] _movingObject;
+
     protected override void Awake()
     {
         base.Awake();
-        PatternObject = GameObject.FindGameObjectsWithTag("Obstacle");
-    }
-
-    public void ActivateObjects()
-    {
-        for (int i = 0; i < MovingObject.Length; i++)
-            MovingObject[i].ActivateObject();
-    }
-
-    protected override void PatternLogic()
-    {
-        ActivateObjects();
+        _patternObject = GameObject.FindGameObjectsWithTag("Obstacle");
     }
 
     public override void Init(GameObject target)
     {
-        MovingObject = new MovingObject[PatternObject.Length];
-        for (int i = 0; i < PatternObject.Length; i++)
-            MovingObject[i] = PatternObject[i].GetComponent<MovingObject>();
+        _movingObject = new MovingObject[_patternObject.Length];
+        for (int i = 0; i < _patternObject.Length; i++)
+        {
+            _movingObject[i] = _patternObject[i].GetComponent<MovingObject>();
+        }
+    }
+
+    protected override IEnumerator PatternRoutine()
+    {
+        _isPatternActive = true;
+
+        for (int i = 0; i < _movingObject.Length; i++)
+        {
+            if (_movingObject[i] != null)
+            {
+                _movingObject[i].ActivateObject();
+            }
+        }
+
+        PlayPatternSound(PatternEnum.ObjectSpawn);
+
+        yield break;
+    }
+
+    protected override void CleanupPattern()
+    {
+        _isPatternActive = false;
+
+        for (int i = 0; i < _movingObject.Length; i++)
+        {
+            if (_movingObject[i] != null)
+            {
+                _movingObject[i].DeactivateObject();
+            }
+        }
     }
 }
-

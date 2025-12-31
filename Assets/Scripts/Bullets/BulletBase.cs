@@ -25,14 +25,18 @@ public abstract class BulletBase : MonoBehaviour, IPoolable
 
      protected virtual void Update()
      {
-          MoveForward();
           CheckDistance();
+     }
+
+     protected virtual void FixedUpdate()
+     {
+          MoveForward();          
      }
 
      // 정면 방향으로 전진
      protected virtual void MoveForward()
      {
-          transform.Translate(Vector3.forward * (_speed * Time.deltaTime), Space.Self);
+          transform.Translate(Vector3.forward * (_speed * Time.fixedDeltaTime), Space.Self);
      }
 
      // 최대 사거리 체크 후 디스폰

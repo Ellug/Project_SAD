@@ -5,8 +5,10 @@ public class WeaponData : ScriptableObject
 {
     [SerializeField] private GameObject _weaponPrefab;
     [SerializeField] private int _weaponId;
+    [SerializeField] private WeaponEnum _weaponType;
     public GameObject WeaponPrefab => _weaponPrefab;
     public int WeaponId => _weaponId;
+    public WeaponEnum WeaponType => _weaponType;
 
     [Header("Normal Attack")]
     public float attack;

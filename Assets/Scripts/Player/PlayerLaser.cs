@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerLaser : MonoBehaviour
 {
@@ -11,36 +10,48 @@ public class PlayerLaser : MonoBehaviour
     [Tooltip("레이저 히트 지점")] public GameObject laserHitObject;
     [Tooltip("히트 포인트 이격거리")] public float hitParticleOffset = 0.05f;
 
-    void Update()
+    [Tooltip("마우스 커서 포인트")] public Vector3 CursorPoint;
+
+    private LayerMask _layerMask;
+
+    private void Awake()
     {
+        _layerMask += 1 << LayerMask.NameToLayer("Wall");
+        _layerMask += 1 << LayerMask.NameToLayer("Enemy");
+    }
+
+    void FixedUpdate()
+    {
+        Vector3 targetPoint = firePoint.position + (firePoint.forward * maxLaserDistance);
+        Vector3 hitNormal = Vector3.up;
+        bool isHittingObject = false;
+
         RaycastHit hit;
-        
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance))
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, maxLaserDistance, _layerMask))
         {
-            //라인 렌더러의 시작지점과 끝지점을 설정
-            lineRenderer.SetPosition(0, firePoint.position);
-            lineRenderer.SetPosition(1, hit.point);
+            targetPoint = hit.point;
+            hitNormal = hit.normal;
+            isHittingObject = true;
+        }
 
-            laserHitObject.transform.position = hit.point + hit.normal * hitParticleOffset;
+        UpdateLaserVisuals(targetPoint, hitNormal, isHittingObject);
+    }
 
-            //회전각을 초기화 
-            laserHitObject.transform.rotation = Quaternion.LookRotation(hit.normal);
+    private void UpdateLaserVisuals(Vector3 endPoint, Vector3 normal, bool showEffect)
+    {
+        lineRenderer.SetPosition(0, firePoint.position);
+        lineRenderer.SetPosition(1, endPoint);
 
-            if (!laserHitObject.activeSelf)
-            {
-                laserHitObject.SetActive(true);
-            }
+        if (showEffect)
+        {
+            if (!laserHitObject.activeSelf) laserHitObject.SetActive(true);
 
+            laserHitObject.transform.position = endPoint + (normal * hitParticleOffset);
+            laserHitObject.transform.rotation = Quaternion.LookRotation(normal);
         }
         else
         {
-            lineRenderer.SetPosition(0, firePoint.position);
-            lineRenderer.SetPosition(1, firePoint.position + firePoint.forward * maxLaserDistance);
-
-            if (laserHitObject != null && laserHitObject.activeSelf)
-            {
-                laserHitObject.SetActive(false);
-            }
+            if (laserHitObject.activeSelf) laserHitObject.SetActive(false);
         }
     }
 }
