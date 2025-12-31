@@ -1987,6 +1987,8 @@ MonoBehaviour:
   _boss: {fileID: 223490255}
   _phase:
   - {fileID: 11400000, guid: 01d42a574e3598949a40e751b0fff6d4, type: 2}
+  - {fileID: 11400000, guid: 46bc8be2191ec4f4e82d4feb5884bba9, type: 2}
+  - {fileID: 11400000, guid: de2c9c209b4fb7b49bee8fbd0286dc37, type: 2}
 --- !u!4 &505577145
 Transform:
   m_ObjectHideFlags: 0
