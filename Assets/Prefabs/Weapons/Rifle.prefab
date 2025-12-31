@@ -49,7 +49,7 @@ MonoBehaviour:
   _perksTree: {fileID: -1396832517224262730}
   _stackInterval: 1
   _maxStacks: 5
-  _breakInterval: 0.5
+  _breakInterval: 0.8
   _attackMulPerStack: 0.16
   _atkSpdMulPerStack: 0.16
 --- !u!114 &-1396832517224262730
@@ -131,7 +131,7 @@ MonoBehaviour:
         value: 2
       - stat: 10
         op: 1
-        value: -0.4
+        value: -0.2
       - stat: 11
         op: 1
         value: 2

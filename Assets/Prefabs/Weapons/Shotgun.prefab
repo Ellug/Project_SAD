@@ -155,16 +155,16 @@ MonoBehaviour:
         value: -0.4
       - stat: 10
         op: 1
-        value: 0.6
+        value: 0.45
       - stat: 11
         op: 1
-        value: 0.6
+        value: 0.45
       - stat: 1
         op: 1
-        value: 0.6
+        value: 0.45
       - stat: 2
         op: 1
-        value: 0.6
+        value: 0.45
       buffs:
       - trigger: 0
         duration: 0
