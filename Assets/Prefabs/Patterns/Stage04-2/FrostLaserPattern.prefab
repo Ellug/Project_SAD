@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FrostLaserPattern
   _counterable: 1
   _startupDelay: 1.5
-  _cycleTime: 15
+  _cycleTime: 12
   _objectTag: []
   _laserObject: []
 --- !u!82 &6638213081860413320

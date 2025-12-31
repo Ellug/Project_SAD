@@ -47,8 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shotgun
   _weaponData: {fileID: 11400000, guid: 2a559d7c706ae2f4ba02927ae1cd0a8f, type: 2}
   _perksTree: {fileID: 3088357781340253219}
-  _burnDps: 50
-  _burnDuration: 5
+  _burnDps: 40
+  _burnDuration: 3
 --- !u!114 &3088357781340253219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +70,9 @@ MonoBehaviour:
       - stat: 11
         op: 1
         value: -0.2
+      - stat: 13
+        op: 0
+        value: -5
       buffs: []
     right:
       mods:
@@ -95,6 +98,9 @@ MonoBehaviour:
         - stat: 11
           op: 1
           value: 0.2
+        - stat: 15
+          op: 0
+          value: -5
         healPerTrigger: 0
     right:
       mods: []
@@ -137,7 +143,7 @@ MonoBehaviour:
         value: 3
       - stat: 10
         op: 1
-        value: 1.5
+        value: 1
       buffs: []
     right:
       mods:
@@ -147,6 +153,9 @@ MonoBehaviour:
       - stat: 12
         op: 0
         value: 2
+      - stat: 10
+        op: 1
+        value: -0.55
       buffs: []
   - left:
       mods:
@@ -155,16 +164,16 @@ MonoBehaviour:
         value: -0.4
       - stat: 10
         op: 1
-        value: 0.45
+        value: 0.3
       - stat: 11
         op: 1
-        value: 0.45
+        value: 0.3
       - stat: 1
         op: 1
-        value: 0.45
+        value: 0.25
       - stat: 2
         op: 1
-        value: 0.45
+        value: 0.25
       buffs:
       - trigger: 0
         duration: 0

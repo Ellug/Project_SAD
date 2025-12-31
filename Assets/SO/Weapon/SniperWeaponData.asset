@@ -16,7 +16,7 @@ MonoBehaviour:
   _weaponId: 1
   _weaponType: 1
   attack: 30
-  attackSpeed: 1
+  attackSpeed: 0.9
   projectileCount: 1
   projectileAngle: 0
   projectileRange: 30
