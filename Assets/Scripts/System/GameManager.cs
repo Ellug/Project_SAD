@@ -34,6 +34,7 @@ public class GameManager : SingletonePattern<GameManager>
         base.Awake();
         UnlockStage = 1;
         CurEnterStage = 0;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Start()
