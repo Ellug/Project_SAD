@@ -30,6 +30,10 @@ public class BossController : MonoBehaviour
     private float _burnRemain;
     private float _burnDps;
 
+    // Timer
+    private int _secondTimer;
+    private Coroutine _timerCoroutine;
+
     public event Action _phaseChange;
     public event Action _takeCounterableAttack;
 
@@ -41,12 +45,19 @@ public class BossController : MonoBehaviour
 
     void Start()
     {
+        _timerCoroutine = StartCoroutine(UpdateTimer());
         if (_childRenderers.Length > 0) _baseMaterial = _childRenderers[0].sharedMaterial;
     }
 
     void Update()
     {
         TickBurn(Time.deltaTime);
+    }
+
+    private void OnDestroy()
+    {
+        if (_timerCoroutine != null)
+            StopCoroutine(_timerCoroutine);
     }
 
     public void TakeDamage(float dmg, bool isCounterable)
@@ -158,6 +169,27 @@ public class BossController : MonoBehaviour
         foreach (var renderer in _childRenderers)
         {
             if (renderer != null) renderer.materials = newMats;
+        }
+    }
+
+    public int GetTime()
+    {
+        StopCoroutine(_timerCoroutine);
+        return _secondTimer;
+    }
+
+    // Timer Update
+    private IEnumerator UpdateTimer()
+    {
+        WaitForSeconds secondDelay = new WaitForSeconds(1f);
+        _secondTimer = 0;
+
+        yield return secondDelay;
+
+        while (true)
+        {
+            _secondTimer++;
+            yield return secondDelay;
         }
     }
 }
