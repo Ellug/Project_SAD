@@ -5,27 +5,39 @@ using UnityEngine;
 public class BossBullet : BulletBase
 {
     [Header("Hit Area")]
-    [Tooltip("히트 판정 길이")][SerializeField] float HitAreaLength = 1.5f;
-    [Tooltip("히트 판정 반지름")][SerializeField] float _HitAreaRadius = 0.3f;
-    [Tooltip("플레이어 레이어")][SerializeField] LayerMask _PlayerLayer;
+    [Tooltip("히트 판정 길이")][SerializeField] protected float HitAreaLength = 1.5f;
+    [Tooltip("히트 판정 반지름")][SerializeField] protected float _HitAreaRadius = 0.3f;
+    [Tooltip("플레이어 레이어")][SerializeField] protected LayerMask _PlayerLayer;
 
     [Header("VFX Prefabs")]
     [Tooltip("총구 화염 효과")] public ParticleSystem _MuzzlePrefab;
     [Tooltip("폭발 파티클 프리팹")] public ParticleSystem _ExplosionParticle;
     [Tooltip("총알에 붙어있는 잔상(Trail) 리스트")] public List<GameObject> _Trails;
-    private bool _hit;
 
-    void Start()
+    protected bool _hit;
+
+    public override void OnSpawned()
     {
+        base.OnSpawned();
+        _hit = false;
+
         if (_MuzzlePrefab != null)
         {
-            ParticleSystem muzzleVFX =
-                PoolManager.Instance.Spawn(_MuzzlePrefab, transform.position, transform.rotation);
-
-            if (muzzleVFX != null &&
-                muzzleVFX.TryGetComponent<ParticleSystem>(out var ps))
+            ParticleSystem muzzleVFX = PoolManager.Instance.Spawn(_MuzzlePrefab, transform.position, transform.rotation);
+            if (muzzleVFX != null)
             {
-                ps.Play();
+                muzzleVFX.Play();
+            }
+        }
+
+        if (_Trails != null)
+        {
+            foreach (var trail in _Trails)
+            {
+                if (trail == null) continue;
+                trail.transform.SetParent(transform);
+                trail.transform.localPosition = Vector3.zero;
+                if (trail.TryGetComponent<ParticleSystem>(out var ps)) ps.Play();
             }
         }
     }
@@ -36,7 +48,7 @@ public class BossBullet : BulletBase
         CheckHit();
     }
 
-    void CheckHit()
+    protected virtual void CheckHit()
     {
         if (_hit) return;
 
@@ -63,7 +75,7 @@ public class BossBullet : BulletBase
         }
     }
 
-    void HandleTrails()
+    protected virtual void HandleTrails()
     {
         if (_Trails == null || _Trails.Count == 0) return;
 
@@ -80,27 +92,23 @@ public class BossBullet : BulletBase
         }
     }
 
-    void SpawnExplosion()
+    protected virtual void SpawnExplosion()
     {
         if (_ExplosionParticle == null) return;
 
-        ParticleSystem instance =
-            PoolManager.Instance.Spawn(_ExplosionParticle, transform.position, transform.rotation);
-
-        if (instance != null &&
-            instance.TryGetComponent<ParticleSystem>(out var ps))
+        ParticleSystem instance = PoolManager.Instance.Spawn(_ExplosionParticle, transform.position, transform.rotation);
+        if (instance != null)
         {
-            ps.Play();
+            instance.Play();
         }
     }
 
-    public override void OnSpawned()
+    public override void OnDespawned()
     {
-        base.OnSpawned();
-        _hit = false;
+        base.OnDespawned();
     }
 
-    void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
 

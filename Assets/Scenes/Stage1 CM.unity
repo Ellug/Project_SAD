@@ -660,8 +660,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77aa77eca01fefb45bde02d5309d0b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossController
+  _dmgFont: {fileID: 0}
   _bossMaxHp: 1000
-  _changePhaseHpRate: 0.5
+  _changePhaseHpRate: []
+  _childRenderers: []
+  _CounterMaterial: {fileID: 0}
 --- !u!136 &223490256
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -903,6 +906,7 @@ MonoBehaviour:
   _playerModel: {fileID: 996569840}
   _bossController: {fileID: 223490255}
   _bossHpBar: {fileID: 1053289067}
+  _bossHpFollowingBar: {fileID: 0}
   _bossHpText: {fileID: 997888410}
   _outOfScreenBoss: {fileID: 841228361}
   _playerIndicator: {fileID: 1610056051}
@@ -1788,7 +1792,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PhaseManager
   _player: {fileID: 996569837}
   _boss: {fileID: 223490255}
-  _spawnPosition: {fileID: 602345127}
   _phase:
   - {fileID: 11400000, guid: ee9a4d3701baf6e45868a4b42c4c2e7b, type: 2}
   - {fileID: 11400000, guid: ee9a4d3701baf6e45868a4b42c4c2e7b, type: 2}
@@ -2173,11 +2176,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
---- !u!4 &602345127 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
-  m_PrefabInstance: {fileID: 602345126}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &736151537
 GameObject:
   m_ObjectHideFlags: 0
@@ -4446,6 +4444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5845a670102fb4445a48af749ac0eefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  _fadeInOutEffectPrefab: {fileID: 0}
 --- !u!4 &1099610020
 Transform:
   m_ObjectHideFlags: 0

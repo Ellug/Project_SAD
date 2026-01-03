@@ -1,44 +1,60 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBall : BulletBase, IPoolable
+public class FireBall : BulletBase
 {
     [Header("VFX Prefabs")]
-    [Tooltip("총구 화염 효과")] public ParticleSystem _MuzzlePrefab;
-    [Tooltip("폭발 파티클 프리팹")] public ParticleSystem _ExplosionParticle;
-    [Tooltip("총알에 붙어있는 잔상(Trail) 리스트")] public List<GameObject> _Trails;
+    [SerializeField] protected ParticleSystem _MuzzlePrefab;
+    [SerializeField] protected ParticleSystem _ExplosionParticle;
+    [SerializeField] protected List<GameObject> _Trails;
 
     [Header("데칼 & 장판")]
-    [Tooltip("그을음 데칼 프리팹")] public BurnDecal _BurnDecalPrefab;
-    [Tooltip("화염 장판 프리팹")] public FireArea _FireAreaPrefab;
+    [SerializeField] protected BurnDecal _BurnDecalPrefab;
+    [SerializeField] protected FireArea _FireAreaPrefab;
 
-    private Vector3 _targetPos;
-    private bool _isArrived = false;
-    private GameObject _player;
+    protected Vector3 _targetPos;
+    protected bool _isArrived = false;
+    protected GameObject _player;
 
-    public void Init(GameObject player)
+    protected float _areaDmg;
+    protected float _areaRange;
+    protected float _areaLifeTime;
+    protected float _burnDmg;
+    protected float _burnTime;
+    protected float _burnTickInterval;
+
+    public void SetFireBallStats(GameObject player, Vector3 targetPoint, float areaDmg, float areaRange, float areaLifeTime, float burnDmg, float burnTime, float burnTick)
     {
         _player = player;
-    }
-
-    public void setTarget(Vector3 targetPoint)
-    {
         _targetPos = targetPoint;
+        _areaDmg = areaDmg;
+        _areaRange = areaRange;
+        _areaLifeTime = areaLifeTime;
+        _burnDmg = burnDmg;
+        _burnTime = burnTime;
+        _burnTickInterval = burnTick;
+
         _isArrived = false;
         transform.LookAt(_targetPos);
     }
 
-    public void Start()
+    public override void OnSpawned()
     {
+        base.OnSpawned();
         if (_MuzzlePrefab != null)
         {
-            ParticleSystem muzzle =
-                PoolManager.Instance.Spawn(_MuzzlePrefab, transform.position, transform.rotation);
+            ParticleSystem muzzle = PoolManager.Instance.Spawn(_MuzzlePrefab, transform.position, transform.rotation);
+            if (muzzle != null) muzzle.Play();
+        }
 
-            if (muzzle != null &&
-                muzzle.TryGetComponent<ParticleSystem>(out var ps))
+        if (_Trails != null)
+        {
+            foreach (var trail in _Trails)
             {
-                ps.Play();
+                if (trail == null) continue;
+                trail.transform.parent = transform;
+                trail.transform.localPosition = Vector3.zero;
+                if (trail.TryGetComponent<ParticleSystem>(out var ps)) ps.Play();
             }
         }
     }
@@ -46,7 +62,6 @@ public class FireBall : BulletBase, IPoolable
     protected override void Update()
     {
         if (_isArrived) return;
-
         base.Update();
 
         if (Vector3.Distance(transform.position, _targetPos) < 0.5f)
@@ -55,7 +70,7 @@ public class FireBall : BulletBase, IPoolable
         }
     }
 
-    private void ExplodeAtTarget()
+    protected virtual void ExplodeAtTarget()
     {
         if (_isArrived) return;
         _isArrived = true;
@@ -65,11 +80,10 @@ public class FireBall : BulletBase, IPoolable
 
         if (_FireAreaPrefab != null)
         {
-            FireArea area =
-                PoolManager.Instance.Spawn(_FireAreaPrefab, _targetPos, Quaternion.identity);
+            FireArea area = PoolManager.Instance.Spawn(_FireAreaPrefab, _targetPos, Quaternion.identity);
             if (area != null)
             {
-                area.Init(_player);
+                area.Init(_player, _areaDmg, _areaRange, _areaLifeTime, _burnDmg, _burnTime, _burnTickInterval);
             }
         }
 
@@ -78,7 +92,7 @@ public class FireBall : BulletBase, IPoolable
         Despawn();
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Obstacle"))
         {
@@ -87,33 +101,22 @@ public class FireBall : BulletBase, IPoolable
         }
     }
 
-    private void HandleTrails()
+    protected virtual void HandleTrails()
     {
         if (_Trails == null) return;
-
-        for (int i = 0; i < _Trails.Count; i++)
+        foreach (var trail in _Trails)
         {
-            if (_Trails[i] == null) continue;
-
-            _Trails[i].transform.parent = null;
-
-            if (_Trails[i].TryGetComponent<ParticleSystem>(out var ps))
-            {
+            if (trail == null) continue;
+            trail.transform.parent = null;
+            if (trail.TryGetComponent<ParticleSystem>(out var ps))
                 ps.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            }
         }
     }
 
-    private void SpawnExplosion()
+    protected virtual void SpawnExplosion()
     {
         if (_ExplosionParticle == null) return;
-
         ParticleSystem instance = PoolManager.Instance.Spawn(_ExplosionParticle, transform.position, transform.rotation);
-
-        if (instance != null &&
-            instance.TryGetComponent<ParticleSystem>(out var ps))
-        {
-            ps.Play();
-        }
+        if (instance != null) instance.Play();
     }
 }

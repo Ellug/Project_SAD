@@ -1,42 +1,46 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserPattern : PatternBase
 {
-    [Tooltip("오브젝트 태그")][SerializeField] private GameObject[] _objectTag;
-    [Tooltip("레이저 오브젝트 컴포넌트들")] public LaserObject[] _laserObject;
-    private GameObject _player;
+    [Header("레이저 오브젝트 설정")]
+    [SerializeField, Tooltip("수동 등록할 레이저 오브젝트들")] private List<LaserObject> _laserObjects = new List<LaserObject>();
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _objectTag = GameObject.FindGameObjectsWithTag("LaserObject");
-    }
+    [Header("오브젝트 이동 및 물리 설정")]
+    [SerializeField, Tooltip("오브젝트 이동 속도")] private float _moveSpeed = 5f;
+    [SerializeField, Tooltip("오브젝트 활성화 시간")] private float _lifeTime = 5f;
+    [SerializeField, Tooltip("오브젝트 회전 속도")] private float _rotationSpeed = 5f;
+    [SerializeField, Tooltip("오브젝트 상승 좌표")] private float _upPosition = -0.2f;
+    [SerializeField, Tooltip("오브젝트 하강 좌표")] private float _underPosition = -1.45f;
+
+    [Header("레이저 세부 설정")]
+    [SerializeField, Tooltip("레이저 최대 길이")] private float _maxLaserDistance = 50f;
+    [SerializeField, Tooltip("히트 파티클 이격 거리")] private float _hitParticleOffset = 0.05f;
+    [SerializeField, Tooltip("데칼 생성 텀")] private float _decalTime = 5f;
+
+    [Header("데미지 설정")]
+    [SerializeField, Tooltip("레이저 데미지")] private float _damage = 5f;
+    [SerializeField, Tooltip("데미지 딜레이")] private float _damageDelay = 0.5f;
 
     public override void Init(GameObject target)
     {
-        _player = target;
-        _laserObject = new LaserObject[_objectTag.Length];
-        for (int i = 0; i < _objectTag.Length; i++)
-        {
-            _laserObject[i] = _objectTag[i].GetComponent<LaserObject>();
-        }
+        base.Init(target);
     }
 
     protected override IEnumerator PatternRoutine()
     {
         _isPatternActive = true;
 
-        for (int i = 0; i < _laserObject.Length; i++)
+        foreach (var laserObj in _laserObjects)
         {
-            if (_laserObject[i] != null)
+            if (laserObj != null)
             {
-                _laserObject[i].ActivateObject();
-                _laserObject[i].Init(_player);
+                laserObj.Init(_target, _moveSpeed, _lifeTime, _rotationSpeed, _upPosition, _underPosition);
+                laserObj.SetLaserStats(_maxLaserDistance, _hitParticleOffset, _decalTime, _damage, _damageDelay);
+                laserObj.ActivateObject();
             }
         }
-
-       // PlayPatternSound(PatternEnum.Laser);
 
         yield break;
     }
@@ -44,13 +48,9 @@ public class LaserPattern : PatternBase
     protected override void CleanupPattern()
     {
         _isPatternActive = false;
-
-        for (int i = 0; i < _laserObject.Length; i++)
+        foreach (var laserObj in _laserObjects)
         {
-            if (_laserObject[i] != null)
-            {
-                _laserObject[i].DeactivateObject();
-            }
+            if (laserObj != null) laserObj.DeactivateObject();
         }
     }
 }

@@ -1,35 +1,33 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectSpawnPattern : PatternBase
 {
-    [Tooltip("오브젝트 태그")][SerializeField] private GameObject[] _patternObject;
-    [Tooltip("이동 오브젝트 컴포넌트들")] public MovingObject[] _movingObject;
+    [Header("장애물 오브젝트 설정")]
+    [SerializeField, Tooltip("수동 등록할 장애물 오브젝트들")] private List<MovingObject> _movingObjects = new List<MovingObject>();
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _patternObject = GameObject.FindGameObjectsWithTag("Obstacle");
-    }
+    [Header("오브젝트 이동 및 물리 설정")]
+    [SerializeField, Tooltip("오브젝트 이동 속도")] private float _moveSpeed = 5f;
+    [SerializeField, Tooltip("오브젝트 활성화 시간")] private float _lifeTime = 5f;
+    [SerializeField, Tooltip("오브젝트 상승 좌표")] private float _upPosition = 0.5f;
+    [SerializeField, Tooltip("오브젝트 하강 좌표")] private float _underPosition = -0.6f;
 
     public override void Init(GameObject target)
     {
-        _movingObject = new MovingObject[_patternObject.Length];
-        for (int i = 0; i < _patternObject.Length; i++)
-        {
-            _movingObject[i] = _patternObject[i].GetComponent<MovingObject>();
-        }
+        base.Init(target);
     }
 
     protected override IEnumerator PatternRoutine()
     {
         _isPatternActive = true;
 
-        for (int i = 0; i < _movingObject.Length; i++)
+        foreach (var movingObj in _movingObjects)
         {
-            if (_movingObject[i] != null)
+            if (movingObj != null)
             {
-                _movingObject[i].ActivateObject();
+                movingObj.Init(_moveSpeed, _lifeTime, _upPosition, _underPosition);
+                movingObj.ActivateObject();
             }
         }
 
@@ -42,11 +40,11 @@ public class ObjectSpawnPattern : PatternBase
     {
         _isPatternActive = false;
 
-        for (int i = 0; i < _movingObject.Length; i++)
+        foreach (var movingObj in _movingObjects)
         {
-            if (_movingObject[i] != null)
+            if (movingObj != null)
             {
-                _movingObject[i].DeactivateObject();
+                movingObj.DeactivateObject();
             }
         }
     }

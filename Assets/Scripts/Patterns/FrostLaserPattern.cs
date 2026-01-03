@@ -1,56 +1,63 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FrostLaserPattern : PatternBase
 {
-    [Tooltip("오브젝트 태그")][SerializeField] private GameObject[] _objectTag;
-    [Tooltip("레이저 오브젝트 컴포넌트들")][SerializeField] private FrostLaserObject[] _laserObject;
+    [Header("레이저 오브젝트 설정")]
+    [SerializeField, Tooltip("수동 등록할 레이저 오브젝트들")] private List<FrostLaserObject> _laserObjects = new List<FrostLaserObject>();
 
-    private GameObject _player;
+    [Header("오브젝트 이동 및 물리 설정")]
+    [SerializeField, Tooltip("오브젝트 이동 속도")] private float _moveSpeed = 5f;
+    [SerializeField, Tooltip("오브젝트 활성화 시간")] private float _lifeTime = 5f;
+    [SerializeField, Tooltip("오브젝트 회전 속도")] private float _rotationSpeed = 50f;
+    [SerializeField, Tooltip("오브젝트 상승 좌표")] private float _upPosition = -0.2f;
+    [SerializeField, Tooltip("오브젝트 하강 좌표")] private float _underPosition = -1.45f;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _objectTag = GameObject.FindGameObjectsWithTag("FrostLaserObject");
-    }
+    [Header("레이저 세부 설정")]
+    [SerializeField, Tooltip("레이저 최대 길이")] private float _maxLaserDistance = 50f;
+    [SerializeField, Tooltip("히트 파티클 이격 거리")] private float _hitParticleOffset = 0.05f;
+    [SerializeField, Tooltip("데칼 생성 텀")] private float _decalTime = 0.1f;
+
+    [Header("데미지 및 디버프 설정")]
+    [SerializeField, Tooltip("레이저 데미지")] private float _laserDmg = 5f;
+    [SerializeField, Tooltip("데미지 딜레이")] private float _dmgDelay = 0.5f;
+    [SerializeField, Tooltip("추위 데미지")] private float _coldDmg = 5f;
+    [SerializeField, Tooltip("추위 지속시간")] private float _coldTime = 5f;
+    [SerializeField, Tooltip("추위 틱")] private float _coldInterval = 1f;
 
     public override void Init(GameObject target)
     {
-        _player = target;
-        _laserObject = new FrostLaserObject[_objectTag.Length];
-        for (int i = 0; i < _objectTag.Length; i++)
-        {
-            _laserObject[i] = _objectTag[i].GetComponent<FrostLaserObject>();
-        }
+        base.Init(target);
     }
 
     protected override IEnumerator PatternRoutine()
     {
         _isPatternActive = true;
-
-        for (int i = 0; i < _laserObject.Length; i++)
-        {
-            if (_laserObject[i] != null)
-            {
-                _laserObject[i].ActivateObject();
-                _laserObject[i].Init(_player);
-            }
-        }
-
         PlayPatternSound(PatternEnum.FrostLaser);
 
-        yield break;
+        foreach (var laserObj in _laserObjects)
+        {
+            if (laserObj != null)
+            {
+                laserObj.Init(_target, _moveSpeed, _lifeTime, _rotationSpeed, _upPosition, _underPosition);
+                laserObj.SetLaserStats(_maxLaserDistance, _hitParticleOffset, _decalTime, _laserDmg, _dmgDelay, _coldDmg, _coldTime, _coldInterval);
+                laserObj.ActivateObject();
+            }
+        }
+        yield return new WaitForSeconds(_lifeTime);
+
+        CleanupPattern();
     }
 
     protected override void CleanupPattern()
     {
         _isPatternActive = false;
-
-        for (int i = 0; i < _laserObject.Length; i++)
+        foreach (var laserObj in _laserObjects)
         {
-            if (_laserObject[i] != null)
+            if (laserObj != null)
             {
-                _laserObject[i].DeactivateObject();
+                laserObj.DeactivateObject();
             }
         }
     }

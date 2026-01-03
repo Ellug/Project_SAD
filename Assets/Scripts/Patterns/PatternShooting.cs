@@ -12,7 +12,6 @@ public class PatternShooting : PatternBase
     [SerializeField, Tooltip("총알 속도")] private float _bulletSpeed;
     [SerializeField, Tooltip("총알 최대 사거리")] private float _bulletDistance;
 
-    private GameObject _target;
     private WaitForSeconds _delay;
 
     protected override void Awake()
@@ -23,7 +22,7 @@ public class PatternShooting : PatternBase
 
     public override void Init(GameObject target)
     {
-        _target = target;
+        base.Init(target);
     }
 
     protected override IEnumerator PatternRoutine()
@@ -32,30 +31,32 @@ public class PatternShooting : PatternBase
 
         for (int i = 0; i < _shootBulletNumber; i++)
         {
-            // 총알이 수평으로 날아가게 하기 위해 y축은 타겟 좌표가 아님
             if (_target == null) yield break;
 
             Vector3 spawnPos = _spawnPosition != null ? _spawnPosition.position : transform.position;
+            Quaternion shootRot;
 
-            Vector3 targetPos = new Vector3(
-                _target.transform.position.x,
-                spawnPos.y,
-                _target.transform.position.z
-            );
-
-            Vector3 dir = targetPos - spawnPos;
-            dir.y = 0f;
-
-            if (dir != Vector3.zero)
+            if (_useFixedSpawnPoint)
             {
-                Quaternion rot = Quaternion.LookRotation(dir.normalized, Vector3.up);
-                PlayPatternSound(PatternEnum.NormalShot);
+                // 고정 스폰 포인트의 방향을 그대로 사용
+                shootRot = _spawnPosition != null ? _spawnPosition.rotation : transform.rotation;
+            }
+            else
+            {
+                // 플레이어 방향 계산 (수평 발사를 위해 Y값 보정)
+                Vector3 targetPos = new Vector3(_target.transform.position.x, spawnPos.y, _target.transform.position.z);
+                Vector3 dir = (targetPos - spawnPos).normalized;
 
-                BulletBase bullet = PoolManager.Instance.Spawn(_bulletPrefab, spawnPos, rot);
-                if (bullet != null)
-                {
-                    bullet.Init(_bulletDamage, _bulletSpeed, _bulletDistance);
-                }
+                if (dir == Vector3.zero) dir = transform.forward;
+                shootRot = Quaternion.LookRotation(dir);
+            }
+
+            PlayPatternSound(PatternEnum.NormalShot);
+
+            BulletBase bullet = PoolManager.Instance.Spawn(_bulletPrefab, spawnPos, shootRot);
+            if (bullet != null)
+            {
+                bullet.Init(_bulletDamage, _bulletSpeed, _bulletDistance);
             }
 
             yield return _delay;
