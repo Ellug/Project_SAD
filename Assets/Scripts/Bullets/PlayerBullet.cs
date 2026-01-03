@@ -139,13 +139,13 @@ public class PlayerBullet : BulletBase
         // Boss -> Dmg + OnHit Effect
         if (other.transform.CompareTag("Boss"))
         {
+            float dmg = _dmg * _payload.damageMul;
+
+            if (_hasBounced)
+                dmg *= _payload.bouncedDamageMul;
+
             if (other.TryGetComponent<BossController>(out var boss))
             {
-                float dmg = _dmg * _payload.damageMul;
-
-                if (_hasBounced)
-                    dmg *= _payload.bouncedDamageMul;
-
                 // 최대체력 비례 추가 피해 (payload로 전달된 pct 사용)
                 if (_payload.dmgPerMaxHp > 0f)
                 {
@@ -158,13 +158,19 @@ public class PlayerBullet : BulletBase
                 if (_payload.effect == BulletEffect.Burn)
                     boss.ApplyBurn(_payload.burnDps, _payload.burnDuration);
             }
-            else
+            else if (other.TryGetComponent<DummyController>(out var dummy))
             {
-                if (other.TryGetComponent<DummyController>(out var dummy))
+                // 최대체력 비례 추가 피해 (payload로 전달된 pct 사용)
+                if (_payload.dmgPerMaxHp > 0f)
                 {
-                    float dmg = _dmg * _payload.damageMul;
-                    dummy.TakeDamage(dmg, _counterAttack);
+                    float pct = Mathf.Clamp01(_payload.dmgPerMaxHp);
+                    dmg += dummy.MaxHp * pct;
                 }
+
+                dummy.TakeDamage(dmg, _counterAttack);
+
+                if (_payload.effect == BulletEffect.Burn)
+                    dummy.ApplyBurn(_payload.burnDps, _payload.burnDuration);
             }
 
             PlayHitFX(hitPoint, normal);
