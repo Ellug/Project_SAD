@@ -9,11 +9,16 @@ public class StageStaticUI : MonoBehaviour
     [SerializeField] private GameObject _gameResultUI;
     [SerializeField] private GameObject _missionCompletePanel;
     [SerializeField] private GameObject _missionFailedPanel;
+    [SerializeField] private TextMeshProUGUI _elapsedTime;
+    [SerializeField] private TextMeshProUGUI _bossRemainHp;
+
+    private BossController _bossController;
 
     void Start()
     {
         UIManager.Instance.PauseUItrigger += OnOpenPausePanel;
         GameManager.Instance.OnGameStateChanged += GameResultProcess;
+        _bossController = GameObject.FindWithTag("Boss").GetComponent<BossController>();
         _curStage.text = $"STAGE {GameManager.Instance.CurEnterStage}";
     }
 
@@ -33,6 +38,11 @@ public class StageStaticUI : MonoBehaviour
         if (_gameResultUI != null)
         {
             _gameResultUI.SetActive(true);
+
+            int elapsedTime = _bossController.GetTime();
+
+            _elapsedTime.text = $"{elapsedTime / 60:D2} : {elapsedTime % 60:D2}";
+            _bossRemainHp.text = $"{(_bossController.BossCurrentHp / _bossController.BossMaxHp * 100f):F2}%";
 
             bool isWin = GameManager.Instance.IsPlayerWin;
 
