@@ -34,6 +34,10 @@ public class GameManager : SingletonePattern<GameManager>
         base.Awake();
         UnlockStage = 1;
         CurEnterStage = 0;
+
+    #if !UNITY_EDITOR
+        Cursor.lockState = CursorLockMode.Confined;
+    #endif
     }
 
     void Start()

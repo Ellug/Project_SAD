@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,10 +6,6 @@ using DG.Tweening;
 
 public class StageDynamicUI : MonoBehaviour
 {
-    [Header("Models")]
-    [SerializeField] private PlayerModel _playerModel;
-    [SerializeField] private BossController _bossController;
-
     [Header("Boss UI")]
     [SerializeField] private Transform _bossHpBar;
     [SerializeField] private Transform _bossHpFollowingBar;
@@ -24,15 +19,13 @@ public class StageDynamicUI : MonoBehaviour
     [SerializeField] private Image _specialCooldownBar;
     [SerializeField] private TextMeshProUGUI _specialCooldownText;
 
-    [Header("Result Info")]
-    [SerializeField] private TextMeshProUGUI _elapsedTime;
-    [SerializeField] private TextMeshProUGUI _bossRemainHp;
+    private PlayerModel _playerModel;
+    private BossController _bossController;
 
     private const float OUT_OF_SCREEN_INDI_PADDING = 50f;
 
     private Camera _mainCam;
-    private int _secondTimer;
-    private Coroutine _timerCoroutine;
+    
     private Vector3 _hpBarVector;
     private float _prevPlayerHp;
     private float _prevBossHp;
@@ -41,12 +34,15 @@ public class StageDynamicUI : MonoBehaviour
     {
         _hpBarVector = Vector3.zero;
         _mainCam = Camera.main;
+
+        _playerModel = GameObject.FindWithTag("Player").GetComponent<PlayerModel>();
+        _bossController = GameObject.FindWithTag("Boss").GetComponent<BossController>();
         _prevPlayerHp = _playerModel.CurHp;
         _prevBossHp = _bossController.BossCurrentHp;
         GameManager.Instance.OnGameStateChanged += GameResultProcess;
         UIManager.Instance.PauseUItrigger += PauseProcess;
         UIManager.Instance.AllUIClosed += ResumeProcess;
-        _timerCoroutine = StartCoroutine(UpdateTimer());
+        
     }
 
     private void OnDestroy()
@@ -58,7 +54,6 @@ public class StageDynamicUI : MonoBehaviour
             UIManager.Instance.PauseUItrigger -= PauseProcess;
             UIManager.Instance.AllUIClosed -= ResumeProcess;
         }
-        StopCoroutine(_timerCoroutine);
     }
 
     void Update()
@@ -180,20 +175,20 @@ public class StageDynamicUI : MonoBehaviour
         _playerIndicator.transform.position = curPos;
     }
 
-    // Timer Update
-    private IEnumerator UpdateTimer()
-    {
-        WaitForSeconds secondDelay = new WaitForSeconds(1f);
-        _secondTimer = 0;
+    //// Timer Update
+    //private IEnumerator UpdateTimer()
+    //{
+    //    WaitForSeconds secondDelay = new WaitForSeconds(1f);
+    //    _secondTimer = 0;
 
-        yield return secondDelay;
+    //    yield return secondDelay;
 
-        while (true)
-        {
-            _secondTimer++;
-            yield return secondDelay;
-        }
-    }
+    //    while (true)
+    //    {
+    //        _secondTimer++;
+    //        yield return secondDelay;
+    //    }
+    //}
 
     private void PauseProcess()
     {
@@ -213,9 +208,6 @@ public class StageDynamicUI : MonoBehaviour
         if (_playerIndicator != null)
         {
             _playerIndicator.gameObject.SetActive(false);
-
-            _elapsedTime.text = $"{_secondTimer / 60:D2} : {_secondTimer % 60:D2}";
-            _bossRemainHp.text = $"{(_bossController.BossCurrentHp / _bossController.BossMaxHp * 100f):F2}%";
         }
     }
 }
