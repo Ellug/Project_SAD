@@ -26,13 +26,13 @@ public class GameManager : SingletonePattern<GameManager>
     public bool IsResult  => CurrentState == GameState.Result;
 
     public event Action<GameState> OnGameStateChanged;
+    public event Action<int> OnUnlockStageChanged;
 
     private CanvasGroup _fadeInOutEffect;
 
     protected override void Awake()
     {
         base.Awake();
-        UnlockStage = 1;
         CurEnterStage = 0;
 
     #if !UNITY_EDITOR
@@ -49,20 +49,30 @@ public class GameManager : SingletonePattern<GameManager>
             instance.SetActive(false);
             DontDestroyOnLoad(instance);
         }
+        
+        SetUnlockStage(1);
     }
 
     // Stage Unlock for Debug
     void Update()
     {
         if(Keyboard.current.pKey.wasPressedThisFrame)
-            UnlockStage = 5;
+            SetUnlockStage(5);
+    }
+    
+    public void SetUnlockStage(int value)
+    {
+        if (UnlockStage == value) return;
+
+        UnlockStage = value;
+        OnUnlockStageChanged?.Invoke(UnlockStage);
     }
 
     public void PlayerWin()
     {
         IsPlayerWin = true;
         if (CurEnterStage == UnlockStage)
-            UnlockStage++;
+            SetUnlockStage(UnlockStage + 1);
         SetState(GameState.Result);
     }
 

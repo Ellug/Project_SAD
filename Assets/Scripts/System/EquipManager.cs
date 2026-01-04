@@ -12,7 +12,9 @@ public class EquipManager : SingletonePattern<EquipManager>
 
     public event Action<WeaponBase> OnWeaponEquipped;
 
+    private GameManager _gm;
     private int[] _perkSelections; // 전체 퍽 선택 상태 저장
+    private bool _suppressPerksChanged;
 
     // Perks -> PlayerMods 브릿지용
     private PlayerModel _boundPlayer;
@@ -21,12 +23,19 @@ public class EquipManager : SingletonePattern<EquipManager>
     void OnEnable()
     {
         SceneManager.sceneLoaded -= OnSceneLoad;
-        SceneManager.sceneLoaded += OnSceneLoad;        
+        SceneManager.sceneLoaded += OnSceneLoad;
+        
+        _gm = GameManager.Instance;
+        if (_gm != null)
+            _gm.OnUnlockStageChanged += OnUnlockStageChanged;
     }
 
     void OnDisable()
     {        
         SceneManager.sceneLoaded -= OnSceneLoad;
+
+        if (_gm != null)
+            _gm.OnUnlockStageChanged -= OnUnlockStageChanged;
     }
 
     void Start()
@@ -39,6 +48,7 @@ public class EquipManager : SingletonePattern<EquipManager>
     {
         UnbindPerksBridge();
     }
+
 
     private void EnsureDefaultWeapon()
     {
@@ -83,6 +93,8 @@ public class EquipManager : SingletonePattern<EquipManager>
         // 같은 무기면 "재생성" 하지 말고, 현재 인스턴스 기준으로 UI/브릿지 재동기화만
         if (CurrentWeaponInstance != null && CurrentWeaponInstance.GetWeaponId() == Weapon.GetWeaponId())
         {
+            ApplySelectionsToTree(CurrentWeaponInstance.PerksTree, notify: true);
+
             // 트리/브릿지/플레이어 적용만 보정
             BindPerksBridge(player, CurrentWeaponInstance.PerksTree);
             ApplyPerksTo(player, CurrentWeaponInstance);
@@ -104,7 +116,7 @@ public class EquipManager : SingletonePattern<EquipManager>
         player.SetWeapon(weaponInstance);
 
         // 2) Perks 복원
-        RestorePerksTo(weaponInstance.PerksTree);
+        ApplySelectionsToTree(weaponInstance.PerksTree, notify: true);
 
         // 3) 무기 퍽이 플레이어에도 영향을 주기에 바인딩
         BindPerksBridge(player, weaponInstance.PerksTree);
@@ -154,29 +166,100 @@ public class EquipManager : SingletonePattern<EquipManager>
     private void OnBoundPerksChanged()
     {
         if (_boundTree == null) return;
+        if (_suppressPerksChanged) return;
 
-        // 1) 저장을 먼저 갱신
-        SavePerksFrom(_boundTree);
+        // 1) 트리에서 읽고 저장
+        _perkSelections = _boundTree.ExportSelections();
+
+        // 2) 특전에 적용 (잠긴 스테이지 -1 강제 / 열린 스테이지 -1이면 0)
+        int[] applied = ApplyUnlockPerks(_perkSelections, _boundTree.StageCount, _gm.UnlockStage);
+
+        if (!AreEqual(_perkSelections, applied))
+        {
+            _perkSelections = applied;
+
+            // 트리에 반영하되, 이벤트 루프 방지
+            _suppressPerksChanged = true;
+            _boundTree.ImportSelections(_perkSelections, notify: false);
+            _suppressPerksChanged = false;
+        }
 
         if (_boundPlayer == null) return;
 
-        // 2) 무기 퍽 변경 시, 플레이어 스탯도 같이 갱신
         var mods = _boundTree.GetActiveMods();
         _boundPlayer.RebuildRuntimeStats(mods);
     }
 
-    // Save / Restore
-    public void SavePerksFrom(PerksTree tree)
+    // 퍽 선택 동일한지 비교용 메서드
+    private bool AreEqual(int[] a, int[] b)
     {
-        if (tree == null) return;
-        _perkSelections = tree.ExportSelections();
+        if (ReferenceEquals(a, b)) return true;
+        if (a == null || b == null) return false;
+        if (a.Length != b.Length) return false;
+
+        for (int i = 0; i < a.Length; i++)
+            if (a[i] != b[i]) return false;
+
+        return true;
     }
 
-    private void RestorePerksTo(PerksTree tree)
+    // i < unlockedCount: -1이면 0으로 채움 (기존 0/1 유지)
+    // i >= unlockedCount: 무조건 -1
+    private int[] ApplyUnlockPerks(int[] src, int stageCount, int unlockStage)
+    {
+        var dst = new int[stageCount];
+        for (int i = 0; i < stageCount; i++) dst[i] = -1;
+
+        if (src != null)
+        {
+            int copy = Mathf.Min(src.Length, stageCount);
+            for (int i = 0; i < copy; i++)
+            {
+                int v = src[i];
+                dst[i] = (v == -1 || v == 0 || v == 1) ? v : -1;
+            }
+        }
+
+        int unlockedCount = Mathf.Clamp(unlockStage, 0, stageCount);
+
+        for (int i = 0; i < unlockedCount; i++)
+            if (dst[i] == -1) dst[i] = 0;
+
+        for (int i = unlockedCount; i < stageCount; i++)
+            dst[i] = -1;
+
+        return dst;
+    }
+
+    private void ApplySelectionsToTree(PerksTree tree, bool notify)
     {
         if (tree == null) return;
-        if (_perkSelections == null) return;
 
-        tree.ImportSelections(_perkSelections, notify: true);
+        int stageCount = tree.StageCount;
+
+        int unlockStage = _gm.UnlockStage;
+        int[] normalized = ApplyUnlockPerks(_perkSelections, stageCount, unlockStage);
+
+        _perkSelections = normalized;
+
+        if (notify)
+        {
+            // notify:true면 OnChanged -> OnBoundPerksChanged가 돌아야 함 (스탯/저장 갱신)
+            tree.ImportSelections(_perkSelections, notify: true);
+        }
+        else
+        {
+            // notify:false일 때만 루프 방지
+            _suppressPerksChanged = true;
+            tree.ImportSelections(_perkSelections, notify: false);
+            _suppressPerksChanged = false;
+        }
+    }
+
+    private void OnUnlockStageChanged(int unlockStage)
+    {
+        if (_boundTree == null) return;
+
+        ApplySelectionsToTree(_boundTree, notify: true);
     }
 }
