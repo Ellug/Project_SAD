@@ -112,6 +112,13 @@ public class PlayerController : MonoBehaviour
         UIManager.Instance.TogglePause();
     }
 
+    public void OnGuide(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.performed) return;
+
+        UIManager.Instance.ToggleGuide();
+    }
+
     // Movement
     private void HandleMovement()
     {
