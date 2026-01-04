@@ -11,7 +11,6 @@ public class WeaponView : MonoBehaviour
     [SerializeField] private WeaponSelectUI _weaponSelectUI;
 
     private WeaponPresenter _presenter;
-    private PerksTree _perksTree;
     private TextMeshProUGUI _titleText;
 
     void Start()
@@ -79,8 +78,6 @@ public class WeaponView : MonoBehaviour
         var inst = EquipManager.Instance.CurrentWeaponInstance;
         var tree = inst != null ? inst.PerksTree : null;
 
-        BindPerksTree(tree);
-
         if (_perkPanelUI != null)
             _perkPanelUI.ApplyPerksTree(tree);
 
@@ -89,26 +86,5 @@ public class WeaponView : MonoBehaviour
 
         if (_titleText != null && weaponId >= 0 && weaponId < _allWeaponData.Length)
             _titleText.text = $"{_allWeaponData[weaponId].name.ToUpper()}";
-    }
-
-    private void BindPerksTree(PerksTree tree)
-    {
-        if (_perksTree != null)
-            _perksTree.OnChanged -= OnPreviewPerksChanged;
-
-        _perksTree = tree;
-
-        if (_perksTree == null) return;
-
-        _perksTree.OnChanged += OnPreviewPerksChanged;
-
-        // 선택 UI 표시 갱신
-        OnPreviewPerksChanged();
-    }
-
-    private void OnPreviewPerksChanged()
-    {
-        // 선택 상태를 GameManager에 저장
-        EquipManager.Instance.SavePerksFrom(_perksTree);
     }
 }
