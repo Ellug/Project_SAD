@@ -7,7 +7,7 @@ using UnityEngine;
 public class BossController : MonoBehaviour
 {
     [Header("건드리지 말 것")]
-    [SerializeField] private DamageNumber _dmgFont;
+    [SerializeField] protected DamageNumber _dmgFont;
     [Header("보스 체력&페이즈 정의")]
     [SerializeField] private float _bossMaxHp = 100;
     [SerializeField] private float[] _changePhaseHpRate;
@@ -25,10 +25,10 @@ public class BossController : MonoBehaviour
     public float BossCurrentHp { get; private set; }
 
     // Burn
-    private float _burnTickInterval = 0.5f;
-    private float _burnTickAcc;
-    private float _burnRemain;
-    private float _burnDps;
+    protected float _burnTickInterval = 0.5f;
+    protected float _burnTickAcc;
+    protected float _burnRemain;
+    protected float _burnDps;
 
     // Timer
     private int _secondTimer;
@@ -43,13 +43,13 @@ public class BossController : MonoBehaviour
         BossCurrentHp = _bossMaxHp;
     }
 
-    void Start()
+    protected virtual void Start()
     {
         _timerCoroutine = StartCoroutine(UpdateTimer());
         if (_childRenderers.Length > 0) _baseMaterial = _childRenderers[0].sharedMaterial;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         TickBurn(Time.deltaTime);
     }
@@ -127,7 +127,7 @@ public class BossController : MonoBehaviour
         _burnRemain = Mathf.Max(_burnRemain, duration);
     }
 
-    private void TickBurn(float dt)
+    protected void TickBurn(float dt)
     {
         if (_burnRemain <= 0f) return;
         if (BossCurrentHp <= 0f) return;

@@ -158,13 +158,13 @@ public class PlayerBullet : BulletBase
                 if (_payload.effect == BulletEffect.Burn)
                     boss.ApplyBurn(_payload.burnDps, _payload.burnDuration);
             }
-            else if (other.TryGetComponent<DummyController>(out var dummy))
+            else if (other.TryGetComponent<BossController>(out var dummy))
             {
                 // 최대체력 비례 추가 피해 (payload로 전달된 pct 사용)
                 if (_payload.dmgPerMaxHp > 0f)
                 {
                     float pct = Mathf.Clamp01(_payload.dmgPerMaxHp);
-                    dmg += dummy.MaxHp * pct;
+                    dmg += dummy.BossMaxHp * pct;
                 }
 
                 dummy.TakeDamage(dmg, _counterAttack);
