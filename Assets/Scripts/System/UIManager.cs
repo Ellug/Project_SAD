@@ -11,6 +11,7 @@ public class UIManager : SingletonePattern<UIManager>
     private QuickGuideUI _quickGuidePanel;
 
     public event Action PauseUItrigger;
+    public event Action FirstUItrigger;
     public event Action AllUIClosed;
 
     protected override void Awake()
@@ -57,6 +58,7 @@ public class UIManager : SingletonePattern<UIManager>
         {
             if (_inputSystem != null && _uiStack.Count == 0)
             {
+                FirstUItrigger?.Invoke();
                 GameManager.Instance.TogglePause();
                 _inputSystem.SwitchCurrentActionMap("UI");
             }

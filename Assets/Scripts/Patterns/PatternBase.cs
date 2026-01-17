@@ -16,6 +16,7 @@ public abstract class PatternBase : MonoBehaviour
     [SerializeField, Tooltip("장판 길이 보정 배율")] protected float _lengthScaleModifier;
     [SerializeField, Tooltip("레이어 마스크")] protected LayerMask _groundLayer;
     [SerializeField, Tooltip("플레이어 예측치(0이면 플레이어 위치)")] protected float _ChaseOffset;
+    [SerializeField, Tooltip("경고장판 생성 위치")] protected Transform _WarnningSpwanPoint;
 
     [Header("고정 스폰 설정")]
     [SerializeField, Tooltip("체크 시 스폰 포인트의 위치와 방향으로 고정")] protected bool _useFixedSpawnPoint;
@@ -60,7 +61,7 @@ public abstract class PatternBase : MonoBehaviour
 
     private void UpdateWarningPosition()
     {
-        Vector3 origin = transform.position;
+        Vector3 origin = _WarnningSpwanPoint.position;
         origin.y = 0.1f;
 
         Vector3 targetPos;
@@ -68,12 +69,12 @@ public abstract class PatternBase : MonoBehaviour
 
         if (_useFixedSpawnPoint)
         {
-            targetPos = transform.position;
-            direction = transform.forward;
+            targetPos = _WarnningSpwanPoint.position;
+            direction = _WarnningSpwanPoint.forward;
         }
         else
         {
-            targetPos = _predictiveAim != null ? _predictiveAim.PredictiveAimCalc(_ChaseOffset) : _target.transform.position;
+            targetPos = _predictiveAim != null ? _predictiveAim.PredictiveAimCalc(_ChaseOffset) : _WarnningSpwanPoint.position;
             targetPos.y = 0.1f;
             direction = (targetPos - origin).normalized;
         }
@@ -106,11 +107,11 @@ public abstract class PatternBase : MonoBehaviour
             Vector3 startPos;
             if (_useFixedSpawnPoint)
             {
-                startPos = transform.position;
+                startPos = _WarnningSpwanPoint.position;
             }
             else
             {
-                startPos = _predictiveAim != null ? _predictiveAim.PredictiveAimCalc(_ChaseOffset) : _target.transform.position;
+                startPos = _predictiveAim != null ? _predictiveAim.PredictiveAimCalc(_ChaseOffset) : _WarnningSpwanPoint.position;
             }
 
             _currentWarning = PoolManager.Instance.Spawn(_WarnningArea, startPos, Quaternion.identity);
