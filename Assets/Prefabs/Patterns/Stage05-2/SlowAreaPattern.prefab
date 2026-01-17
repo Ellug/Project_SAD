@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlowAreaPattern
   mode: 0
-  _WarnningArea: {fileID: 0}
+  _WarnningArea: {fileID: 5028210697168788272}
   _WarnningTime: 0
   _WarnningDTime: 0
   _WarnningMaxLength: 0
@@ -412,5 +412,10 @@ PrefabInstance:
 --- !u!4 &1403447674594913251 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8917160837124551410, guid: 33dc574e6747eb7469c5b751ff6df295, type: 3}
+  m_PrefabInstance: {fileID: 7546364673487444241}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5028210697168788272 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3278013929562178081, guid: 33dc574e6747eb7469c5b751ff6df295, type: 3}
   m_PrefabInstance: {fileID: 7546364673487444241}
   m_PrefabAsset: {fileID: 0}

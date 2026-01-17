@@ -83,7 +83,7 @@ MonoBehaviour:
   _WarnningTime: 1
   _WarnningDTime: 0.3
   _WarnningMaxLength: 60
-  _WarnningWidth: 3
+  _WarnningWidth: 4
   _lengthScaleModifier: 0.45
   _groundLayer:
     serializedVersion: 2
