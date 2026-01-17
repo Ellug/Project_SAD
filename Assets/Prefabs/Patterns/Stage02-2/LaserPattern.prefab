@@ -67,7 +67,7 @@ MonoBehaviour:
   - {fileID: 0}
   _moveSpeed: 5
   _lifeTime: 5
-  _rotationSpeed: 5
+  _rotationSpeed: 20
   _upPosition: -0.2
   _underPosition: -1.45
   _maxLaserDistance: 50
