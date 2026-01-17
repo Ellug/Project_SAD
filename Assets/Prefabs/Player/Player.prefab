@@ -217,7 +217,7 @@ MonoBehaviour:
   _dodgeSpeed: 30
   _dodgeCoolTime: 3
   _specialCoolTime: 7
-  _attackMinSpeed: 8
+  _attackMinSpeed: 12
   _attackSlowRate: 2
   _childRenderers:
   - {fileID: 4968826433639077705}
@@ -439,6 +439,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fc5cb3e3-7b4e-4bbd-9299-5652a8d1739d
     m_ActionName: 'UI/Exit[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 69e4cbf0-002c-46ca-bc6f-0dc2f4d58037
+    m_ActionName: 'Player/Guide[/Keyboard/g]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
