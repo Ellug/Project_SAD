@@ -44,10 +44,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326ecf945f46b724dba4bfd86b69c99e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserPattern
-  _counterable: 1
+  mode: 0
+  _WarnningArea: {fileID: 0}
+  _WarnningTime: 0
+  _WarnningDTime: 0
+  _WarnningMaxLength: 0
+  _WarnningWidth: 0
+  _lengthScaleModifier: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 0}
+  _useFixedSpawnPoint: 0
+  _counterable: 0
   _startupDelay: 1.5
+  _startDelay: 1
   _cycleTime: 12
   _objectTag:
   - {fileID: 0}
   _laserObject:
   - {fileID: 0}
+  _moveSpeed: 5
+  _lifeTime: 10
+  _rotationSpeed: 40
+  _upPosition: -0.2
+  _underPosition: -1.45
+  _maxLaserDistance: 50
+  _hitParticleOffset: 0.05
+  _decalTime: 5
+  _damage: 5
+  _damageDelay: 0.1

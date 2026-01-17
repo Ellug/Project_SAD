@@ -72,8 +72,8 @@ MonoBehaviour:
   _maxLaserDistance: 50
   _hitParticleOffset: 0.05
   _decalTime: 0.1
-  _laserDmg: 5
-  _dmgDelay: 0.5
+  _laserDmg: 10
+  _dmgDelay: 0.1
   _coldDmg: 5
   _coldTime: 5
   _coldInterval: 1
