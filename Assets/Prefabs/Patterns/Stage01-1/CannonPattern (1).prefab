@@ -67,7 +67,7 @@ MonoBehaviour:
   _shootInterval: 0.1
   _shootBulletNumber: 1
   _spawnPosition: {fileID: 7406611455383550715, guid: 37b20ad13a00e8741828f6b1f46377a4, type: 3}
-  _bulletDamage: 10
+  _bulletDamage: 30
   _bulletSpeed: 20
   _bulletMaxDistance: 50
 --- !u!82 &8302400667519359762

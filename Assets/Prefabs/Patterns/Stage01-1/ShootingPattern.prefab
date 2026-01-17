@@ -56,6 +56,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 0}
   _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 0
@@ -66,7 +67,7 @@ MonoBehaviour:
   _shootBulletNumber: 5
   _spawnPosition: {fileID: 7406611455383550715, guid: aadca8f1168b258448a8940428e76826, type: 3}
   _bulletDamage: 10
-  _bulletSpeed: 20
+  _bulletSpeed: 30
   _bulletDistance: 50
 --- !u!82 &1668651442522837303
 AudioSource:

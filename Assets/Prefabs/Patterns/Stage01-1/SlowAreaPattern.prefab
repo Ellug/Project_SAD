@@ -56,7 +56,7 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 0
-  _ChaseOffset: -2
+  _ChaseOffset: 0.1
   _WarnningSpwanPoint: {fileID: 7406611455383550715, guid: 3574154a30911cc4588ace04e981c8a5, type: 3}
   _useFixedSpawnPoint: 0
   _counterable: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   _SlowRange: 2.5
   _SlowAreaTime: 5
   _ChaseSpeed: 8
-  _SlowPower: 0.1
+  _SlowPower: 0
   _SlowTime: 2
   _applyInterval: 0.2
 --- !u!82 &4108840657820736238
