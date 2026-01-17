@@ -1187,7 +1187,7 @@ MonoBehaviour:
   _player: {fileID: 1507371533}
   _boss: {fileID: 223490255}
   _phase:
-  - {fileID: 11400000, guid: 01d42a574e3598949a40e751b0fff6d4, type: 2}
+  - {fileID: 11400000, guid: 46bc8be2191ec4f4e82d4feb5884bba9, type: 2}
   - {fileID: 11400000, guid: 46bc8be2191ec4f4e82d4feb5884bba9, type: 2}
   - {fileID: 11400000, guid: de2c9c209b4fb7b49bee8fbd0286dc37, type: 2}
 --- !u!4 &505577145
@@ -1351,6 +1351,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2f749f5f92e22a40a65b9e8d9947ec6, type: 3}
+--- !u!1001 &616717774
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2469734760800800472, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_Name
+      value: FrostLaser (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
 --- !u!1 &668630619
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,63 +1723,6 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 6766083591274399076, guid: d0eedec75df5c0942819e8af1822a2a0, type: 3}
   m_PrefabInstance: {fileID: 469217936}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &985433980
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2469734760800800472, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_Name
-      value: FrostLaser (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.0000008344649
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7599397546666515023, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7eadd7bd0f7c9d443904410ce0f462a3, type: 3}
 --- !u!1001 &1080304711
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3872,7 +3872,7 @@ SceneRoots:
   - {fileID: 1931284171}
   - {fileID: 668630620}
   - {fileID: 5725331173702402023}
-  - {fileID: 985433980}
+  - {fileID: 616717774}
   - {fileID: 1278843708}
   - {fileID: 713250902}
   - {fileID: 697177660}
