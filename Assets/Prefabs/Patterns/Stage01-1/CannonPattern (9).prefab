@@ -46,22 +46,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4716483ba26e54f45868fc20233b2a7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CannonPattern
+  mode: 1
+  _WarnningArea: {fileID: 1651267398265640262}
+  _WarnningTime: 1.5
+  _WarnningDTime: 0
+  _WarnningMaxLength: 50
+  _WarnningWidth: 5
+  _lengthScaleModifier: 0.45
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 0
+  _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 1
+  _startDelay: 1
   _cycleTime: 3
   _bulletPrefab: {fileID: 6547672779303436957, guid: 6993d496e570f55498ccce76772cee0f, type: 3}
   _shootInterval: 0.1
   _shootBulletNumber: 1
   _spawnPosition: {fileID: 7406611455383550715, guid: 05642f4c67a459e48b90a121e34d925d, type: 3}
-  _WarnningArea: {fileID: 1651267398265640262}
-  _WarnningTime: 1.5
-  _WarnningFNTime: 0.5
-  _WarnningMaxLength: 50
-  _WarnningWidth: 5
-  _Layer:
-    serializedVersion: 2
-    m_Bits: 64
-  _lengthScaleModifier: 0.45
+  _bulletDamage: 10
+  _bulletSpeed: 20
+  _bulletMaxDistance: 50
 --- !u!82 &8302400667519359762
 AudioSource:
   m_ObjectHideFlags: 0

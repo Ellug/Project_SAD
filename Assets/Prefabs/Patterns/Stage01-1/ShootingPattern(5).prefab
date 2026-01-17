@@ -45,8 +45,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98701e639e75834290238ce91300d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatternShooting
+  mode: 2
+  _WarnningArea: {fileID: 0}
+  _WarnningTime: 0
+  _WarnningDTime: 0
+  _WarnningMaxLength: 0
+  _WarnningWidth: 0
+  _lengthScaleModifier: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 0
+  _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 0
+  _startDelay: 1
   _cycleTime: 3
   _bulletPrefab: {fileID: 2245060522831277793, guid: 89236ddc88ce0074a89402d591207f07, type: 3}
   _shootInterval: 0.2
