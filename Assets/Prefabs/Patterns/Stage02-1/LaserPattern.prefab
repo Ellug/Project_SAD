@@ -72,4 +72,4 @@ MonoBehaviour:
   _hitParticleOffset: 0.05
   _decalTime: 5
   _damage: 5
-  _damageDelay: 0.5
+  _damageDelay: 0.1

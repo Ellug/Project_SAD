@@ -60,14 +60,14 @@ MonoBehaviour:
   _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 0
-  _startDelay: 1
-  _cycleTime: 1.5
-  _bulletPrefab: {fileID: 2245060522831277793, guid: a083c7413226a2544ba50fd19895f0b0, type: 3}
-  _shootInterval: 1
-  _shootBulletNumber: 1
-  _spawnPosition: {fileID: 1592164106204890104, guid: 4f0013bb1b636ac48aba1774ac5af76e, type: 3}
-  _bulletDamage: 30
-  _bulletSpeed: 30
+  _startDelay: 2
+  _cycleTime: 4
+  _bulletPrefab: {fileID: 2245060522831277793, guid: 2f0ef30c3605f7040ad1f46c647e7a00, type: 3}
+  _shootInterval: 0.2
+  _shootBulletNumber: 2
+  _spawnPosition: {fileID: 8345392495636398961, guid: 6e072a12ebb69b54e8792e7259e2048f, type: 3}
+  _bulletDamage: 10
+  _bulletSpeed: 20
   _bulletDistance: 100
 --- !u!82 &1668651442522837303
 AudioSource:

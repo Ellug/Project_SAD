@@ -46,16 +46,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c1600b0b91ed4f41910a1d977126ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlowAreaPattern
+  mode: 0
+  _WarnningArea: {fileID: 5028210697168788272}
+  _WarnningTime: 0
+  _WarnningDTime: 0
+  _WarnningMaxLength: 0
+  _WarnningWidth: 0
+  _lengthScaleModifier: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 0}
+  _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 0
+  _startDelay: 1
   _cycleTime: 4
-  _ChaseOffset: 0
   _SlowParticle: {fileID: 3521858460786768127}
-  _WarinningParticle: {fileID: 5028210697168788272}
   _SlowRange: 2.5
   _SlowAreaTime: 5
-  _WarinningAreaTime: 0
-  _WarinningAreaDTime: 0.5
   _ChaseSpeed: 10
   _SlowPower: 0.1
   _SlowTime: 2
