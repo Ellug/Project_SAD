@@ -56,17 +56,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 0}
   _useFixedSpawnPoint: 0
   _counterable: 1
   _startupDelay: 2
-  _startDelay: 1
-  _cycleTime: 15
+  _startDelay: 3
+  _cycleTime: 12
   _bulletPrefab: {fileID: 2245060522831277793, guid: 4523a5e5963ac1a40afd180aecba7a79, type: 3}
   _shootInterval: 0.15
   _shootBulletNumber: 3
   _spawnPosition: {fileID: 7406611455383550715, guid: 154780b68ed0ad64d8f49c00c23a360d, type: 3}
-  _bulletDamage: 40
-  _bulletSpeed: 100
+  _bulletDamage: 20
+  _bulletSpeed: 55
   _bulletDistance: 50
 --- !u!82 &1668651442522837303
 AudioSource:
