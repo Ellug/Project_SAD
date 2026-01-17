@@ -45,17 +45,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98701e639e75834290238ce91300d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatternShooting
-  mode: 1
+  mode: 2
   _WarnningArea: {fileID: 7466106648552227881, guid: 25806f3a7b7da3343b8925efdda2bf9a, type: 3}
-  _WarnningTime: 1
-  _WarnningDTime: 0.5
-  _WarnningMaxLength: 50
-  _WarnningWidth: 5
-  _lengthScaleModifier: 0.45
+  _WarnningTime: 0
+  _WarnningDTime: 0
+  _WarnningMaxLength: 0
+  _WarnningWidth: 0
+  _lengthScaleModifier: 0
   _groundLayer:
     serializedVersion: 2
     m_Bits: 0
   _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 0}
   _useFixedSpawnPoint: 0
   _counterable: 1
   _startupDelay: 2

@@ -62,11 +62,13 @@ MonoBehaviour:
   _startupDelay: 0
   _startDelay: 1
   _cycleTime: 10
-  _laserObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  _objectTag:
+  - {fileID: 4007862064861658317, guid: 2380138181a6f1a4dae8e6f738098c37, type: 3}
+  _laserObject:
+  - {fileID: 1115048764367140901, guid: 2380138181a6f1a4dae8e6f738098c37, type: 3}
+  - {fileID: 2775792562158423023, guid: 77f4065e0ab80be4c9bc41dcb63ed0da, type: 3}
+  - {fileID: 7685570583831328877, guid: ce9df78afde4ba74a93af2d21c3d0278, type: 3}
+  - {fileID: 1691104662411453785, guid: 9aaec9117578efe4dbfb0d1562730a2d, type: 3}
   _moveSpeed: 5
   _lifeTime: 5
   _rotationSpeed: 50
