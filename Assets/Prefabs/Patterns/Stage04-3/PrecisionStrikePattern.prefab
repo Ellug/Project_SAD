@@ -98,7 +98,7 @@ MonoBehaviour:
   _counterable: 0
   _startupDelay: 0
   _startDelay: 1
-  _cycleTime: 3
+  _cycleTime: 5
   _StaticWarnningArea: {fileID: 4492684248554453628}
   _FirstExplosionParticle: {fileID: 5943681133329445055}
   _SecondExplosionParticle: {fileID: 8605577470561055736}
