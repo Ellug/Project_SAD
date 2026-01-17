@@ -3,35 +3,41 @@ using System.Collections;
 
 public class IceArea : MonoBehaviour, IPoolable
 {
-    [Header("냉기 설정")]
-    [Tooltip("실제 타격 판정 범위 (지름)")][SerializeField] float _IceAreaRange = 5.0f;
-    [Tooltip("냉기 지속 시간")][SerializeField] float _IceAreaLifeTime = 5.0f;
-    [Tooltip("냉기 데미지")][SerializeField] float _Dmg = 10.0f;
-    [Tooltip("데미지 딜레이")][SerializeField] float _DmgDelay = 0.5f;
+    protected float _IceAreaRange;
+    protected float _IceAreaLifeTime;
+    protected float _Dmg;
+    protected float _DmgDelay;
 
-    [Header("디버프 설정")]
-    [Tooltip("냉기 지속시간")][SerializeField] float _ColdDebuffTime = 2.0f;
-    [Tooltip("냉기 데미지")][SerializeField] float _ColdDmg = 5.0f;
-    [Tooltip("냉기 틱")][SerializeField] float _TickInterval = 0.5f;
+    protected float _ColdDebuffTime;
+    protected float _ColdDmg;
+    protected float _TickInterval;
 
-    private GameObject _player;
-    private bool _checkDelay = true;
-    private Coroutine _delayCoroutine;
+    protected GameObject _player;
+    protected bool _checkDelay = true;
+    protected Coroutine _delayCoroutine;
 
     private void OnValidate()
     {
         UpdateVisuals();
     }
 
-    public void Init(GameObject player)
+    public void Init(GameObject player, float range, float life, float dmg, float delay, float cDmg, float cTime, float cTick)
     {
         _player = player;
+        _IceAreaRange = range;
+        _IceAreaLifeTime = life;
+        _Dmg = dmg;
+        _DmgDelay = delay;
+        _ColdDmg = cDmg;
+        _ColdDebuffTime = cTime;
+        _TickInterval = cTick;
+
         _checkDelay = true;
         UpdateVisuals();
         Invoke(nameof(DespawnIceArea), _IceAreaLifeTime);
     }
 
-    private void UpdateVisuals()
+    protected virtual void UpdateVisuals()
     {
         if (transform.childCount == 0) return;
         Transform bottom = transform.GetChild(0);
@@ -40,16 +46,13 @@ public class IceArea : MonoBehaviour, IPoolable
         for (int i = 0; i < bottom.childCount; i++)
         {
             Transform child = bottom.GetChild(i);
-
             float multiplier = child.name.Contains("Aura") ? 1.6f : 1.0f;
-
             float finalScale = (_IceAreaRange / 5.0f) * multiplier;
-
             child.localScale = new Vector3(finalScale, finalScale, finalScale);
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (_player == null || !_checkDelay) return;
 
@@ -61,30 +64,35 @@ public class IceArea : MonoBehaviour, IPoolable
                 playerModel.ColdDebuff(_ColdDmg, _ColdDebuffTime, _TickInterval);
 
                 _checkDelay = false;
-                _delayCoroutine = StartCoroutine(DmgDelayTime());
+                if (gameObject.activeInHierarchy)
+                    _delayCoroutine = StartCoroutine(DmgDelayTime());
             }
         }
     }
 
-    private void DespawnIceArea()
+    protected virtual void DespawnIceArea()
     {
         CancelInvoke();
         if (_delayCoroutine != null) StopCoroutine(_delayCoroutine);
         PoolManager.Instance.Despawn(gameObject);
     }
 
-    private IEnumerator DmgDelayTime()
+    protected virtual IEnumerator DmgDelayTime()
     {
         yield return new WaitForSeconds(_DmgDelay);
         _checkDelay = true;
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
-        Gizmos.color = _checkDelay ? Color.red : Color.green;
+        Gizmos.color = _checkDelay ? Color.blue : Color.cyan;
         Gizmos.DrawWireSphere(transform.position, _IceAreaRange * 0.5f);
     }
 
-    public void OnSpawned() { }
-    public void OnDespawned() { }
+    public virtual void OnSpawned() { }
+    public virtual void OnDespawned()
+    {
+        _checkDelay = true;
+        if (_delayCoroutine != null) StopCoroutine(_delayCoroutine);
+    }
 }

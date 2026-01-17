@@ -1,65 +1,43 @@
 ﻿using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class FireBallPattern : PatternBase
 {
-    [Header("추적 및 예측")]
-    [SerializeField, Tooltip("경고 장판 프리팹")] private ParticleSystem _WarnningArea;
-    [SerializeField, Tooltip("플레이어 예측 거리")] private float _ChaseOffset;
-    [SerializeField, Tooltip("경고 파티클 추적 시간")] private float _WarnningTime;
-    [SerializeField, Tooltip("경고 장판 지연시간")] private float _WarnningDTime;
-
     [Header("발사 설정")]
     [SerializeField, Tooltip("화염구 프리팹")] private FireBall _FireBallPrefab;
     [SerializeField, Tooltip("화염구 생성 위치")] private GameObject _SpawnPoint;
     [SerializeField, Tooltip("화염구 생성 Y좌표 오프셋")] private float _SpawnYOffset = 5f;
 
-    private GameObject _player;
-    private ParticleSystem _currentWarning;
-    private PredictiveAim _predictiveAim;
+    [Header("투사체 및 장판 수치 설정")]
+    [SerializeField, Tooltip("투사체 데미지")] private float _fireballDmg = 15f;
+    [SerializeField, Tooltip("투사체 속도")] private float _fireballSpeed = 15f;
+    [SerializeField, Tooltip("장판 데미지")] private float _areaDmg = 10f;
+    [SerializeField, Tooltip("장판 지름")] private float _areaRange = 5f;
+    [SerializeField, Tooltip("장판 지속 시간")] private float _areaLifeTime = 5f;
 
-    public override void Init(GameObject target)
-    {
-        _player = target;
-        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
-    }
-
-    protected override void Update()
-    {
-        if (_isPatternActive && _currentWarning != null && _player != null)
-        {
-            _currentWarning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
-        }
-    }
+    [Header("화상 디버프 설정")]
+    [SerializeField, Tooltip("화상 지속 시간")] private float _burnTime = 2.0f;
+    [SerializeField, Tooltip("화상 틱 데미지")] private float _burnDmg = 5.0f;
+    [SerializeField, Tooltip("화상 데미지 간격(틱)")] private float _burnTickInterval = 0.5f;
 
     protected override IEnumerator PatternRoutine()
     {
-        if (_WarnningArea != null && _predictiveAim != null)
-        {
-            _currentWarning = PoolManager.Instance.Spawn(_WarnningArea, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
-            _isPatternActive = true;
+        yield return StartCoroutine(ShowWarning());
 
-            _currentWarning.Clear();
-            _currentWarning.Play();
+        Vector3 targetPosition;
+        if (_useFixedSpawnPoint)
+        {
+            targetPosition = transform.position + (transform.forward * _WarnningMaxLength);
+        }
+        else
+        {
+            targetPosition = _warningTransform != null ? _warningTransform.position : _target.transform.position;
         }
 
-        yield return new WaitForSeconds(_WarnningTime);
-        _isPatternActive = false;
-
-        Vector3 targetPosition = _currentWarning.transform.position;
-
-        yield return new WaitForSeconds(_WarnningDTime);
+        RemoveWarning();
 
         Fire(targetPosition);
         PlayPatternSound(PatternEnum.FireBall);
-
-        if (_currentWarning != null)
-        {
-            _currentWarning.Stop();
-            PoolManager.Instance.Despawn(_currentWarning.gameObject);
-            _currentWarning = null;
-        }
     }
 
     private void Fire(Vector3 targetPosition)
@@ -69,21 +47,13 @@ public class FireBallPattern : PatternBase
         Vector3 firePos = _SpawnPoint.transform.position;
         firePos.y += _SpawnYOffset;
 
-        FireBall fireball = PoolManager.Instance.Spawn(_FireBallPrefab, firePos, _SpawnPoint.transform.rotation);
+        FireBall fireball = PoolManager.Instance.Spawn(_FireBallPrefab, firePos, Quaternion.identity);
         if (fireball != null)
         {
-            fireball.Init(_player);
-            fireball.setTarget(targetPosition);
+            fireball.Init(_fireballDmg, _fireballSpeed, 0);
+            fireball.SetFireBallStats(_target, targetPosition, _areaDmg, _areaRange, _areaLifeTime, _burnDmg, _burnTime, _burnTickInterval);
         }
     }
 
-    protected override void CleanupPattern()
-    {
-        if (_currentWarning != null)
-        {
-            _currentWarning.Stop();
-            PoolManager.Instance.Despawn(_currentWarning.gameObject);
-            _currentWarning = null;
-        }
-    }
+    protected override void CleanupPattern() { }
 }

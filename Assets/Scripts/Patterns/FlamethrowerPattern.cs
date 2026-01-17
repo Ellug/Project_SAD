@@ -8,83 +8,53 @@ public class FlamethrowerPattern : PatternBase
     [SerializeField, Tooltip("스폰 포인트")] private Transform _spawnPosition;
     [SerializeField, Tooltip("화염 유지 시간")] private float _fireDuration = 5.0f;
 
-    [Header("경고 장판")]
-    [SerializeField, Tooltip("경고 장판 프리팹")] private ParticleSystem _WarningAreaPrefab;
-    [SerializeField, Tooltip("경고 장판 추적 시간")] private float _WarningTime = 1.5f;
-    [SerializeField, Tooltip("추적 정지 후 발사까지 대기 시간")] private float _WarningFNTime = 0.2f;
-    [SerializeField, Tooltip("장판 너비")] private float _WarningWidth = 10f;
-    [SerializeField, Tooltip("장판 길이")] private float _WarningLength = 15f;
-    [SerializeField, Tooltip("장판 시작점 오프셋 비율")] private float _WarningOffsetRate = 0.5f;
+    [Header("화염 물리 수치")]
+    [SerializeField, Tooltip("화염방사 총 길이")] private float _Distance = 15.0f;
+    [SerializeField, Tooltip("시작 지점 반지름")] private float _StartRadius = 0.1f;
+    [SerializeField, Tooltip("끝 지점 반지름")] private float _EndRadius = 2.0f;
+    [SerializeField, Tooltip("구체 간 밀도")] private float _Density = 1.8f;
+    [SerializeField, Tooltip("데미지")] private float _Dmg = 10.0f;
 
-    private GameObject _target;
-    private ParticleSystem _currentWarning;
-    private Transform _warningTransform;
+    [Header("화상 디버프 설정")]
+    [SerializeField, Tooltip("화상 지속시간")] private float _BurnDebuffTime = 2.0f;
+    [SerializeField, Tooltip("화상 데미지")] private float _BurnDmg = 5.0f;
+    [SerializeField, Tooltip("화상 틱")] private float _TickInterval = 0.5f;
+
     private Flamethrower _activeFlame;
-    private Quaternion _finalRotation;
-
-    public override void Init(GameObject target) => _target = target;
-
-    protected override void Update()
-    {
-        if (_isPatternActive && _warningTransform != null && _target != null)
-        {
-            UpdateWarningLogic();
-        }
-    }
-
-    private void UpdateWarningLogic()
-    {
-        Vector3 dir = (_target.transform.position - _spawnPosition.position);
-        dir.y = 0;
-
-        if (dir != Vector3.zero)
-        {
-            Quaternion targetRot = Quaternion.LookRotation(dir);
-            _warningTransform.rotation = Quaternion.Slerp(_warningTransform.rotation, targetRot, Time.deltaTime * 50f);
-        }
-
-        Vector3 forwardOffset = _warningTransform.forward * (_WarningLength * _WarningOffsetRate);
-        _warningTransform.position = _spawnPosition.position + forwardOffset;
-        _warningTransform.localScale = new Vector3(_WarningWidth, 1f, _WarningLength);
-    }
 
     protected override IEnumerator PatternRoutine()
     {
-        if (_WarningAreaPrefab == null) yield break;
+        yield return StartCoroutine(ShowWarning());
 
-        _currentWarning = PoolManager.Instance.Spawn(_WarningAreaPrefab, _spawnPosition.position, Quaternion.identity);
-        _warningTransform = _currentWarning.transform;
-
-        _currentWarning.Clear();
-        _currentWarning.Play();
-
-        _isPatternActive = true;
-
-        yield return new WaitForSeconds(_WarningTime);
-
-        _isPatternActive = false;
-        _finalRotation = _warningTransform.rotation;
-
-        yield return new WaitForSeconds(_WarningFNTime);
+        Quaternion finalRotation;
+        if (_useFixedSpawnPoint)
+        {
+            finalRotation = _spawnPosition.rotation;
+        }
+        else
+        {
+            finalRotation = _lastDirection != Vector3.zero ? Quaternion.LookRotation(_lastDirection) : _spawnPosition.rotation;
+        }
 
         RemoveWarning();
-        Fire();
+        Fire(finalRotation);
 
         yield return new WaitForSeconds(_fireDuration);
 
         CleanupPattern();
     }
 
-    private void Fire()
+    private void Fire(Quaternion rotation)
     {
-        if (_flamePrefab == null) return;
+        if (_flamePrefab == null || _spawnPosition == null) return;
 
         PlayPatternSound(PatternEnum.Flamethrower);
-        _activeFlame = PoolManager.Instance.Spawn(_flamePrefab, _spawnPosition.position, _finalRotation);
+        _activeFlame = PoolManager.Instance.Spawn(_flamePrefab, _spawnPosition.position, rotation);
 
         if (_activeFlame != null)
         {
-            _activeFlame.Init(_target);
+            _activeFlame.Init(_target, _Distance, _StartRadius, _EndRadius, _Density, _fireDuration, _Dmg, _BurnDmg, _BurnDebuffTime, _TickInterval);
+
             foreach (ParticleSystem ps in _activeFlame.GetComponentsInChildren<ParticleSystem>())
             {
                 ps.Clear();
@@ -93,24 +63,8 @@ public class FlamethrowerPattern : PatternBase
         }
     }
 
-    private void RemoveWarning()
-    {
-        if (_currentWarning != null)
-        {
-            _currentWarning.Stop();
-            if (PoolManager.Instance != null)
-                PoolManager.Instance.Despawn(_currentWarning.gameObject);
-
-            _currentWarning = null;
-            _warningTransform = null;
-        }
-    }
-
     protected override void CleanupPattern()
     {
-        _isPatternActive = false;
-        RemoveWarning();
-
         if (_activeFlame != null)
         {
             if (PoolManager.Instance != null)

@@ -8,6 +8,7 @@ public class UIManager : SingletonePattern<UIManager>
 {
     private PlayerInput _inputSystem;
     private Stack<GameObject> _uiStack;
+    private QuickGuideUI _quickGuidePanel;
 
     public event Action PauseUItrigger;
     public event Action AllUIClosed;
@@ -82,6 +83,19 @@ public class UIManager : SingletonePattern<UIManager>
                 _inputSystem.SwitchCurrentActionMap("Player");
             }
         }
+    }
+
+    public void ToggleGuide()
+    {
+        if (_quickGuidePanel != null)
+        {
+            _quickGuidePanel.PanelToggle();
+        }
+    }
+
+    public void RegistQuickGuide(QuickGuideUI obj)
+    {
+        _quickGuidePanel = obj;
     }
 
     public bool IsUIPopUp()

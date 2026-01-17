@@ -13,8 +13,4 @@ MonoBehaviour:
   m_Name: PhaseTestData
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   _patterns:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8020916841353739512, guid: 07d15fb762a22bc4f8ff3a14796b9983, type: 3}

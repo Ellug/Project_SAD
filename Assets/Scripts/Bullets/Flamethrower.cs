@@ -3,40 +3,40 @@ using System.Collections;
 
 public class Flamethrower : MonoBehaviour, IPoolable
 {
-    [Header("화염 방사 설정")]
-    [Tooltip("화염방사 총 길이")][SerializeField] float _Distance = 15.0f;
-    [Tooltip("시작 지점 반지름")][SerializeField] float _StartRadius = 0.1f;
-    [Tooltip("끝 지점 반지름")][SerializeField] float _EndRadius = 2.0f;
-    [Tooltip("구체 간 밀도 (비주얼 최적화값: 1.8)")][Range(0.1f, 2.0f)][SerializeField] float _Density = 1.8f;
-    [Tooltip("지속 시간")][SerializeField] float _LifeTime = 5.0f;
-    [Tooltip("데미지")][SerializeField] float _Dmg = 10.0f;
-    [Tooltip("데미지 딜레이")][SerializeField] float _DmgDelay = 0.5f;
+    protected float _Distance;
+    protected float _StartRadius;
+    protected float _EndRadius;
+    protected float _Density;
+    protected float _LifeTime;
+    protected float _Dmg;
+    protected float _DmgDelay = 0.5f;
 
-    [Header("디버프 설정")]
-    [Tooltip("화상 지속시간")][SerializeField] float _BurnDebuffTime = 2.0f;
-    [Tooltip("화상 데미지")][SerializeField] float _BurnDmg = 5.0f;
-    [Tooltip("화상 틱")][SerializeField] float _TickInterval = 0.5f;
+    protected float _BurnDebuffTime;
+    protected float _BurnDmg;
+    protected float _TickInterval;
 
-    private GameObject _player;
-    private bool _checkDelay = true;
-    private Coroutine _delayCoroutine;
+    protected GameObject _player;
+    protected bool _checkDelay = true;
+    protected Coroutine _delayCoroutine;
 
-    private void OnValidate()
-    {
-        _Distance = Mathf.Max(_Distance, 0.5f);
-        _StartRadius = Mathf.Max(_StartRadius, 0.05f);
-        _EndRadius = Mathf.Max(_EndRadius, 0.1f);
-        _Density = Mathf.Max(_Density, 0.1f);
-    }
-
-    public void Init(GameObject player)
+    public void Init(GameObject player, float dist, float sRad, float eRad, float dens, float life, float dmg, float bDmg, float bTime, float bTick)
     {
         _player = player;
+        _Distance = dist;
+        _StartRadius = sRad;
+        _EndRadius = eRad;
+        _Density = dens;
+        _LifeTime = life;
+        _Dmg = dmg;
+        _BurnDmg = bDmg;
+        _BurnDebuffTime = bTime;
+        _TickInterval = bTick;
+
         _checkDelay = true;
-        Invoke(nameof(DespawnArea), _LifeTime);
+        Invoke(nameof(DespawnArea), _LifeTime + 0.1f);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (_player == null || !_checkDelay) return;
 
@@ -48,12 +48,13 @@ public class Flamethrower : MonoBehaviour, IPoolable
                 playerModel.BurnDebuff(_BurnDmg, _BurnDebuffTime, _TickInterval);
 
                 _checkDelay = false;
-                _delayCoroutine = StartCoroutine(DmgDelayTime());
+                if (gameObject.activeInHierarchy)
+                    _delayCoroutine = StartCoroutine(DmgDelayTime());
             }
         }
     }
 
-    private bool CheckConeCollision()
+    protected virtual bool CheckConeCollision()
     {
         float currentDist = 0;
         int safetyLimit = 0;
@@ -72,22 +73,23 @@ public class Flamethrower : MonoBehaviour, IPoolable
         return false;
     }
 
-    private void DespawnArea()
+    protected virtual void DespawnArea()
     {
         CancelInvoke();
         if (_delayCoroutine != null) StopCoroutine(_delayCoroutine);
-        PoolManager.Instance.Despawn(gameObject);
+        if (PoolManager.Instance != null)
+            PoolManager.Instance.Despawn(gameObject);
     }
 
-    private IEnumerator DmgDelayTime()
+    protected virtual IEnumerator DmgDelayTime()
     {
         yield return new WaitForSeconds(_DmgDelay);
         _checkDelay = true;
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
-        Gizmos.color = Application.isPlaying && !_checkDelay ? Color.green : Color.red;
+        Gizmos.color = (Application.isPlaying && !_checkDelay) ? Color.green : Color.red;
 
         float currentDist = 0;
         int safetyLimit = 0;
@@ -105,6 +107,10 @@ public class Flamethrower : MonoBehaviour, IPoolable
         }
     }
 
-    public void OnSpawned() { }
-    public void OnDespawned() { }
+    public virtual void OnSpawned() { }
+    public virtual void OnDespawned()
+    {
+        _checkDelay = true;
+        if (_delayCoroutine != null) StopCoroutine(_delayCoroutine);
+    }
 }

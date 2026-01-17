@@ -3,57 +3,40 @@ using UnityEngine;
 
 public class IceAreaPattern : PatternBase
 {
-    [Header("경고 장판")]
-    [Tooltip("경고 파티클")][SerializeField] private ParticleSystem _WarnningArea;
-    [Tooltip("경고 파티클 추적 시간")][SerializeField] private float _WarnningTime = 2.0f;
-    [Tooltip("경고 장판 정지 후 대기 시간")][SerializeField] private float _WarnningDTime = 0.5f;
+    [Header("냉기 장판 생성 설정")]
+    [SerializeField, Tooltip("냉기 장판 프리팹")] private IceArea _IceAreaPrefab;
 
-    [Header("냉기 장판 생성")]
-    [Tooltip("냉기 장판 프리팹")][SerializeField] private IceArea _IceAreaPrefab;
-    [Tooltip("생성 위치 예측 오프셋")][SerializeField] private float _ChaseOffset = 0.2f;
+    [Header("냉기 설정")]
+    [SerializeField, Tooltip("실제 타격 판정 범위 (지름)")] private float _IceAreaRange = 5.0f;
+    [SerializeField, Tooltip("냉기 지속 시간")] private float _IceAreaLifeTime = 5.0f;
+    [SerializeField, Tooltip("냉기 데미지")] private float _Dmg = 10.0f;
+    [SerializeField, Tooltip("데미지 딜레이")] private float _DmgDelay = 0.5f;
 
-    private PredictiveAim _predictiveAim;
-    private GameObject _player;
-    private ParticleSystem _currentWarning;
+    [Header("디버프 설정")]
+    [SerializeField, Tooltip("냉기 지속시간")] private float _ColdDebuffTime = 2.0f;
+    [SerializeField, Tooltip("냉기 데미지")] private float _ColdDmg = 5.0f;
+    [SerializeField, Tooltip("냉기 틱")] private float _TickInterval = 0.5f;
 
     public override void Init(GameObject target)
     {
-        _player = target;
-        _predictiveAim = GameObject.FindAnyObjectByType<PredictiveAim>();
-    }
-
-    protected override void Update()
-    {
-        if (_isPatternActive && _currentWarning != null && _predictiveAim != null)
-        {
-            _currentWarning.transform.position = _predictiveAim.PredictiveAimCalc(_ChaseOffset);
-        }
+        base.Init(target);
     }
 
     protected override IEnumerator PatternRoutine()
     {
-        if (_WarnningArea == null) yield break;
+        yield return StartCoroutine(ShowWarning());
 
-        _currentWarning = PoolManager.Instance.Spawn(_WarnningArea, _predictiveAim.PredictiveAimCalc(_ChaseOffset), Quaternion.identity);
-        _currentWarning.Clear();
-        _currentWarning.Play();
-
-        _isPatternActive = true;
-
-        yield return new WaitForSeconds(_WarnningTime);
-
-        _isPatternActive = false;
-        Vector3 spawnPos = _currentWarning != null ? _currentWarning.transform.position : _predictiveAim.PredictiveAimCalc(_ChaseOffset);
-
-        yield return new WaitForSeconds(_WarnningDTime);
-
-        if (_currentWarning != null)
+        Vector3 spawnPos;
+        if (_useFixedSpawnPoint)
         {
-            _currentWarning.Stop();
-            PoolManager.Instance.Despawn(_currentWarning.gameObject);
-            _currentWarning = null;
+            spawnPos = transform.position;
+        }
+        else
+        {
+            spawnPos = _warningTransform != null ? _warningTransform.position : transform.position;
         }
 
+        RemoveWarning();
         SpawnIceArea(spawnPos);
     }
 
@@ -66,20 +49,11 @@ public class IceAreaPattern : PatternBase
 
         if (ice != null)
         {
-            ice.Init(_player);
+            ice.Init(_target, _IceAreaRange, _IceAreaLifeTime, _Dmg, _DmgDelay, _ColdDmg, _ColdDebuffTime, _TickInterval);
         }
     }
 
     protected override void CleanupPattern()
     {
-        _isPatternActive = false;
-
-        if (_currentWarning != null)
-        {
-            _currentWarning.Stop();
-            if (PoolManager.Instance != null)
-                PoolManager.Instance.Despawn(_currentWarning.gameObject);
-            _currentWarning = null;
-        }
     }
 }
