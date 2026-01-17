@@ -97,7 +97,7 @@ MonoBehaviour:
   _cycleTime: 12
   _MissilePrefab: {fileID: 821262787588371134, guid: 3fc5a2e8cdab5bf44834f213ef88ada1, type: 3}
   _SpawnPoint: {fileID: 1155848805997012951, guid: aadca8f1168b258448a8940428e76826, type: 3}
-  _MissileSpeed: 15
+  _MissileSpeed: 25
   _MissileRotationSpeed: 3
   _MissileLifeTime: 5
   _dmg: 20

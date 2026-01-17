@@ -59,7 +59,7 @@ MonoBehaviour:
   _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 0
-  _startDelay: 1
+  _startDelay: 3
   _cycleTime: 10
   _objectTag:
   - {fileID: 0}

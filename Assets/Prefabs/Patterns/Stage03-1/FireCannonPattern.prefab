@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3253869d6d874fa419a6a3cfa2bd31e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireCannonPattern
-  mode: 2
-  _WarnningArea: {fileID: 0}
+  mode: 1
+  _WarnningArea: {fileID: 5098383528556321439}
   _WarnningTime: 0
   _WarnningDTime: 0
   _WarnningMaxLength: 0
@@ -289,6 +289,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae5a1b8d9c8340d418f81c6422ae9e8b, type: 3}
+--- !u!198 &5098383528556321439 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3748548323603309899, guid: ae5a1b8d9c8340d418f81c6422ae9e8b, type: 3}
+  m_PrefabInstance: {fileID: 8269906444792348628}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7977665206581777671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2049912043821296339, guid: ae5a1b8d9c8340d418f81c6422ae9e8b, type: 3}
