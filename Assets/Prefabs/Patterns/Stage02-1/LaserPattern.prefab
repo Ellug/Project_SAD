@@ -59,8 +59,8 @@ MonoBehaviour:
   _useFixedSpawnPoint: 0
   _counterable: 1
   _startupDelay: 1.5
-  _startDelay: 1
-  _cycleTime: 15
+  _startDelay: 4
+  _cycleTime: 13
   _objectTag: []
   _laserObject: []
   _moveSpeed: 5

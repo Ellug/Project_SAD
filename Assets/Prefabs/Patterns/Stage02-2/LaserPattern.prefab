@@ -60,16 +60,16 @@ MonoBehaviour:
   _counterable: 0
   _startupDelay: 0
   _startDelay: 1
-  _cycleTime: 15
+  _cycleTime: 10
   _objectTag:
   - {fileID: 0}
   _laserObject:
   - {fileID: 0}
   _moveSpeed: 5
   _lifeTime: 5
-  _rotationSpeed: 20
-  _upPosition: -0.2
-  _underPosition: -1.45
+  _rotationSpeed: 30
+  _upPosition: 1
+  _underPosition: -4
   _maxLaserDistance: 50
   _hitParticleOffset: 0.05
   _decalTime: 5
