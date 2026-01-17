@@ -67,7 +67,7 @@ MonoBehaviour:
   _SlowRange: 2.5
   _SlowAreaTime: 2
   _ChaseSpeed: 10
-  _SlowPower: 0.5
+  _SlowPower: 0.2
   _SlowTime: 1
   _applyInterval: 0.1
 --- !u!82 &4108840657820736238

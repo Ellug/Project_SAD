@@ -46,14 +46,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e72cc934e414f9a4eb8c09753956a76a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceAreaPattern
+  mode: 0
+  _WarnningArea: {fileID: 5402580152695258218}
+  _WarnningTime: 1
+  _WarnningDTime: 0.5
+  _WarnningMaxLength: 0
+  _WarnningWidth: 0
+  _lengthScaleModifier: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 1
+  _WarnningSpwanPoint: {fileID: 0}
+  _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 5
-  _WarnningArea: {fileID: 5402580152695258218}
-  _WarnningTime: 2
-  _WarnningDTime: 0.5
+  _startDelay: 1
+  _cycleTime: 4
   _IceAreaPrefab: {fileID: 7463013888460847592, guid: 31784e72f52b5834abc02bb6a3d08052, type: 3}
-  _ChaseOffset: 0
+  _IceAreaRange: 5
+  _IceAreaLifeTime: 5
+  _Dmg: 10
+  _DmgDelay: 0.5
+  _ColdDebuffTime: 2
+  _ColdDmg: 5
+  _TickInterval: 0.5
 --- !u!82 &-3616581369151974552
 AudioSource:
   m_ObjectHideFlags: 0
@@ -246,6 +263,22 @@ PrefabInstance:
     - target: {fileID: 2828155463494887191, guid: 043c63c08366d1d45803bf7d1893375d, type: 3}
       propertyPath: m_Name
       value: Marker circle fantasy blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 4734263339447474376, guid: 043c63c08366d1d45803bf7d1893375d, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.42745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 6007436025103039093, guid: 043c63c08366d1d45803bf7d1893375d, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.50980395
+      objectReference: {fileID: 0}
+    - target: {fileID: 6027677923653144990, guid: 043c63c08366d1d45803bf7d1893375d, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.23529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 7356925691453145857, guid: 043c63c08366d1d45803bf7d1893375d, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.39607844
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

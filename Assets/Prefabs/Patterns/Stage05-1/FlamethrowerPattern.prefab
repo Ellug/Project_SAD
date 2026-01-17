@@ -97,8 +97,8 @@ MonoBehaviour:
   _cycleTime: 10
   _flamePrefab: {fileID: 3972544336971986292, guid: ad9c73d4583e1014dbc83b167fdd404e, type: 3}
   _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
-  _fireDuration: 5
-  _Distance: 15
+  _fireDuration: 1
+  _Distance: 60
   _StartRadius: 0.1
   _EndRadius: 2
   _Density: 1.8

@@ -9,7 +9,7 @@ public class Flamethrower : MonoBehaviour, IPoolable
     protected float _Density;
     protected float _LifeTime;
     protected float _Dmg;
-    protected float _DmgDelay = 0.5f;
+    protected float _DmgDelay = 0.1f;
 
     protected float _BurnDebuffTime;
     protected float _BurnDmg;
