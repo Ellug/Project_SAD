@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c1600b0b91ed4f41910a1d977126ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlowAreaPattern
-  mode: 2
-  _WarnningArea: {fileID: 0}
+  mode: 0
+  _WarnningArea: {fileID: 7466106648552227881, guid: 25806f3a7b7da3343b8925efdda2bf9a, type: 3}
   _WarnningTime: 0
   _WarnningDTime: 0
   _WarnningMaxLength: 0
