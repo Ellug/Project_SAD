@@ -28,8 +28,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.5}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3776984478367260332}
   m_Father: {fileID: 0}
@@ -49,11 +49,6 @@ MonoBehaviour:
   _MuzzlePrefab: {fileID: 5298398091398872510, guid: 16f45383ac421cb44a1e101daca79a93, type: 3}
   _ExplosionPrefab: {fileID: 5815045670644359433, guid: 16f6f9c28a093ad459f7621d3d0d1ccd, type: 3}
   _Trails: []
-  _MissileLifeTime: 10
-  _MissileSpeed: 14
-  _MissileRotationSpeed: 3
-  _Dmg: 20
-  Player: {fileID: 1843839388801252768, guid: 45e9cc884b58d104ca888d4cb1cf0128, type: 3}
 --- !u!136 &5352139090238327445
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -78,18 +78,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b455c3e6aa3e8ca4f9470090cceb3019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlamethrowerPattern
+  mode: 1
+  _WarnningArea: {fileID: 517166583863999149}
+  _WarnningTime: 1
+  _WarnningDTime: 0.3
+  _WarnningMaxLength: 0
+  _WarnningWidth: 0
+  _lengthScaleModifier: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
+  _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 5
+  _startDelay: 3
+  _cycleTime: 10
   _flamePrefab: {fileID: 3972544336971986292, guid: ad9c73d4583e1014dbc83b167fdd404e, type: 3}
   _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
   _fireDuration: 5
-  _WarningAreaPrefab: {fileID: 0}
-  _WarningTime: 2
-  _WarningFNTime: 0.2
-  _WarningWidth: 5
-  _WarningLength: 30
-  _WarningOffsetRate: 1
+  _Distance: 15
+  _StartRadius: 0.1
+  _EndRadius: 2
+  _Density: 1.8
+  _Dmg: 10
+  _BurnDebuffTime: 2
+  _BurnDmg: 5
+  _TickInterval: 0.5
 --- !u!82 &-4762822488132172696
 AudioSource:
   m_ObjectHideFlags: 0
@@ -276,6 +292,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce0b87fa2b7f89649a8af83314563f66, type: 3}
+--- !u!198 &517166583863999149 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1705881344474540260, guid: ce0b87fa2b7f89649a8af83314563f66, type: 3}
+  m_PrefabInstance: {fileID: 1189471813578822217}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8465551454152051076 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7348313826559974349, guid: ce0b87fa2b7f89649a8af83314563f66, type: 3}

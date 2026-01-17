@@ -78,18 +78,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b455c3e6aa3e8ca4f9470090cceb3019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlamethrowerPattern
+  mode: 1
+  _WarnningArea: {fileID: 517166583863999149}
+  _WarnningTime: 1
+  _WarnningDTime: 0.3
+  _WarnningMaxLength: 60
+  _WarnningWidth: 3
+  _lengthScaleModifier: 0.45
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
+  _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 0
-  _cycleTime: 5
+  _startDelay: 2
+  _cycleTime: 7
   _flamePrefab: {fileID: 3972544336971986292, guid: 739b459f6cd943642b5695374da1fbf9, type: 3}
   _spawnPosition: {fileID: 2972957131812476677, guid: 51d68303859518c438393a0bd76d9e1e, type: 3}
-  _fireDuration: 5
-  _WarningAreaPrefab: {fileID: 517166583863999149}
-  _WarningTime: 2
-  _WarningFNTime: 0.3
-  _WarningWidth: 5
-  _WarningLength: 30
-  _WarningOffsetRate: 0
+  _fireDuration: 3
+  _Distance: 15
+  _StartRadius: 0.1
+  _EndRadius: 2
+  _Density: 1.8
+  _Dmg: 10
+  _BurnDebuffTime: 2
+  _BurnDmg: 5
+  _TickInterval: 0.5
 --- !u!82 &-4762822488132172696
 AudioSource:
   m_ObjectHideFlags: 0

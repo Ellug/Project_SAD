@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 448921634507870543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45,13 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8b5891e8bfcaea4a9d09077ce20b271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FireArea
-  _FireAreaRange: 10
-  _FireAreaLifeTime: 5
-  _Dmg: 2
-  _DmgDelay: 0.5
-  _BurnDebuffTime: 2
-  _BurnDmg: 5
-  _TickInterval: 0.5
 --- !u!1001 &8695613207706853133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -178,7 +171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4502220137496871532, guid: 1e9d02b48e1b6fb4f9c366ebb9e36f20, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4502220137496871532, guid: 1e9d02b48e1b6fb4f9c366ebb9e36f20, type: 3}
       propertyPath: m_LocalPosition.z

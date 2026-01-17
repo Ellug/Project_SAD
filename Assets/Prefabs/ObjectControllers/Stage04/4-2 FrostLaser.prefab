@@ -34311,7 +34311,7 @@ GameObject:
   - component: {fileID: 1213275951799988567}
   m_Layer: 0
   m_Name: 4-2 FrostLaser
-  m_TagString: FrostLaserObject
+  m_TagString: LaserObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34401,11 +34401,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f647013a7df9b43a8beb718ca37ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FrostLaserObject
-  _moveSpeed: 5
-  _lifeTime: 10
-  _rotationSpeed: 40
-  _upPosition: -0.2
-  _underPosition: -1.45
 --- !u!1 &3764711985296177819
 GameObject:
   m_ObjectHideFlags: 0
@@ -59101,19 +59096,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SetFrostLaser
   _lineRenderer: {fileID: 4750967449921880451}
   _firePoint: {fileID: 8867962236022334222}
-  _maxLaserDistance: 80
   _sparkParticle: {fileID: 5951635128269206734}
   _sparkParticle2: {fileID: 4672272619380190266}
   _laserHitObject: {fileID: 1016346247099925957}
-  _hitParticleOffset: 0.05
   _BurnDecalPrefab: {fileID: 679891756893386196, guid: a3be74fda5792b342afb3b94e619e62f, type: 3}
-  _DecalTime: 5
-  _Player: {fileID: 0}
-  _Dmg: 15
-  _DmgDelayTime: 0.1
-  _ColdDmg: 5
-  _ColdTime: 5
-  _ColdInterval: 5
 --- !u!1 &6315615575644362120
 GameObject:
   m_ObjectHideFlags: 0
