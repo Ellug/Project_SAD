@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1880858330334761104}
   - component: {fileID: -4043651985943119045}
   m_Layer: 0
-  m_Name: ShootingPattern2-2
+  m_Name: ShootingPattern (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98701e639e75834290238ce91300d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatternShooting
-  mode: 0
+  mode: 2
   _WarnningArea: {fileID: 0}
   _WarnningTime: 0
   _WarnningDTime: 0
@@ -59,16 +59,16 @@ MonoBehaviour:
   _WarnningSpwanPoint: {fileID: 0}
   _useFixedSpawnPoint: 0
   _counterable: 0
-  _startupDelay: 0
-  _startDelay: 1.2
-  _cycleTime: 3.2
-  _bulletPrefab: {fileID: 2245060522831277793, guid: 223bc3fa900818740906c4966820e135, type: 3}
-  _shootInterval: 0.2
+  _startupDelay: 2
+  _startDelay: 1
+  _cycleTime: 5
+  _bulletPrefab: {fileID: 2245060522831277793, guid: 67fb3eb959dc93f41a7ace3a7dd34dae, type: 3}
+  _shootInterval: 0.3
   _shootBulletNumber: 3
-  _spawnPosition: {fileID: 7406611455383550715, guid: 154780b68ed0ad64d8f49c00c23a360d, type: 3}
+  _spawnPosition: {fileID: 7406611455383550715, guid: 3574154a30911cc4588ace04e981c8a5, type: 3}
   _bulletDamage: 20
-  _bulletSpeed: 35
-  _bulletDistance: 60
+  _bulletSpeed: 40
+  _bulletDistance: 40
 --- !u!82 &-4043651985943119045
 AudioSource:
   m_ObjectHideFlags: 0

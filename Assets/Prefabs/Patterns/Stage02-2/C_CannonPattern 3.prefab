@@ -61,8 +61,8 @@ MonoBehaviour:
   _useFixedSpawnPoint: 0
   _counterable: 1
   _startupDelay: 2
-  _startDelay: 1
-  _cycleTime: 15
+  _startDelay: 5
+  _cycleTime: 13
   _bulletPrefab: {fileID: 6547672779303436957, guid: 2bc4d36136e1ef347a507f320abee8cb, type: 3}
   _shootInterval: 0.1
   _shootBulletNumber: 1
