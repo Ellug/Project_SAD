@@ -46,16 +46,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc7a42523fc4b814496c8c7150a983c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserBombingPattern
+  mode: 0
+  _WarnningArea: {fileID: 7466106648552227881, guid: 25806f3a7b7da3343b8925efdda2bf9a, type: 3}
+  _WarnningTime: 0
+  _WarnningDTime: 0
+  _WarnningMaxLength: 0
+  _WarnningWidth: 0
+  _lengthScaleModifier: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 0}
+  _useFixedSpawnPoint: 0
   _counterable: 1
   _startupDelay: 2
+  _startDelay: 1
   _cycleTime: 13
-  _warningAreaPrefab: {fileID: 4742255281639719975}
-  _chaseTime: 0
-  _readyTime: 0
-  _chaseOffset: 0
   _laserParticlePrefab: {fileID: 5440208619642781528}
   _laserCount: 15
-  _bombingRadius: 40
+  _bombingRadius: 5
   _intervalBetweenLasers: 0.2
   _explosionRange: 1.5
   _damage: 20
@@ -258,11 +268,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d91c09a229c56d048aadfe66f1b94df7, type: 3}
---- !u!198 &4742255281639719975 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5499720537335921840, guid: d91c09a229c56d048aadfe66f1b94df7, type: 3}
-  m_PrefabInstance: {fileID: 980956498874661015}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5920601882922441090 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6897045908766138645, guid: d91c09a229c56d048aadfe66f1b94df7, type: 3}

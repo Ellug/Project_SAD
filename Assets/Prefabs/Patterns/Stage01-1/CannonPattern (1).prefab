@@ -57,6 +57,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 7406611455383550715, guid: 37b20ad13a00e8741828f6b1f46377a4, type: 3}
   _useFixedSpawnPoint: 0
   _counterable: 0
   _startupDelay: 1
