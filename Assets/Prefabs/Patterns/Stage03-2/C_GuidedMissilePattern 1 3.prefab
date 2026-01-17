@@ -78,14 +78,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84f2f1fbcf2fbbd4c9c909b2108447c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GuidedMissilePattern
+  mode: 0
+  _WarnningArea: {fileID: 0}
+  _WarnningTime: 0
+  _WarnningDTime: 0
+  _WarnningMaxLength: 0
+  _WarnningWidth: 0
+  _lengthScaleModifier: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _ChaseOffset: 0
+  _WarnningSpwanPoint: {fileID: 0}
+  _useFixedSpawnPoint: 0
   _counterable: 1
   _startupDelay: 2
-  _cycleTime: 15
+  _startDelay: 3.5
+  _cycleTime: 12
   _MissilePrefab: {fileID: 821262787588371134, guid: 3fc5a2e8cdab5bf44834f213ef88ada1, type: 3}
   _SpawnPoint: {fileID: 1155848805997012951, guid: aadca8f1168b258448a8940428e76826, type: 3}
-  _WarningAreaPrefab: {fileID: 1053945783359283152}
-  _ChaseOffset: 0
-  _WarningTime: 0
+  _MissileSpeed: 15
+  _MissileRotationSpeed: 3
+  _MissileLifeTime: 5
+  _dmg: 20
 --- !u!82 &-3600035148881012456
 AudioSource:
   m_ObjectHideFlags: 0
@@ -256,11 +271,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 258c4d8f700d1b149bb6519babdf49ec, type: 3}
---- !u!198 &1053945783359283152 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 7701612061490733406, guid: 258c4d8f700d1b149bb6519babdf49ec, type: 3}
-  m_PrefabInstance: {fileID: 7224267785527000718}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7787758455807078764 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 599660772126003170, guid: 258c4d8f700d1b149bb6519babdf49ec, type: 3}
