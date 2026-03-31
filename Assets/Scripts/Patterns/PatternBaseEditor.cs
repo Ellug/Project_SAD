@@ -10,6 +10,7 @@ public class PatternBaseEditor : Editor
     SerializedProperty warningArea;
     SerializedProperty warningTime;
     SerializedProperty warningDTime;
+    SerializedProperty warnningSpwanPoint;
 
     SerializedProperty warningMaxLength;
     SerializedProperty warningWidth;
@@ -27,6 +28,8 @@ public class PatternBaseEditor : Editor
         warningArea = serializedObject.FindProperty("_WarnningArea");
         warningTime = serializedObject.FindProperty("_WarnningTime"); 
         warningDTime = serializedObject.FindProperty("_WarnningDTime");
+        warnningSpwanPoint = serializedObject.FindProperty("_WarnningSpwanPoint");
+
 
         warningMaxLength = serializedObject.FindProperty("_WarnningMaxLength");
         warningWidth = serializedObject.FindProperty("_WarnningWidth");
@@ -90,6 +93,7 @@ public class PatternBaseEditor : Editor
         EditorGUILayout.PropertyField(warningArea);
         EditorGUILayout.PropertyField(warningTime);
         EditorGUILayout.PropertyField(warningDTime);
+        EditorGUILayout.PropertyField(warnningSpwanPoint);
     }
 
     void DrawLineWarning()
@@ -122,6 +126,7 @@ public class PatternBaseEditor : Editor
             "_WarnningArea",
             "_WarnningTime",
             "_WarnningDTime",
+            "_WarnningSpwanPoint",
             "_WarnningMaxLength",
             "_WarnningWidth",
             "_lengthScaleModifier",

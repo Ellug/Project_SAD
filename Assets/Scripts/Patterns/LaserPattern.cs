@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LaserPattern : PatternBase
-{
+{    
+
     [Header("레이저 오브젝트 설정")]
-    [SerializeField, Tooltip("수동 등록할 레이저 오브젝트들")] private List<LaserObject> _laserObjects = new List<LaserObject>();
+    [SerializeField, Tooltip("오브젝트 태그")] private GameObject[] _objectTag;
+    [SerializeField, Tooltip("레이저 오브젝트 컴포넌트들")] public LaserObject[] _laserObject;
 
     [Header("오브젝트 이동 및 물리 설정")]
     [SerializeField, Tooltip("오브젝트 이동 속도")] private float _moveSpeed = 5f;
@@ -22,17 +24,27 @@ public class LaserPattern : PatternBase
     [Header("데미지 설정")]
     [SerializeField, Tooltip("레이저 데미지")] private float _damage = 5f;
     [SerializeField, Tooltip("데미지 딜레이")] private float _damageDelay = 0.5f;
+    protected override void Awake()
+    {
+        base.Awake();
+        _objectTag = GameObject.FindGameObjectsWithTag("LaserObject");
+    }
 
     public override void Init(GameObject target)
     {
         base.Init(target);
+        _laserObject = new LaserObject[_objectTag.Length];
+        for (int i = 0; i < _objectTag.Length; i++)
+        {
+            _laserObject[i] = _objectTag[i].GetComponent<LaserObject>();
+        }
     }
 
     protected override IEnumerator PatternRoutine()
     {
         _isPatternActive = true;
 
-        foreach (var laserObj in _laserObjects)
+        foreach (var laserObj in _laserObject)
         {
             if (laserObj != null)
             {
@@ -48,7 +60,7 @@ public class LaserPattern : PatternBase
     protected override void CleanupPattern()
     {
         _isPatternActive = false;
-        foreach (var laserObj in _laserObjects)
+        foreach (var laserObj in _laserObject)
         {
             if (laserObj != null) laserObj.DeactivateObject();
         }

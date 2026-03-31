@@ -5,7 +5,8 @@ using UnityEngine;
 public class FrostLaserPattern : PatternBase
 {
     [Header("레이저 오브젝트 설정")]
-    [SerializeField, Tooltip("수동 등록할 레이저 오브젝트들")] private List<FrostLaserObject> _laserObjects = new List<FrostLaserObject>();
+    [SerializeField, Tooltip("오브젝트 태그")] private GameObject[] _objectTag;
+    [SerializeField, Tooltip("레이저 오브젝트 컴포넌트들")] public FrostLaserObject[] _laserObject;
 
     [Header("오브젝트 이동 및 물리 설정")]
     [SerializeField, Tooltip("오브젝트 이동 속도")] private float _moveSpeed = 5f;
@@ -25,10 +26,20 @@ public class FrostLaserPattern : PatternBase
     [SerializeField, Tooltip("추위 데미지")] private float _coldDmg = 5f;
     [SerializeField, Tooltip("추위 지속시간")] private float _coldTime = 5f;
     [SerializeField, Tooltip("추위 틱")] private float _coldInterval = 1f;
+        protected override void Awake()
+    {
+        base.Awake();
+        _objectTag = GameObject.FindGameObjectsWithTag("LaserObject");
+    }
 
     public override void Init(GameObject target)
     {
         base.Init(target);
+        _laserObject = new FrostLaserObject[_objectTag.Length];
+        for (int i = 0; i < _objectTag.Length; i++)
+        {
+            _laserObject[i] = _objectTag[i].GetComponent<FrostLaserObject>();
+        }
     }
 
     protected override IEnumerator PatternRoutine()
@@ -36,7 +47,7 @@ public class FrostLaserPattern : PatternBase
         _isPatternActive = true;
         PlayPatternSound(PatternEnum.FrostLaser);
 
-        foreach (var laserObj in _laserObjects)
+        foreach (var laserObj in _laserObject)
         {
             if (laserObj != null)
             {
@@ -53,7 +64,7 @@ public class FrostLaserPattern : PatternBase
     protected override void CleanupPattern()
     {
         _isPatternActive = false;
-        foreach (var laserObj in _laserObjects)
+        foreach (var laserObj in _laserObject)
         {
             if (laserObj != null)
             {
