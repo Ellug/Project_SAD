@@ -9,7 +9,7 @@
 ---
 
 <details>
-<summary><strong>👑 팀장 (Ellug) 작업물</strong></summary>
+<summary><strong>팀장 (Ellug) 작업물</strong></summary>
 
 ## 팀장 담당 구현 목록
 
@@ -107,6 +107,41 @@ PoolManager (Generic Dictionary<Prefab, Queue<T>>)
 - **[StageStaticUI.cs](Assets/Scripts/UI/StageStaticUI.cs)** — 변경이 적은 UI 요소 (Static Batching)
 - **[StageDynamicUI.cs](Assets/Scripts/UI/StageDynamicUI.cs)** — 매 프레임 갱신되는 HP바·쿨타임 등
 - **[UIManager.cs](Assets/Scripts/System/UIManager.cs)** — UI 스택 관리, 입력맵 전환 (Player ↔ UI)
+
+---
+
+### 6. Git 이력 기반 추가 확인 작업 (기존 작성 외)
+
+`git log --author="Ellug" --no-merges` 기준으로 기존 목록 외 확인된 구현입니다.
+
+- **전투 밸런싱/특수공격 튜닝**
+  - 연결 구조:
+    **[PlayerLaser.cs](Assets/Scripts/Player/PlayerLaser.cs)** →
+    **[WeaponBase.cs](Assets/Scripts/Weapon/Weapons/WeaponBase.cs)** →
+    **[Rifle.cs](Assets/Scripts/Weapon/Weapons/Rifle.cs)** /
+    **[Shotgun.cs](Assets/Scripts/Weapon/Weapons/Shotgun.cs)** /
+    **[Sniper.cs](Assets/Scripts/Weapon/Weapons/Sniper.cs)** →
+    **[PerkText.cs](Assets/Scripts/Perks/PerkText.cs)** →
+    **[BossController.cs](Assets/Scripts/Boss/BossController.cs)**
+- **특전 선택 UI 안정화**
+  - 연결 구조:
+    **[PerkSelectPanelUI.cs](Assets/Scripts/UI/PerkSelectPanelUI.cs)** →
+    **[PerksItemUI.cs](Assets/Scripts/UI/PerksItemUI.cs)** →
+    **[PerksStatusUI.cs](Assets/Scripts/UI/PerksStatusUI.cs)**
+- **옵션(그래픽) 설정 이슈 수정**
+  - 연결 구조:
+    **[SettingManager.cs](Assets/Scripts/Option/SettingManager.cs)** →
+    **[ResolutionSettingItem.cs](Assets/Scripts/Option/Items/Graphic/ResolutionSettingItem.cs)**
+- **로비 진입/스테이지 선택 흐름 보강**
+  - 연결 구조:
+    **[SceneChanger.cs](Assets/Scripts/System/SceneChanger.cs)** →
+    **[LobbyUI.cs](Assets/Scripts/UI/LobbyUI.cs)** →
+    **[StageSelectUI.cs](Assets/Scripts/UI/StageSelectUI.cs)**
+- **디버그 검증 루프 보강**
+  - 연결 구조:
+    **[StageDebugCanvas.cs](Assets/Scripts/UI/StageDebugCanvas.cs)** ↔
+    **[DummyController.cs](Assets/Scripts/ObjectControllers/DummyController.cs)** ↔
+    **[PlayerBullet.cs](Assets/Scripts/Bullets/PlayerBullet.cs)**
 
 </details>
 
